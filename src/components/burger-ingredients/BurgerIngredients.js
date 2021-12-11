@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {inputDataTypes} from "../../utils/dataTypes";
+import {ingredientTypes} from "../../utils/dataTypes";
 
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientGroup from "./ingredient-group/IngredientGroup";
@@ -10,6 +10,9 @@ import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 
 
 function BurgerIngredients(props) {
+
+  console.log('props in BurgerIngredients', props);
+
   const bun = React.useRef(null);
   const sauce = React.useRef(null);
   const main = React.useRef(null);
@@ -85,5 +88,5 @@ function BurgerIngredients(props) {
 export default BurgerIngredients;
 
 BurgerIngredients.propTypes = {
-  props: PropTypes.arrayOf(inputDataTypes),
+  burgerInputData: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
 };

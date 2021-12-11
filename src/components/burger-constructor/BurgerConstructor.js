@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {inputDataTypes} from "../../utils/dataTypes";
+import {ingredientTypes} from "../../utils/dataTypes";
 
 import {
   ConstructorElement,
@@ -11,38 +11,9 @@ import {
 
 import styles from "./BurgerConstructorStyles.module.css";
 
-
-/*const BurgrConstructorElement = (props) => {
-
-  console.log(props);
-  let addText = "";
-
-  if (props.type === "topObj") {
-    console.log('top');
-    addText = " (верх)";
-  } else if (props.type === "bottomObj") {
-    console.log('bottom');
-    addText = " (низ)";
-  }
-
-  return(
-    <div className = {styles.element_constructor}>
-      <div>
-        <DragIcon type = "primary"/>
-      </div>
-      <ConstructorElement
-        
-        text = {props.name + addText}
-       
-        thumbnail = {props.image}
-      />
-    </div>
-  );
-}
-}*/
-
 const BurgerConstructor = (props) => {
-  console.log('props in BurgerConstructor', props);
+ // console.log('props in BurgerConstructor', props);
+
   return (
     <div className = {`${styles.main_container} pt-25`}>
       {/* первый элемент, зафиксирован */}
@@ -50,6 +21,7 @@ const BurgerConstructor = (props) => {
         {
           Array.of(props.burgerInputData.find(burgerItem => (burgerItem.type === "bun"))).map(el => (
             <ConstructorElement
+              key = {el._id}
               type = "top"
               isLocked = {true}
               text = {`${el.name} (верх)`}
@@ -62,11 +34,11 @@ const BurgerConstructor = (props) => {
       {/* элементы начинок */}
         <div className = {styles.constructor_container}>
           {props.burgerInputData.filter(burgerItem => (burgerItem.type !== "bun")).map(el => (
-            <div className = {styles.container_wrapper}>
+            <div className = {styles.container_wrapper} key = {el._id}>
               <div className = "mr-1">
                 <DragIcon type = "primary" />
               </div>
-              <ConstructorElement
+              <ConstructorElement                
                 text = {el.name}
                 price = {el.price}
                 thumbnail = {el.image}
@@ -77,9 +49,10 @@ const BurgerConstructor = (props) => {
 {/* послений элемент, зафиксирован */}
         
           <div className = {styles.bottom_container}>
-            {
-              Array.of(props.burgerInputData.find(burgerItem => (burgerItem.type === "bun"))).map(el => (
+            {              
+              Array.of(props.burgerInputData.find(burgerItem => (burgerItem.type === "bun"))).map(el => (                
                 <ConstructorElement
+                  key = {el._id}
                   type = "bottom"
                   isLocked = {true}
                   text = {`${el.name} (низ)`}
@@ -108,5 +81,15 @@ const BurgerConstructor = (props) => {
 export default BurgerConstructor;
 
 BurgerConstructor.propTypes = {
-  props: PropTypes.arrayOf(inputDataTypes),
+  burgerInputData: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
 };
+
+
+/*
+
+
+При отрисовке массива компонентов нужно всегда указывать уникальный атрибут key в самом верхнем уровне верстки.
+
+Это нужно исправить везде, где отрисовываете массив через map
+
+*/

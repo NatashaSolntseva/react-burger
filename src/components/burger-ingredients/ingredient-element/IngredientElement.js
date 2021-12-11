@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {inputDataTypes} from "../../../utils/dataTypes";
+import {ingredientTypes} from "../../../utils/dataTypes";
 
 import styles from "./IngredientElementStyles.module.css"
 import {Counter} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/counter';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon';
 
 const IngredientElement = (props) => {
+
+  console.log('props in IngredientElement', props);
 
   return (
     <div className = {styles.ingredient_element}>
@@ -27,6 +29,16 @@ const IngredientElement = (props) => {
 
 export default IngredientElement;
 
+/*
 IngredientElement.propTypes = {
-  props: PropTypes.arrayOf(inputDataTypes),
+  image: ingredientTypes.isRequired,
+  price: ingredientTypes.isRequired,
+  name: ingredientTypes.isRequired
+};
+*/
+
+IngredientElement.propTypes = {
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired
 };
