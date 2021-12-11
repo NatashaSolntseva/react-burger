@@ -8,7 +8,7 @@ import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components/d
 
 const IngredientElement = (props) => {
 
-  console.log('props in IngredientElement', props);
+ // console.log('props in IngredientElement', props);
 
   return (
     <div className = {styles.ingredient_element}>

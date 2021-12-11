@@ -12,62 +12,60 @@ import {
 import styles from "./BurgerConstructorStyles.module.css";
 
 const BurgerConstructor = (props) => {
- // console.log('props in BurgerConstructor', props);
+  console.log('props in BurgerConstructor', props);
+  /*разделение на булки и не булки*/
+ const bun = props.burgerInputData.find((item) => item.type === 'bun'); // находим первую попавшуюся булку
+ const notBun = props.burgerInputData.filter((item) => item.type !== 'bun'); // все не булки - массив
+ console.log('bun', bun);
+ console.log('notBun', notBun); 
+  
+  // для расчета итоговой суммы заказа
+ const totalPrice = bun.price*2 + notBun.reduce((sum, current) => sum + current.price, 0);
 
   return (
     <div className = {`${styles.main_container} pt-25`}>
       {/* первый элемент, зафиксирован */}
       <div className = {styles.top_container}>
-        {
-          Array.of(props.burgerInputData.find(burgerItem => (burgerItem.type === "bun"))).map(el => (
-            <ConstructorElement
-              key = {el._id}
-              type = "top"
-              isLocked = {true}
-              text = {`${el.name} (верх)`}
-              price = {el.price}
-              thumbnail = {el.image}
-            />  
-           ))
-        }  
+        <ConstructorElement 
+          type = 'top'
+          isLocked = {true}
+          text = {`${bun.name} (верх)`}
+          price = {bun.price}
+          thumbnail = {bun.image}
+        />       
       </div>
       {/* элементы начинок */}
-        <div className = {styles.constructor_container}>
-          {props.burgerInputData.filter(burgerItem => (burgerItem.type !== "bun")).map(el => (
-            <div className = {styles.container_wrapper} key = {el._id}>
-              <div className = "mr-1">
-                <DragIcon type = "primary" />
-              </div>
-              <ConstructorElement                
-                text = {el.name}
-                price = {el.price}
-                thumbnail = {el.image}
-              />
+      <div className = {styles.constructor_container}>
+        {notBun.map((el) => (
+          <div className = {styles.container_wrapper} key = {el._id}>
+            <div className = 'mr-1'>
+              <DragIcon type = 'primary' />
             </div>
-          ))}
-        </div>
+            <ConstructorElement            
+              text = {el.name}
+              price = {el.price}
+              thumbnail = {el.image}
+            />
+          </div>
+         ))}
+      </div>
 {/* послений элемент, зафиксирован */}
         
-          <div className = {styles.bottom_container}>
-            {              
-              Array.of(props.burgerInputData.find(burgerItem => (burgerItem.type === "bun"))).map(el => (                
-                <ConstructorElement
-                  key = {el._id}
-                  type = "bottom"
-                  isLocked = {true}
-                  text = {`${el.name} (низ)`}
-                  price = {el.price}
-                  thumbnail = {el.image}
-                />  
-              ))
-            }  
-          </div>      
-        
-
+      <div className = {styles.bottom_container}>
+        <ConstructorElement 
+          type = 'bottom'
+          isLocked = {true}
+          text = {`${bun.name} (верх)`}
+          price = {bun.price}
+          thumbnail = {bun.image}
+        />           
+      </div>
       
       <div className = {styles.outcome}>
         <div className = {styles.price}>
-          <p className = "text text_type_digits-medium mr-2">610</p>
+          <p className = "text text_type_digits-medium mr-2">           
+           {totalPrice}
+          </p>
           <CurrencyIcon type = "primary"/>
         </div>
         <Button type = "primary" size = "large">

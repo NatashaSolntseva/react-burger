@@ -7,7 +7,7 @@ import IngredientElement from "../ingredient-element/IngredientElement";
 
 const IngredientGroup = React.forwardRef((props, ref) => {
 
-  console.log('props in IngredientGroup', props);
+  // console.log('props in IngredientGroup', props);
 
   return (
     <>

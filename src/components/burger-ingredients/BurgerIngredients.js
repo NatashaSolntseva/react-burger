@@ -11,11 +11,11 @@ import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 
 function BurgerIngredients(props) {
 
-  console.log('props in BurgerIngredients', props);
-
-  const bun = React.useRef(null);
-  const sauce = React.useRef(null);
-  const main = React.useRef(null);
+  //console.log('props in BurgerIngredients', props);
+  /*для скрола*/
+  const bunRef = React.useRef(null);
+  const sauceRef = React.useRef(null);
+  const mainRef = React.useRef(null);
 
   const [current, setCurrent] = React.useState("buns");
   function scrollToTab(value) {
@@ -35,7 +35,7 @@ function BurgerIngredients(props) {
           active = {current === "buns"}
           onClick = {(value) => {
             setCurrent(value);
-            scrollToTab(bun.current);
+            scrollToTab(bunRef.current);
           }}>
             Булки
         </Tab>
@@ -44,7 +44,7 @@ function BurgerIngredients(props) {
           active = {current === "sauses"}
           onClick = {(value) => {
             setCurrent(value);
-            scrollToTab(sauce.current);
+            scrollToTab(sauceRef.current);
         }}>
             Соусы
         </Tab>
@@ -53,7 +53,7 @@ function BurgerIngredients(props) {
           active = {current === "fillings"}
           onClick = {(value) => {
             setCurrent(value);
-            scrollToTab(main.current);
+            scrollToTab(mainRef.current);
         }}>    
             Начинки
         </Tab>
@@ -63,21 +63,21 @@ function BurgerIngredients(props) {
           <IngredientGroup
             groupName = {"Булки"}
             groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'bun')}
-            ref = {bun}
+            ref = {bunRef}
           />
         </li>
         <li>
          <IngredientGroup
             groupName = {"Соусы"}
             groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'sauce')}
-            ref = {sauce}
+            ref = {sauceRef}
           />
         </li>
         <li>
           <IngredientGroup
             groupName = {"Начинки"}
             groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'main')}
-            ref = {main}
+            ref = {mainRef}
           />
         </li>
       </ul>
