@@ -1,3 +1,5 @@
+export const inputDataUrl = 'https://norma.nomoreparties.space/api/ingredients';
+
 export const inputData = [
   {
    "_id":"60666c42cc7b410027a1a9b1",
