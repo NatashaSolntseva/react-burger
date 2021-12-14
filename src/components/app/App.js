@@ -13,7 +13,7 @@ import { stat } from "fs";
 function App() {
   //console.log(inputDataUrl);
   const [state, setState] = React.useState({
-    isLoading: false,
+    isLoading: true,
     hasError: false,
     error: '',
     inputDataFromServer: []
@@ -31,12 +31,12 @@ function App() {
       .then(
         (res) => {
           setState(state => ({
-            ...state, isLoading: true, inputDataFromServer: res.data
+            ...state, isLoading: false, inputDataFromServer: res.data
           }));
         },
         (error) => {
           setState(state => ({
-            ...state, isLoading: true, hasError: true, error: error            
+            ...state, isLoading: false, hasError: true, error: error            
           }))
         }
       )
@@ -44,7 +44,7 @@ function App() {
 
   if (state.hasError) {
     console.log('Ошибка', state.error);
-  } else if (!state.isLoading) {
+  } else if (state.isLoading) {
     console.log('загрузка с сервера......');
   } else {
     console.log('все ok - загрузка завершена, state:', state); 

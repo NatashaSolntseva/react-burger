@@ -20,12 +20,14 @@ const BurgerConstructor = (props) => {
  console.log('notBun', notBun); 
   
   // для расчета итоговой суммы заказа
- const totalPrice = bun.price*2 + notBun.reduce((sum, current) => sum + current.price, 0);
+ const bunPrice = bun ? (bun.price*2) : 0; //проверяем есть ли данные с сервера в props
+ const notBunPrice = notBun ? (notBun.reduce((sum, current) => sum + current.price, 0)) : 0;
+ const totalPrice = bunPrice + notBunPrice;
 
   return (
     <div className = {`${styles.main_container} pt-25`}>
-      {/* первый элемент, зафиксирован */}
-      <div className = {styles.top_container}>
+      {/* первый элемент, зафиксирован //проверяем есть ли данные с сервера в props */}
+      {bun && <div className = {styles.top_container}> 
         <ConstructorElement 
           type = 'top'
           isLocked = {true}
@@ -33,9 +35,9 @@ const BurgerConstructor = (props) => {
           price = {bun.price}
           thumbnail = {bun.image}
         />       
-      </div>
+      </div>}
       {/* элементы начинок */}
-      <div className = {styles.constructor_container}>
+      {notBun && <div className = {styles.constructor_container}>
         {notBun.map((el) => (
           <div className = {styles.container_wrapper} key = {el._id}>
             <div className = 'mr-1'>
@@ -48,10 +50,10 @@ const BurgerConstructor = (props) => {
             />
           </div>
          ))}
-      </div>
+      </div>}
 {/* послений элемент, зафиксирован */}
         
-      <div className = {styles.bottom_container}>
+      {bun && <div className = {styles.bottom_container}>
         <ConstructorElement 
           type = 'bottom'
           isLocked = {true}
@@ -60,7 +62,7 @@ const BurgerConstructor = (props) => {
           thumbnail = {bun.image}
         />           
       </div>
-      
+}
       <div className = {styles.outcome}>
         <div className = {styles.price}>
           <p className = "text text_type_digits-medium mr-2">           
