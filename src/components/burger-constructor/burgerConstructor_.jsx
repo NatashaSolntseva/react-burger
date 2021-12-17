@@ -9,9 +9,7 @@ import {
   DragIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-
-
-import styles from "./BurgerConstructorStyles.module.css";
+import styles from "./burgerConstructorStyles.module.css";
 
 const BurgerConstructor = ({openModal, burgerInputData}) => {
  // console.log('props in BurgerConstructor', burgerInputData);
@@ -56,7 +54,7 @@ const BurgerConstructor = ({openModal, burgerInputData}) => {
               thumbnail = {el.image}
             />
           </div>
-         ))}
+          ))}
       </div>}
 {/* послений элемент, зафиксирован */}
         
@@ -73,7 +71,7 @@ const BurgerConstructor = ({openModal, burgerInputData}) => {
       <div className = {styles.outcome}>
         <div className = {styles.price}>
           <p className = "text text_type_digits-medium mr-2">           
-           {totalPrice}
+            {totalPrice}
           </p>
           <CurrencyIcon type = "primary"/>
         </div>

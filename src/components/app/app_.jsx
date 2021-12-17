@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import styles from "./AppStyles.module.css"
+import styles from "./appStyles.module.css"
 
-import AppHeader from "../app-header/AppHeader";
-import BurgerIngredients from "../burger-ingredients/BurgerIngredients";
-import BurgerConstructor from "../burger-constructor/BurgerConstructor";
+import AppHeader from "../app-header/appHeader";
+import BurgerIngredients from "../burger-ingredients/burgerIngredients";
+import BurgerConstructor from "../burger-constructor/burgerConstructor";
 import Modal from "../modal/modal"
-import OrderDetails from "../order-details/OrderDetails"
-import IngredientDetails from "../ingredient-detail/IngredientDetails";
+import OrderDetails from "../order-details/orderDetails"
+import IngredientDetails from "../ingredient-detail/ingredientDetails";
 
 import {inputDataUrl} from "../../utils/data"
 
-
-
 function App() {
-  //console.log(inputDataUrl);
   const [state, setState] = useState({
     isLoading: true,
     hasError: false,
@@ -47,11 +44,16 @@ function App() {
 
   const [isOrderDetailsModalOpen, setOrderDetailsModalOpen] = useState(false);
   const [isIngredientDetailsModalOpen, setIngredientDetailsModalOpen] = useState(false);
-  const [modalIngredientData, setModalIngredientData] = useState();
+  const [modalIngredientData, setModalIngredientData] = useState({data: null});
 
-  function openModal({modalType}) {
+  function openModal({modalType, itemId}) {
+    let modalIngredientData = null;
     if (modalType === "ingredientDetail") {      
-      setIngredientDetailsModalOpen(true);      
+      setIngredientDetailsModalOpen(true);
+      modalIngredientData = state.inputDataFromServer.find((item) => item._id === itemId);
+      console.log('modalIngredientData', modalIngredientData);
+      console.log('modalIngredientDat image', modalIngredientData.image);
+      setModalIngredientData({data: modalIngredientData});         
     } else {
       if (modalType === "orderDetail") {        
         setOrderDetailsModalOpen(true);        
@@ -64,9 +66,6 @@ function App() {
     setIngredientDetailsModalOpen(false);
   }  
 
-
-
-
   return (
     <div className = {styles.app}>
       <AppHeader />  
@@ -76,7 +75,14 @@ function App() {
       </main>       
       {isIngredientDetailsModalOpen && (
         <Modal closeModal = {closeModal}>            
-          <IngredientDetails />
+          <IngredientDetails
+            image = {modalIngredientData.data.image}
+            name = {modalIngredientData.data.name}
+            calories = {modalIngredientData.data.calories}
+            fat = {modalIngredientData.data.fat}
+            proteins = {modalIngredientData.data.proteins}
+            carbohydrates = {modalIngredientData.data.carbohydrates}
+          />
         </Modal>
       )}
       {isOrderDetailsModalOpen && (
@@ -86,8 +92,6 @@ function App() {
       )}
     </div>
   );
-
-
 }
 
 export default App;

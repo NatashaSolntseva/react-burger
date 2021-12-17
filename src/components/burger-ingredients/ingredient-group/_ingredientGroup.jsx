@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {ingredientTypes} from "../../../utils/dataTypes";
 
-import styles from "./IngredientGroupStyles.module.css"
-import IngredientElement from "../ingredient-element/IngredientElement";
+import styles from "./ingredientGroupStyles.module.css"
+import IngredientElement from "../ingredient-element/ingredientElement";
 
 const IngredientGroup = React.forwardRef(({groupName, groupElement, openModal}, ref) => {
 
@@ -42,8 +42,6 @@ IngredientGroup.propTypes = {
 };
 
 /*
-
-
 При отрисовке массива компонентов нужно всегда указывать уникальный атрибут key в самом верхнем уровне верстки.
 
 Это нужно исправить везде, где отрисовываете массив через map

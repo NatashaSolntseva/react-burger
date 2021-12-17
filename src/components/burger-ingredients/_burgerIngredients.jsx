@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import {ingredientTypes} from "../../utils/dataTypes";
 
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientGroup from "./ingredient-group/IngredientGroup";
+import IngredientGroup from "./ingredient-group/ingredientGroup";
 
-import styles from "./BurgerIngredientsStyles.module.css";
+import styles from "./burgerIngredientsStyles.module.css";
 import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 
 
@@ -23,7 +23,7 @@ function BurgerIngredients({openModal, burgerInputData}) {
       value.scrollIntoView({behavior: "smooth"});
     }
   } 
-
+  
   return (
     <section className = {`${styles.burger_ingredients} pt-10`}>
       <h1 className = "text text_type_main-large">

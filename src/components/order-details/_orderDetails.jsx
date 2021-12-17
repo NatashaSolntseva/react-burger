@@ -2,7 +2,7 @@ import React from "react";
 
 import doneImg from "../../image/doneImg.svg"
 
-import styles from "./OrderDetails.module.css"
+import styles from "./orderDetails.module.css"
 
 function OrderDetails() {
   return (
@@ -18,5 +18,6 @@ function OrderDetails() {
     </div>
   );  
 }
+
 
 export default OrderDetails;

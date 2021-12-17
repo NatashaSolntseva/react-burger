@@ -1,4 +1,4 @@
-import styles from "./AppHeaderStyles.module.css";
+import styles from "./appHeaderStyles.module.css";
 import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -35,8 +35,6 @@ function AppHeader() {
     </header>
   );
 }
-
-//pl не примиксовывается...глюк
 
 export default AppHeader;
 

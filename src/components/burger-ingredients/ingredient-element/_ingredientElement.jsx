@@ -2,17 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import {ingredientTypes} from "../../../utils/dataTypes";
 
-import styles from "./IngredientElementStyles.module.css"
+import styles from "./ingredientElementStyles.module.css"
 import {Counter} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/counter';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon';
 
 const IngredientElement = ({id, image, name, price, openModal}) => {
 
   function onClick() {
-    openModal({modalType: "ingredientDetail"});
-   // console.log('push!!');
+    openModal({modalType: "ingredientDetail", itemId: id}); 
   }
- //console.log('key', id);
 
   return (
     <div className = {styles.ingredient_element} >
@@ -32,14 +30,6 @@ const IngredientElement = ({id, image, name, price, openModal}) => {
 }
 
 export default IngredientElement;
-
-/*
-IngredientElement.propTypes = {
-  image: ingredientTypes.isRequired,
-  price: ingredientTypes.isRequired,
-  name: ingredientTypes.isRequired
-};
-*/
 
 IngredientElement.propTypes = {
   name: PropTypes.string.isRequired,
