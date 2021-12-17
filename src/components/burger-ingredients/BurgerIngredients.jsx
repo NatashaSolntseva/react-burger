@@ -9,7 +9,7 @@ import styles from "./BurgerIngredientsStyles.module.css";
 import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 
 
-function BurgerIngredients(props) {
+function BurgerIngredients({openModal, burgerInputData}) {
 
   //console.log('props in BurgerIngredients', props);
   /*для скрола*/
@@ -22,7 +22,7 @@ function BurgerIngredients(props) {
     if (value) {
       value.scrollIntoView({behavior: "smooth"});
     }
-  }
+  } 
 
   return (
     <section className = {`${styles.burger_ingredients} pt-10`}>
@@ -58,26 +58,29 @@ function BurgerIngredients(props) {
             Начинки
         </Tab>
       </div>
-      <ul className = {`${styles.burger_list_container} pt-25`}>
+      <ul className = {`${styles.burger_list_container} pt-25`} >
         <li>
           <IngredientGroup
             groupName = {"Булки"}
-            groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'bun')}
+            groupElement = {burgerInputData.filter(burgerItem => burgerItem.type === 'bun')}
             ref = {bunRef}
+            openModal = {openModal}                     
           />
         </li>
         <li>
-         <IngredientGroup
+          <IngredientGroup
             groupName = {"Соусы"}
-            groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'sauce')}
+            groupElement = {burgerInputData.filter(burgerItem => burgerItem.type === 'sauce')}
             ref = {sauceRef}
+            openModal = {openModal}                 
           />
         </li>
         <li>
           <IngredientGroup
             groupName = {"Начинки"}
-            groupElement = {props.burgerInputData.filter(burgerItem => burgerItem.type === 'main')}
-            ref = {mainRef}
+            groupElement = {burgerInputData.filter(burgerItem => burgerItem.type === 'main')}
+            ref = {mainRef}  
+            openModal = {openModal}                       
           />
         </li>
       </ul>

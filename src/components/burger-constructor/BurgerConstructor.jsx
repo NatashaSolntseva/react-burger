@@ -9,23 +9,30 @@ import {
   DragIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+
+
 import styles from "./BurgerConstructorStyles.module.css";
 
-const BurgerConstructor = (props) => {
-  console.log('props in BurgerConstructor', props);
+const BurgerConstructor = ({openModal, burgerInputData}) => {
+ // console.log('props in BurgerConstructor', burgerInputData);
   /*разделение на булки и не булки*/
- const bun = props.burgerInputData.find((item) => item.type === 'bun'); // находим первую попавшуюся булку
- const notBun = props.burgerInputData.filter((item) => item.type !== 'bun'); // все не булки - массив
- console.log('bun', bun);
- console.log('notBun', notBun); 
+ const bun = burgerInputData.find((item) => item.type === 'bun'); // находим первую попавшуюся булку
+ const notBun = burgerInputData.filter((item) => item.type !== 'bun'); // все не булки - массив
+ //console.log('bun', bun);
+ //console.log('notBun', notBun); 
   
   // для расчета итоговой суммы заказа
  const bunPrice = bun ? (bun.price*2) : 0; //проверяем есть ли данные с сервера в props
  const notBunPrice = notBun ? (notBun.reduce((sum, current) => sum + current.price, 0)) : 0;
  const totalPrice = bunPrice + notBunPrice;
 
+ function onClick() {
+   openModal({modalType: "orderDetail"});
+ }
+
   return (
-    <div className = {`${styles.main_container} pt-25`}>
+    <section className = {`${styles.main_container} pt-25`}>
+
       {/* первый элемент, зафиксирован //проверяем есть ли данные с сервера в props */}
       {bun && <div className = {styles.top_container}> 
         <ConstructorElement 
@@ -70,11 +77,11 @@ const BurgerConstructor = (props) => {
           </p>
           <CurrencyIcon type = "primary"/>
         </div>
-        <Button type = "primary" size = "large">
+        <Button type = "primary" size = "large" onClick = {onClick}>
           Оформить заказ
         </Button>
       </div>
-      </div>
+      </section>
   );
 }
 

@@ -6,20 +6,24 @@ import styles from "./IngredientElementStyles.module.css"
 import {Counter} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/counter';
 import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon';
 
-const IngredientElement = (props) => {
+const IngredientElement = ({id, image, name, price, openModal}) => {
 
- // console.log('props in IngredientElement', props);
+  function onClick() {
+    openModal({modalType: "ingredientDetail"});
+   // console.log('push!!');
+  }
+ //console.log('key', id);
 
   return (
-    <div className = {styles.ingredient_element}>
-      <div className = {styles.ingredient_content}>
-        <img alt = "Фото элемента" src={props.image} className = {styles.element_img} />
+    <div className = {styles.ingredient_element} >
+      <div className = {styles.ingredient_content} onClick = {onClick}>
+        <img alt = "Фото элемента" src={image} className = {styles.element_img} />
         <p className = {styles.price}>
-          {props.price}
+          {price}
           <CurrencyIcon type = "primary" />
         </p>
         <p className = "text text_type_main-default">
-          {props.name}
+          {name}
         </p>
       </div>
       <Counter size = "default" count = {1}/>

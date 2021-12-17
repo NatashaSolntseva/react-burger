@@ -5,31 +5,33 @@ import {ingredientTypes} from "../../../utils/dataTypes";
 import styles from "./IngredientGroupStyles.module.css"
 import IngredientElement from "../ingredient-element/IngredientElement";
 
-const IngredientGroup = React.forwardRef((props, ref) => {
-
-  // console.log('props in IngredientGroup', props);
+const IngredientGroup = React.forwardRef(({groupName, groupElement, openModal}, ref) => {
 
   return (
-    <>
-      <p
-       className = "text text_type_main-medium"
-       ref = {ref}
-      >
-        {props.groupName}
-      </p>
-      <div className = {styles.content}>
+    <div>
+      <div className = "mt-10 mb-6">
+        <p
+          className = "text text_type_main-medium"
+          ref = {ref}
+        >
+          {groupName}
+        </p>
+      </div>
+      <div className = {`${styles.content}`}>
         {
-          props.groupElement.map(burgerItem => (
+          groupElement.map(burgerItem => (
             <IngredientElement
               key = {burgerItem._id}
+              id = {burgerItem._id}
               image = {burgerItem.image}
               name = {burgerItem.name}
-              price = {burgerItem.price}
+              price = {burgerItem.price} 
+              openModal = {openModal}    
             />  
           ))
         }
       </div>
-    </>
+    </div>
   ) 
 })
 
