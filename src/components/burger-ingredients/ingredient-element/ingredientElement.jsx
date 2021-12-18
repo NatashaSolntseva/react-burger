@@ -31,8 +31,10 @@ const IngredientElement = ({id, image, name, price, openModal}) => {
 
 export default IngredientElement;
 
-IngredientElement.propTypes = {
+const IngredientElementPropTypes = PropTypes.shape({
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired
-};
+  image: PropTypes.string.isRequired,
+});
+
+IngredientElement.propTypes = IngredientElementPropTypes.isRequired;

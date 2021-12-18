@@ -10,6 +10,7 @@ import OrderDetails from "../order-details/orderDetails"
 import IngredientDetails from "../ingredient-detail/ingredientDetails";
 
 import {inputDataUrl} from "../../utils/data"
+import getResponseData from "../../utils/api";
 
 function App() {
   const [state, setState] = useState({
@@ -19,27 +20,19 @@ function App() {
     inputDataFromServer: []
   });
 
-  function getResponseData(res) {
-    if (res.ok) {
-      return res.json();
-    } return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-  };
-
   useEffect(() =>{
     fetch(`${inputDataUrl}`)
       .then(res => getResponseData(res))
-      .then(
-        (res) => {
+      .then((res) => {
           setState(state => ({
             ...state, isLoading: false, inputDataFromServer: res.data
           }));
-        },
-        (error) => {
-          setState(state => ({
-            ...state, isLoading: false, hasError: true, error: error            
-          }))
-        }
-      )
+        })
+      .catch((error) => { //ловит все ошибки
+        setState(state => ({
+          ...state, isLoading: false, hasError: true, error: error            
+        }))
+      });
   }, []);
 
   const [isOrderDetailsModalOpen, setOrderDetailsModalOpen] = useState(false);

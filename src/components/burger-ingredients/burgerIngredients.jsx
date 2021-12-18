@@ -90,6 +90,9 @@ function BurgerIngredients({openModal, burgerInputData}) {
 
 export default BurgerIngredients;
 
-BurgerIngredients.propTypes = {
+const BurgerIngredientsPropTypes = PropTypes.shape({
+  openModal: PropTypes.func.isRequired,
   burgerInputData: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
-};
+});
+
+BurgerIngredients.propTypes = BurgerIngredientsPropTypes.isRequired;

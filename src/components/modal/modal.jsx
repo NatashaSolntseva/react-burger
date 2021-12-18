@@ -1,4 +1,5 @@
 import React, { Children } from "react";
+import PropTypes from "prop-types";
 import { ReactDOM } from "react-dom";
 import { createPortal } from "react-dom";
 
@@ -10,11 +11,11 @@ import { isPropertySignature } from "typescript";
 
 const modalRoot = document.getElementById('modal-root');
 
-const Modal = (props) => {
+const Modal = ({closeModal, children}) => {
   function onEscPress(evt) {
     if (evt.key === "Escape") {
       evt.preventDefault();
-      props.closeModal();
+      closeModal();
     }
   }
 
@@ -25,8 +26,10 @@ const Modal = (props) => {
     };
   }, []);
   
-  function onOverlayClick() {
-    props.closeModal();
+  function onOverlayClick(evt) {
+    if (evt.target === evt.currentTarget) { // закрытие окна оверлэя по клику, но не по модальному окну
+    closeModal();
+  }
   }
 
   return createPortal(
@@ -34,9 +37,9 @@ const Modal = (props) => {
     <ModalOverlay onClick = {onOverlayClick}>
       <div className = {styles.modal}>
         <div className = {styles.modal_closebtn}>          
-          <CloseIcon type = "primary" onClick = {props.closeModal}/>
+          <CloseIcon type = "primary" onClick = {closeModal}/>
         </div>
-        {props.children}
+        {children}
       </div>
     </ModalOverlay>
   </>,
@@ -46,20 +49,9 @@ const Modal = (props) => {
 
 export default Modal;
 
+const modalPropsTypes = PropTypes.shape({
+  closeModal: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
+});
 
-
-
-/*
-
-  return ReactDOM.createPortal (    
-      <>
-        <div className = {styles.modal}>
-          <div>
-            <h2>заголовок</h2>
-            <CloseIcon />
-          </div>
-        </div>
-      </>,
-      modalRoot      
-  );
-*/
+Modal.propTypes = modalPropsTypes.isRequired;

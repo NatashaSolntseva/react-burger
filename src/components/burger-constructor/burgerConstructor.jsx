@@ -85,16 +85,13 @@ const BurgerConstructor = ({openModal, burgerInputData}) => {
 
 export default BurgerConstructor;
 
-BurgerConstructor.propTypes = {
+//При отрисовке массива компонентов нужно всегда указывать уникальный атрибут key в самом верхнем уровне верстки.
+
+//Это нужно исправить везде, где отрисовываете массив через map
+
+const BurgerConstructorPropTypes = PropTypes.shape({
+  openModal: PropTypes.func.isRequired,
   burgerInputData: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
-};
+});
 
-
-/*
-
-
-При отрисовке массива компонентов нужно всегда указывать уникальный атрибут key в самом верхнем уровне верстки.
-
-Это нужно исправить везде, где отрисовываете массив через map
-
-*/
+BurgerConstructor.propTypes = BurgerConstructorPropTypes.isRequired;

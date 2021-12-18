@@ -47,3 +47,11 @@ IngredientGroup.propTypes = {
 Это нужно исправить везде, где отрисовываете массив через map
 
 */
+
+const IngredientGroupPropTypes = PropTypes.shape({
+  groupName: PropTypes.string.isRequired,
+  groupElement: ingredientTypes, 
+  openModal: PropTypes.func.isRequired
+});
+
+IngredientGroup.propTypes = IngredientGroupPropTypes.isRequired;
