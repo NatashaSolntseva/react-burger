@@ -10,16 +10,16 @@
 
 ### часть 1:
 
-1. Верстка главной страницы [по макету](<https://www.figma.com/file/Z8DHldjVbvhQXtrkmJR8CU/React-%2F-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)?node-id=0%3A1>)
-2. Интеграция библиотеки компоненов Яндекса
-3. Реализация компонент AppHeader, BurgerIngredients, BurgerConstructor
+1. Верстка главной страницы [по макету](<https://www.figma.com/file/Z8DHldjVbvhQXtrkmJR8CU/React-%2F-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)?node-id=0%3A1>) :white_check_mark:
+2. Интеграция библиотеки компоненов Яндекса :white_check_mark:
+3. Реализация компонент AppHeader, BurgerIngredients, BurgerConstructor :white_check_mark:
 4. Типизация
    :white_check_mark:
 
 ### часть 2:
 
-1. Подключение к API
-2. Верстка модальных окон
+1. Подключение к API :white_check_mark:
+2. Верстка модальных окон :white_check_mark:
 
 ## Спринт 2 включает в себя 2 части:
 
