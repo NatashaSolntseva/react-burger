@@ -1,13 +1,12 @@
-/*весь контент*/
 .app {
   display: grid;
   grid-template-rows: 88px auto; /*для шапки 88px*/
   width: 100%;
-  height: 100%; 
+  height: 100%;
 }
-/*секция с меню*/
+
 .content {
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   gap: 40px;
 }

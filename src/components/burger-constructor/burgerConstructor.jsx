@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/dataTypes";
 
@@ -11,31 +11,19 @@ import {
 
 import styles from "./burgerConstructorStyles.module.css";
 
-//контекст
 import { ProductContext } from "../../services/productContext";
 
 const BurgerConstructor = ({ handleMakeOrder }) => {
-  //контекст
   const ingredientContext = useContext(ProductContext);
-  //console.log("context ingr", ingredientContext);
-  // console.log('props in BurgerConstructor', burgerInputData);
-  /*разделение на булки и не булки*/
+  //разделение на булки и не булки
   const bun = ingredientContext.find((item) => item.type === "bun"); // находим первую попавшуюся булку
   const notBun = ingredientContext.filter((item) => item.type !== "bun"); // все не булки - массив
-  //console.log('bun', bun);
-  //console.log('notBun', notBun);
-
   // для расчета итоговой суммы заказа
   const bunPrice = bun ? bun.price * 2 : 0; //проверяем есть ли данные с сервера в props
   const notBunPrice = notBun
     ? notBun.reduce((sum, current) => sum + current.price, 0)
     : 0;
   const totalPrice = bunPrice + notBunPrice;
-
-  //function onClick() {
-  //openModal({ modalType: "orderDetail" });
-  //  handleMakeOrder();
-  //}
 
   return (
     <section className={`${styles.main_container} pt-25`}>
@@ -44,7 +32,7 @@ const BurgerConstructor = ({ handleMakeOrder }) => {
         <div className={styles.top_container}>
           <ConstructorElement
             type="top"
-            isLocked={true}
+            isLocked
             text={`${bun.name} (верх)`}
             price={bun.price}
             thumbnail={bun.image}
@@ -74,7 +62,7 @@ const BurgerConstructor = ({ handleMakeOrder }) => {
         <div className={styles.bottom_container}>
           <ConstructorElement
             type="bottom"
-            isLocked={true}
+            isLocked
             text={`${bun.name} (верх)`}
             price={bun.price}
             thumbnail={bun.image}
@@ -95,10 +83,6 @@ const BurgerConstructor = ({ handleMakeOrder }) => {
 };
 
 export default BurgerConstructor;
-
-//При отрисовке массива компонентов нужно всегда указывать уникальный атрибут key в самом верхнем уровне верстки.
-
-//Это нужно исправить везде, где отрисовываете массив через map
 
 const BurgerConstructorPropTypes = PropTypes.shape({
   openModal: PropTypes.func.isRequired,

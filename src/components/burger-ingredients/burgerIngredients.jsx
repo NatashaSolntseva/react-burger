@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useContext } from "react";
+import { useState, useRef, useMemo, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/dataTypes";
 
@@ -8,37 +8,41 @@ import IngredientGroup from "./ingredient-group/ingredientGroup";
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
 
-//контекст
 import { ProductContext } from "../../services/productContext";
 
 function BurgerIngredients({ openModal }) {
-  //контекст
   const ingredientContext = useContext(ProductContext);
-  // для формирования списка игредиентов
-  const bun = useMemo(
+
+  // константы для формирования списка игредиентов
+  const buns = useMemo(
     () => ingredientContext.filter((ingredient) => ingredient.type === "bun"),
     [ingredientContext]
   );
-  const sauce = useMemo(
+  const sauces = useMemo(
     () => ingredientContext.filter((ingredient) => ingredient.type === "sauce"),
     [ingredientContext]
   );
-  const main = useMemo(
+  const mains = useMemo(
     () => ingredientContext.filter((ingredient) => ingredient.type === "main"),
     [ingredientContext]
   );
-  //__________________________________________________скрол________________________
-  const bunRef = useRef(null); //разметка отрисовывается и ref прицепляется; forwarding ref
+
+  // реализация функционала скрола
+  const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
   const [currentTab, setCurrentTab] = useState("buns");
 
-  function scrollToTab(value) {
-    if (value) {
-      value.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    if (currentTab === "buns") {
+      bunRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (currentTab === "sauses") {
+      sauceRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (currentTab === "mains") {
+      mainRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  }, [currentTab]);
 
   return (
     <section className={`${styles.burger_ingredients} pt-10`}>
@@ -47,63 +51,30 @@ function BurgerIngredients({ openModal }) {
         <Tab
           value="buns"
           active={currentTab === "buns"}
-          onClick={(value) => {
-            setCurrentTab(value);
-            scrollToTab(bunRef.current);
-          }}
+          onClick={setCurrentTab}
         >
           Булки
         </Tab>
         <Tab
           value="sauses"
           active={currentTab === "sauses"}
-          onClick={(value) => {
-            setCurrentTab(value);
-            scrollToTab(sauceRef.current);
-          }}
+          onClick={setCurrentTab}
         >
           Соусы
         </Tab>
         <Tab
-          value="fillings"
-          active={currentTab === "fillings"}
-          onClick={(value) => {
-            setCurrentTab(value);
-            scrollToTab(mainRef.current);
-          }}
+          value="mains"
+          active={currentTab === "mains"}
+          onClick={setCurrentTab}
         >
           Начинки
         </Tab>
       </div>
-      <ul
-        className={`${styles.burger_list_container} pt-25`}
-        onScroll={(evt) => {
-          const scrollPosition = evt.target.scrollTop;
-          const positionOfBunTab = bunRef.current.offsetTop;
-          const positionOfSauceTab = sauceRef.current.offsetTop;
-          const positionOfMainTab = mainRef.current.offsetTop;
-
-          if (scrollPosition + 440 <= positionOfSauceTab) {
-            //console.log("scrollPosition", scrollPosition);
-            //console.log("positionOfSauceTab", positionOfSauceTab);
-            //console.log(" читаем булки");
-            setCurrentTab("buns");
-          } else if (scrollPosition + 440 <= positionOfMainTab) {
-            //console.log("scrollPosition", scrollPosition);
-            // console.log("positionOfMainTab", positionOfMainTab);
-            // console.log("читаем соусы");
-            setCurrentTab("sauses");
-          } else {
-            // console.log("scrollPosition", scrollPosition);
-            // console.log("читаем начинки");
-            setCurrentTab("fillings");
-          }
-        }}
-      >
+      <ul className={`${styles.burger_list_container} pt-25`}>
         <li>
           <IngredientGroup
             groupName={"Булки"}
-            groupElement={bun}
+            groupElement={buns}
             ref={bunRef}
             openModal={openModal}
           />
@@ -111,7 +82,7 @@ function BurgerIngredients({ openModal }) {
         <li>
           <IngredientGroup
             groupName={"Соусы"}
-            groupElement={sauce}
+            groupElement={sauces}
             ref={sauceRef}
             openModal={openModal}
           />
@@ -119,7 +90,7 @@ function BurgerIngredients({ openModal }) {
         <li>
           <IngredientGroup
             groupName={"Начинки"}
-            groupElement={main}
+            groupElement={mains}
             ref={mainRef}
             openModal={openModal}
           />

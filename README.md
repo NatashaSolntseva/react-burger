@@ -1,4 +1,4 @@
-<h1 align="center"><a  href="https://natashasolntseva.github.io/react-burger/" target="_blank"><img src="./readme_src/header.png" width="100%" alt="Readme_header"></a></h1>
+![](./readme_src/header.png)
 
 # Описание:
 

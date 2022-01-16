@@ -1,17 +1,14 @@
-import React, { Children } from "react";
 import PropTypes from "prop-types";
-import { isPropertySignature } from "typescript";
 
-import styles from './modalOverlay.module.css'
+import styles from "./modalOverlay.module.css";
 
-const ModalOverlay = ({children, onClick}) => {
-
+const ModalOverlay = ({ children, onClick }) => {
   return (
-    <div className = {styles.overlay} onClick = {onClick}>
+    <div className={styles.overlay} onClick={onClick}>
       {children}
     </div>
   );
-}
+};
 
 export default ModalOverlay;
 
