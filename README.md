@@ -1,46 +1,49 @@
-# Getting Started with Create React App
+![](./readme_src/header.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Описание:
 
-## Available Scripts
+"Stellar Burgers" - приложение, позволяющее собрать и заказать свой уникальный межгалактический бургер, находится в процессе разработки
 
-In the project directory, you can run:
+[Открыть в браузере](https://natashasolntseva.github.io/react-burger/)
 
-### `npm start`
+## Спринт 1 включает в себя 2 части:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### часть 1:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Верстка главной страницы [по макету](<https://www.figma.com/file/Z8DHldjVbvhQXtrkmJR8CU/React-%2F-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)?node-id=0%3A1>) :white_check_mark:
+2. Интеграция библиотеки компоненов Яндекса :white_check_mark:
+3. Реализация компонент AppHeader, BurgerIngredients, BurgerConstructor :white_check_mark:
+4. Типизация
+   :white_check_mark:
 
-### `npm test`
+### часть 2:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Подключение к API :white_check_mark:
+2. Верстка модальных окон :white_check_mark:
 
-### `npm run build`
+## Спринт 2 включает в себя 2 части:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Часть 1:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Refactoring: перенос состояния в Context
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Часть 2:
 
-### `npm run eject`
+1. Refactoring: Перенос состояния в Redux
+2. Изменение порядка ингредиентов с React DND
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Технологии, использованные при создании:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- React (CRA)
+- JavaScript (ES6)
+- Использована библиотека UI-компонентов [Яндекс.Практикум.Реакт](https://github.com/yandex-praktikum/react-developer-burger-ui-components)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Ссылки:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- [Макет](<https://www.figma.com/file/Z8DHldjVbvhQXtrkmJR8CU/React-%2F-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8-(3-%D0%BC%D0%B5%D1%81%D1%8F%D1%86%D0%B0)?node-id=0%3A1>)
 
-## Learn More
+- [Библиотека UI-компонентов](https://www.npmjs.com/package/@ya.praktikum/react-developer-burger-ui-components)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [Сслыка на deploy Github](https://natashasolntseva.github.io/react-burger/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Проектная работа: "Stellar Burgers". Создана в рамках учебы в [Яндекс.Практикум](https://praktikum.yandex.ru/) на курсе ["Веб-разработчик плюс"](https://practicum.yandex.ru/web-plus/).

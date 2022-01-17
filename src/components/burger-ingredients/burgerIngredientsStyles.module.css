@@ -1,0 +1,18 @@
+.burger_ingredients {
+  height: 750px;
+  width: 600px;
+  padding-left: 24px;    
+}
+
+.burger_menu_tab {
+  display: flex;
+}
+
+.burger_list_container {
+  padding: 0px;
+  list-style: none;  
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: calc(100vh - 384px);
+  scrollbar-width: thin;  
+} 

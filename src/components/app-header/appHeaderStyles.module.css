@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  grid-row: 1 / span 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 1280px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.logo {
+  grid-column: 2 / span 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu_btn {
+  display: flex;
+  border: none;
+  background: none;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.nav__menu_left {
+  grid-column: 1 / span 1;
+  display: flex;
+  align-items: center;
+}
+
+.nav__menu_right {
+  grid-column: 3 / span 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nav__menu_right svg {
+  /*pl не примиксовывается глюк*/
+  padding-right: 8px;
+}
+
+.nav__menu_left svg {
+  padding-right: 8px;
+}
