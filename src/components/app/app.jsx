@@ -1,135 +1,98 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import styles from "./appStyles.module.css";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
 import BurgerIngredients from "../burger-ingredients/burgerIngredients";
-import BurgerConstructor from "../burger-constructor/burgerConstructor";
+
+import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/orderDetails";
-import IngredientDetails from "../ingredient-detail/ingredientDetails";
+import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
 
 // серверная часть
-import { inputDataUrl } from "../../utils/data";
-import getResponseData from "../../utils/api";
 
-import { OrderContext } from "../../services/orderContext";
-import { ProductContext } from "../../services/productContext";
+import { getIngredientsApiRequest } from "../../utils/api";
+
+import {
+  CLOSE_MODAL,
+  OPEN_MODAL_ORDER,
+  OPEN_MODAL_INGREDIENT,
+  CLEAR_ORDER_LIST,
+} from "../../services/actions/actions";
 
 function App() {
-  const [isLoadingError, setIsloadingError] = useState(false);
-  const [inputDataFromServer, setInputDataFromServer] = useState([]);
+  const dispatch = useDispatch();
+
+  //запрос данных ингредиентов с сервера
+  const {
+    ingredientsApiRequest,
+    ingredientsApiFailed,
+    ingredientsDataFromServer,
+  } = useSelector((store) => store.ingredients);
 
   useEffect(() => {
-    fetch(`${inputDataUrl}/ingredients`)
-      .then((res) => getResponseData(res))
-      .then((res) => {
-        setInputDataFromServer(res.data);
-      })
-      .catch((error) => {
-        //ловит все ошибки
-        setIsloadingError(true);
-        console.log(`Данные с сервера не получены, ошибка: ${error}`);
-      });
-  }, []);
+    dispatch(getIngredientsApiRequest());
+  }, [dispatch]);
 
   // реализация функциона модельных окон
 
-  const [isOrderDetailsModalOpen, setOrderDetailsModalOpen] = useState(false);
-  const [isIngredientDetailsModalOpen, setIngredientDetailsModalOpen] =
-    useState(false);
-  const [modalIngredientData, setModalIngredientData] = useState([]);
+  const {
+    isOrderDetailModalVisible,
+    isIngredientDetailModalVisible,
+    modalIngredientData,
+  } = useSelector((store) => store.modal);
 
   function openModal({ modalType, itemId }) {
     if (modalType === "ingredientDetail") {
-      setIngredientDetailsModalOpen(true);
-      const ingredient = inputDataFromServer.find(
+      const ingredient = ingredientsDataFromServer.find(
         (item) => item._id === itemId
       );
-      setModalIngredientData(ingredient);
+      dispatch({ type: OPEN_MODAL_INGREDIENT, payload: ingredient });
     } else {
       if (modalType === "orderDetail") {
-        setOrderDetailsModalOpen(true);
+        dispatch({ type: OPEN_MODAL_ORDER });
       }
     }
   }
 
-  function closeModal() {
-    setOrderDetailsModalOpen(false);
-    setIngredientDetailsModalOpen(false);
-  }
-
-  //______________________________________фомирование заказа, отправка на сервер данных об ингр-ах бургера____
-  const ingredientDataContext = inputDataFromServer; // для передачи на вход в конструктор, контекст, будет переделано на DnD
-  const [orderInfo, setOrderInfo] = useState({
-    orderId: null,
-    isCreatingOrder: false,
-    error: "",
-  });
-
-  const handleMakeOrder = async () => {
-    const orderIngredientList = ingredientDataContext
-      .filter((el) => el.type !== "bun")
-      .map((el) => el._id)
-      .concat(
-        ingredientDataContext.find((el) => (el.type === "bun" ? el : 0))._id,
-        ingredientDataContext.find((el) => (el.type === "bun" ? el : 0))._id
-      );
-
-    //отправка листа ингредиентов на сервер
-    const postOrderOption = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ingredients: orderIngredientList,
-      }),
-    };
-
-    try {
-      setOrderInfo({ orderId: null, isCreatingOrder: true });
-      const res = await fetch(`${inputDataUrl}/orders`, postOrderOption);
-      if (res.ok) {
-        const serverResOrderId = await res.json();
-        setOrderInfo({
-          ...orderInfo,
-          isCreatingOrder: false,
-          orderId: serverResOrderId,
-        });
-      } else {
-        throw new Error(`Error ${res.status}`);
-      }
-    } catch (error) {
-      setOrderInfo({ orderId: null, isCreatingOrder: false, error: error });
-    }
-    openModal({ modalType: "orderDetail" });
+  const closeModal = () => {
+    dispatch({ type: CLOSE_MODAL });
+    dispatch({ type: CLEAR_ORDER_LIST });
   };
 
   //___________________________________________render______________________________________________
   return (
     <div className={styles.app}>
       <AppHeader />
-      {!isLoadingError ? (
-        <main className={styles.content}>
-          <ProductContext.Provider value={ingredientDataContext}>
-            <BurgerIngredients openModal={openModal} />
-          </ProductContext.Provider>
-          <ProductContext.Provider value={ingredientDataContext}>
-            {/* пока нет выбора складываем в правую часть все ингредиенты с сервера state.inputDataFromServer*/}
-            <BurgerConstructor handleMakeOrder={handleMakeOrder} />
-          </ProductContext.Provider>
-        </main>
-      ) : (
+      {ingredientsApiRequest && <h1>загрузка данных</h1>}
+      {ingredientsApiFailed && (
         <main>
           <section>
             <h1 className="text text_type_main-large mt-3">
-              Ошибка загрузки данных...
+              Ох, ошибка загрузки данных...
             </h1>
           </section>
         </main>
       )}
+      <DndProvider backend={HTML5Backend}>
+        {!ingredientsApiRequest &&
+          !ingredientsApiFailed &&
+          ingredientsDataFromServer.length && (
+            <main className={styles.content}>
+              <BurgerIngredients openModal={openModal} />
+              {/*<BurgerConstructor openModal={openModal} />*/}
+              <BurgerConstructorDndWrapper openModal={openModal} />
+            </main>
+          )}
+      </DndProvider>
       {/* модальное окно  - подробное описание игредиента*/}
-      {isIngredientDetailsModalOpen && (
+      {isIngredientDetailModalVisible && (
         <Modal closeModal={closeModal}>
           <IngredientDetails
             image={modalIngredientData.image}
@@ -142,13 +105,11 @@ function App() {
         </Modal>
       )}
       {/* модальное окно о готовности заказа. номер и т.д.*/}
-      <OrderContext.Provider value={orderInfo}>
-        {isOrderDetailsModalOpen && (
-          <Modal closeModal={closeModal}>
-            <OrderDetails />
-          </Modal>
-        )}
-      </OrderContext.Provider>
+      {isOrderDetailModalVisible && (
+        <Modal closeModal={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 }

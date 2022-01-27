@@ -1,30 +1,48 @@
-import { useState, useRef, useMemo, useContext, useEffect } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/dataTypes";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientGroup from "./ingredient-group/ingredientGroup";
+import IngredientGroup from "./components/ingredient-group/ingredientGroup";
 
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
 
-import { ProductContext } from "../../services/productContext";
+//import { ProductContext } from "../../services/productContext";
+import { useSelector } from "react-redux";
 
 function BurgerIngredients({ openModal }) {
-  const ingredientContext = useContext(ProductContext);
+  const { ingredientsDataFromServer } = useSelector(
+    (store) => store.ingredients
+  );
+
+  const { droppedIngredients, droppedBun } = useSelector(
+    ({ burgerConstructor: { droppedIngredients, droppedBun } }) => {
+      return { droppedIngredients, droppedBun };
+    }
+  );
 
   // константы для формирования списка игредиентов
+
   const buns = useMemo(
-    () => ingredientContext.filter((ingredient) => ingredient.type === "bun"),
-    [ingredientContext]
+    () =>
+      ingredientsDataFromServer.filter(
+        (ingredient) => ingredient.type === "bun"
+      ),
+    [ingredientsDataFromServer]
   );
   const sauces = useMemo(
-    () => ingredientContext.filter((ingredient) => ingredient.type === "sauce"),
-    [ingredientContext]
+    () =>
+      ingredientsDataFromServer.filter(
+        (ingredient) => ingredient.type === "sauce"
+      ),
+    [ingredientsDataFromServer]
   );
   const mains = useMemo(
-    () => ingredientContext.filter((ingredient) => ingredient.type === "main"),
-    [ingredientContext]
+    () =>
+      ingredientsDataFromServer.filter(
+        (ingredient) => ingredient.type === "main"
+      ),
+    [ingredientsDataFromServer]
   );
 
   // реализация функционала скрола
@@ -43,6 +61,25 @@ function BurgerIngredients({ openModal }) {
       mainRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [currentTab]);
+
+  //TODO поправить счетчик когда будет второй DnD массив игредиентов (попрвить сравнение id)
+  const ingredientCounter = useMemo(() => {
+    return ingredientsDataFromServer.reduce((result, ingredient) => {
+      if (ingredient.type === "bun") {
+        return {
+          ...result,
+          [ingredient._id]:
+            droppedBun && ingredient._id === droppedBun._id ? 1 : 0,
+        };
+      }
+      return {
+        ...result,
+        [ingredient._id]: droppedIngredients.filter(
+          (droppedIngredient) => droppedIngredient._id === ingredient._id
+        ).length,
+      };
+    }, {});
+  }, [ingredientsDataFromServer, droppedIngredients, droppedBun]);
 
   return (
     <section className={`${styles.burger_ingredients} pt-10`}>
@@ -74,25 +111,28 @@ function BurgerIngredients({ openModal }) {
         <li>
           <IngredientGroup
             groupName={"Булки"}
-            groupElement={buns}
+            groupElements={buns}
             ref={bunRef}
             openModal={openModal}
+            count={ingredientCounter}
           />
         </li>
         <li>
           <IngredientGroup
             groupName={"Соусы"}
-            groupElement={sauces}
+            groupElements={sauces}
             ref={sauceRef}
             openModal={openModal}
+            count={ingredientCounter}
           />
         </li>
         <li>
           <IngredientGroup
             groupName={"Начинки"}
-            groupElement={mains}
+            groupElements={mains}
             ref={mainRef}
             openModal={openModal}
+            count={ingredientCounter}
           />
         </li>
       </ul>
@@ -104,7 +144,6 @@ export default BurgerIngredients;
 
 const BurgerIngredientsPropTypes = PropTypes.shape({
   openModal: PropTypes.func.isRequired,
-  ingredientContext: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
 });
 
 BurgerIngredients.propTypes = BurgerIngredientsPropTypes.isRequired;
