@@ -42,7 +42,7 @@ export const constructorReducer = (
         droppedIngredients: [],
         droppedBun: null,
       };
-    } //TODO они меняются местами, а по хорошему нужно развдивать элементы
+    } //TODO они меняются местами, а по хорошему нужно раздвигать элементы
     case REORDER_CONSTRUCTOR_INGREDIENT: {
       const { draggedElementIndex, targetElementIndex } = action.payload;
       //console.log("draggedElementIndex", draggedElementIndex);

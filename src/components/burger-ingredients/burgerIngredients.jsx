@@ -1,14 +1,12 @@
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientGroup from "./components/ingredient-group/ingredientGroup";
 
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
-
-//import { ProductContext } from "../../services/productContext";
-import { useSelector } from "react-redux";
 
 function BurgerIngredients({ openModal }) {
   const { ingredientsDataFromServer } = useSelector(
@@ -52,17 +50,29 @@ function BurgerIngredients({ openModal }) {
 
   const [currentTab, setCurrentTab] = useState("buns");
 
-  useEffect(() => {
-    if (currentTab === "buns") {
-      bunRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (currentTab === "sauses") {
-      sauceRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (currentTab === "mains") {
-      mainRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [currentTab]);
+  const handleTabClick = useCallback(({ tab, ref }) => () => {
+    setCurrentTab(tab);
+    ref.current.scrollIntoView({ behavior: "smooth" });
+  });
 
-  //TODO поправить счетчик когда будет второй DnD массив игредиентов (попрвить сравнение id)
+  const handleIngredientListScroll = (event) => {
+    const scrollContainer = event.target;
+    const scrollPosition = scrollContainer.scrollTop;
+    const sauceTabPosition = sauceRef.current.offsetTop;
+    const mainTabPosition = mainRef.current.offsetTop;
+    const scrollSetup = 400;
+    console.log("scrollPosition", scrollPosition);
+    console.log("sauceTabPosition", sauceTabPosition);
+    console.log("mainTabPosition", mainTabPosition);
+    if (scrollPosition + scrollSetup <= sauceTabPosition) {
+      setCurrentTab("buns");
+    } else if (scrollPosition + scrollSetup <= mainTabPosition) {
+      setCurrentTab("sauses");
+    } else {
+      setCurrentTab("mains");
+    }
+  };
+  // счетчик игредиентов при перетаскивании
   const ingredientCounter = useMemo(() => {
     return ingredientsDataFromServer.reduce((result, ingredient) => {
       if (ingredient.type === "bun") {
@@ -88,26 +98,38 @@ function BurgerIngredients({ openModal }) {
         <Tab
           value="buns"
           active={currentTab === "buns"}
-          onClick={setCurrentTab}
+          onClick={handleTabClick({
+            tab: currentTab,
+            ref: bunRef,
+          })}
         >
           Булки
         </Tab>
         <Tab
           value="sauses"
           active={currentTab === "sauses"}
-          onClick={setCurrentTab}
+          onClick={handleTabClick({
+            tab: currentTab,
+            ref: sauceRef,
+          })}
         >
           Соусы
         </Tab>
         <Tab
           value="mains"
           active={currentTab === "mains"}
-          onClick={setCurrentTab}
+          onClick={handleTabClick({
+            tab: currentTab,
+            ref: mainRef,
+          })}
         >
           Начинки
         </Tab>
       </div>
-      <ul className={`${styles.burger_list_container} pt-25`}>
+      <ul
+        className={`${styles.burger_list_container} pt-25`}
+        onScroll={handleIngredientListScroll}
+      >
         <li>
           <IngredientGroup
             groupName={"Булки"}
