@@ -1,46 +1,30 @@
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { ingredientTypes } from "../../utils/dataTypes";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientGroup from "./components/ingredient-group/ingredientGroup";
+import IngredientGroup from "./ingredient-group/ingredientGroup";
 
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
 
-function BurgerIngredients({ openModal }) {
-  const { ingredientsDataFromServer } = useSelector(
-    (store) => store.ingredients
-  );
+import { ProductContext } from "../../services/productContext";
 
-  const { droppedIngredients, droppedBun } = useSelector(
-    ({ burgerConstructor: { droppedIngredients, droppedBun } }) => {
-      return { droppedIngredients, droppedBun };
-    }
-  );
+function BurgerIngredients({ openModal }) {
+  const ingredientContext = useContext(ProductContext);
 
   // константы для формирования списка игредиентов
-
   const buns = useMemo(
-    () =>
-      ingredientsDataFromServer.filter(
-        (ingredient) => ingredient.type === "bun"
-      ),
-    [ingredientsDataFromServer]
+    () => ingredientContext.filter((ingredient) => ingredient.type === "bun"),
+    [ingredientContext]
   );
   const sauces = useMemo(
-    () =>
-      ingredientsDataFromServer.filter(
-        (ingredient) => ingredient.type === "sauce"
-      ),
-    [ingredientsDataFromServer]
+    () => ingredientContext.filter((ingredient) => ingredient.type === "sauce"),
+    [ingredientContext]
   );
   const mains = useMemo(
-    () =>
-      ingredientsDataFromServer.filter(
-        (ingredient) => ingredient.type === "main"
-      ),
-    [ingredientsDataFromServer]
+    () => ingredientContext.filter((ingredient) => ingredient.type === "main"),
+    [ingredientContext]
   );
 
   // реализация функционала скрола
@@ -50,47 +34,15 @@ function BurgerIngredients({ openModal }) {
 
   const [currentTab, setCurrentTab] = useState("buns");
 
-  const handleTabClick = useCallback(
-    ({ tab, ref }) =>
-      () => {
-        setCurrentTab(tab);
-        ref.current.scrollIntoView({ behavior: "smooth" });
-      },
-    [setCurrentTab]
-  );
-
-  const handleIngredientListScroll = (event) => {
-    const scrollContainer = event.target;
-    const scrollPosition = scrollContainer.scrollTop;
-    const sauceTabPosition = sauceRef.current.offsetTop;
-    const mainTabPosition = mainRef.current.offsetTop;
-    const scrollSetup = 400;
-    if (scrollPosition + scrollSetup <= sauceTabPosition) {
-      setCurrentTab("buns");
-    } else if (scrollPosition + scrollSetup <= mainTabPosition) {
-      setCurrentTab("sauses");
-    } else {
-      setCurrentTab("mains");
+  useEffect(() => {
+    if (currentTab === "buns") {
+      bunRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (currentTab === "sauses") {
+      sauceRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (currentTab === "mains") {
+      mainRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
-  // счетчик игредиентов при перетаскивании
-  const ingredientCounter = useMemo(() => {
-    return ingredientsDataFromServer.reduce((result, ingredient) => {
-      if (ingredient.type === "bun") {
-        return {
-          ...result,
-          [ingredient._id]:
-            droppedBun && ingredient._id === droppedBun._id ? 1 : 0,
-        };
-      }
-      return {
-        ...result,
-        [ingredient._id]: droppedIngredients.filter(
-          (droppedIngredient) => droppedIngredient._id === ingredient._id
-        ).length,
-      };
-    }, {});
-  }, [ingredientsDataFromServer, droppedIngredients, droppedBun]);
+  }, [currentTab]);
 
   return (
     <section className={`${styles.burger_ingredients} pt-10`}>
@@ -99,63 +51,48 @@ function BurgerIngredients({ openModal }) {
         <Tab
           value="buns"
           active={currentTab === "buns"}
-          onClick={handleTabClick({
-            tab: currentTab,
-            ref: bunRef,
-          })}
+          onClick={setCurrentTab}
         >
           Булки
         </Tab>
         <Tab
           value="sauses"
           active={currentTab === "sauses"}
-          onClick={handleTabClick({
-            tab: currentTab,
-            ref: sauceRef,
-          })}
+          onClick={setCurrentTab}
         >
           Соусы
         </Tab>
         <Tab
           value="mains"
           active={currentTab === "mains"}
-          onClick={handleTabClick({
-            tab: currentTab,
-            ref: mainRef,
-          })}
+          onClick={setCurrentTab}
         >
           Начинки
         </Tab>
       </div>
-      <ul
-        className={`${styles.burger_list_container} pt-25`}
-        onScroll={handleIngredientListScroll}
-      >
+      <ul className={`${styles.burger_list_container} pt-25`}>
         <li>
           <IngredientGroup
             groupName={"Булки"}
-            groupElements={buns}
+            groupElement={buns}
             ref={bunRef}
             openModal={openModal}
-            count={ingredientCounter}
           />
         </li>
         <li>
           <IngredientGroup
             groupName={"Соусы"}
-            groupElements={sauces}
+            groupElement={sauces}
             ref={sauceRef}
             openModal={openModal}
-            count={ingredientCounter}
           />
         </li>
         <li>
           <IngredientGroup
             groupName={"Начинки"}
-            groupElements={mains}
+            groupElement={mains}
             ref={mainRef}
             openModal={openModal}
-            count={ingredientCounter}
           />
         </li>
       </ul>
@@ -167,6 +104,7 @@ export default BurgerIngredients;
 
 const BurgerIngredientsPropTypes = PropTypes.shape({
   openModal: PropTypes.func.isRequired,
+  ingredientContext: PropTypes.arrayOf(ingredientTypes.isRequired).isRequired,
 });
 
 BurgerIngredients.propTypes = BurgerIngredientsPropTypes.isRequired;

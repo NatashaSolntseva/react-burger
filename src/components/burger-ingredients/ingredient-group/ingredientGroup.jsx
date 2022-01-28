@@ -1,12 +1,12 @@
-import { forwardRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { ingredientTypes } from "../../../../utils/dataTypes";
+import { ingredientTypes } from "../../../utils/dataTypes";
 
 import styles from "./ingredientGroupStyles.module.css";
-import IngredientElementDndWrapper from "../ingredients-dnd-wrapper/ingredient-dnd-wrapper";
+import IngredientElement from "../ingredient-element/ingredientElement";
 
-const IngredientGroup = forwardRef(
-  ({ groupName, groupElements, openModal, count }, ref) => {
+const IngredientGroup = React.forwardRef(
+  ({ groupName, groupElement, openModal }, ref) => {
     return (
       <div>
         <div className="mt-10 mb-6">
@@ -15,12 +15,14 @@ const IngredientGroup = forwardRef(
           </p>
         </div>
         <div className={`${styles.content}`}>
-          {groupElements.map((burgerItem) => (
-            <IngredientElementDndWrapper
+          {groupElement.map((burgerItem) => (
+            <IngredientElement
               key={burgerItem._id}
-              burgerItem={burgerItem}
+              id={burgerItem._id}
+              image={burgerItem.image}
+              name={burgerItem.name}
+              price={burgerItem.price}
               openModal={openModal}
-              count={count[burgerItem._id]}
             />
           ))}
         </div>
