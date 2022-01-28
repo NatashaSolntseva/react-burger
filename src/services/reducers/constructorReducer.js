@@ -2,6 +2,7 @@ import {
   DROP_SELECTED_INGREDIENT,
   DELETE_INGREDIENT,
   CLEAR_ORDER_LIST,
+  REORDER_CONSTRUCTOR_INGREDIENT,
 } from "../actions/actions";
 
 const defaultBurgerConstructorState = {
@@ -40,6 +41,21 @@ export const constructorReducer = (
         ...state,
         droppedIngredients: [],
         droppedBun: null,
+      };
+    } //TODO они меняются местами, а по хорошему нужно развдивать элементы
+    case REORDER_CONSTRUCTOR_INGREDIENT: {
+      const { draggedElementIndex, targetElementIndex } = action.payload;
+      //console.log("draggedElementIndex", draggedElementIndex);
+      //console.log("targetElementIndex", targetElementIndex);
+      const constructorIngredientsArr = [...state.droppedIngredients];
+      const draggingElementIndex =
+        constructorIngredientsArr[draggedElementIndex];
+      constructorIngredientsArr[draggedElementIndex] =
+        constructorIngredientsArr[targetElementIndex];
+      constructorIngredientsArr[targetElementIndex] = draggingElementIndex;
+      return {
+        ...state,
+        droppedIngredients: constructorIngredientsArr,
       };
     }
     default:

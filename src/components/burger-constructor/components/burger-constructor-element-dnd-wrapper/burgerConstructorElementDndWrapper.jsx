@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
+import { REORDER_CONSTRUCTOR_INGREDIENT } from "../../../../services/actions/actions";
 import BurgerConstructorElement from "../burger-constructor-element/burgerConstructorElement";
 
 function BurgerConstructorElementDndWrapper({
@@ -23,7 +24,13 @@ function BurgerConstructorElementDndWrapper({
   const [{ isHover }, dropTarget] = useDrop({
     accept: "burger-constructor-element",
     drop({ draggedElementIndex }) {
-      dispatch(); //TODO
+      dispatch({
+        type: REORDER_CONSTRUCTOR_INGREDIENT,
+        payload: {
+          draggedElementIndex: draggedElementIndex,
+          targetElementIndex: index,
+        },
+      });
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),

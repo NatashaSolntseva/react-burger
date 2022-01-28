@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { forwardRef } from "react";
 
 import styles from "./ingredientElementStyles.module.css";
+
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/counter";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/currency-icon";
 
