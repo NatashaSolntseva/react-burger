@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import { REORDER_CONSTRUCTOR_INGREDIENT } from "../../../../services/actions/actions";
 import BurgerConstructorElement from "../burger-constructor-element/burgerConstructorElement";
 
@@ -57,3 +58,10 @@ function BurgerConstructorElementDndWrapper({
 }
 
 export default BurgerConstructorElementDndWrapper;
+
+const BurgerConstructorElementDndWrapperPropTypes = PropTypes.shape({
+  handleDeleteIngredient: PropTypes.func.isRequired,
+});
+
+BurgerConstructorElementDndWrapper.propTypes =
+  BurgerConstructorElementDndWrapperPropTypes.isRequired;

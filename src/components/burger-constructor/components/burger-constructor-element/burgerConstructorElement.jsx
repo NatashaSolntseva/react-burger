@@ -1,4 +1,5 @@
 import { forwardRef, useCallback } from "react";
+import PropTypes from "prop-types";
 
 import styles from "./burgerConstructorElementStyles.module.css";
 
@@ -31,3 +32,10 @@ const BurgerConstructorElement = forwardRef(
 );
 
 export default BurgerConstructorElement;
+
+const BurgerConstructorElementPropTypes = PropTypes.shape({
+  handleDeleteIngredient: PropTypes.func.isRequired,
+});
+
+BurgerConstructorElement.propTypes =
+  BurgerConstructorElementPropTypes.isRequired;

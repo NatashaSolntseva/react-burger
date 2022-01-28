@@ -7,4 +7,4 @@ const IngredientsMold = ({ children }) => {
 
 export default IngredientsMold;
 
-//IngredientsPlug.propTypes = { children: PropTypes.string };
+IngredientsMold.propTypes = { children: PropTypes.string };

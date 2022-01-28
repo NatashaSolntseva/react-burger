@@ -28,3 +28,9 @@ const IngredientElementDndWrapper = ({ openModal, burgerItem, count }) => {
 };
 
 export default IngredientElementDndWrapper;
+
+const IngredientElementDndWrapperPropTypes = PropTypes.shape({
+  openModal: PropTypes.func.isRequired,
+});
+IngredientElementDndWrapper.propTypes =
+  IngredientElementDndWrapperPropTypes.isRequired;

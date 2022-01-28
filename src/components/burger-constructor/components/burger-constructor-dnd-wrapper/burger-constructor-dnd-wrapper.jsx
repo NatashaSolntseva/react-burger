@@ -34,3 +34,10 @@ function BurgerConstructorDndWrapper({ openModal }) {
 }
 
 export default BurgerConstructorDndWrapper;
+
+const BurgerConstructorDndWrapperPropTypes = PropTypes.shape({
+  openModal: PropTypes.func.isRequired,
+});
+
+BurgerConstructorDndWrapper.propTypes =
+  BurgerConstructorDndWrapperPropTypes.isRequired;

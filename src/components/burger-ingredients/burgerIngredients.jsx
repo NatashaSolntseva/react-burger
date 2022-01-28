@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
@@ -50,10 +50,14 @@ function BurgerIngredients({ openModal }) {
 
   const [currentTab, setCurrentTab] = useState("buns");
 
-  const handleTabClick = useCallback(({ tab, ref }) => () => {
-    setCurrentTab(tab);
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  });
+  const handleTabClick = useCallback(
+    ({ tab, ref }) =>
+      () => {
+        setCurrentTab(tab);
+        ref.current.scrollIntoView({ behavior: "smooth" });
+      },
+    [setCurrentTab]
+  );
 
   const handleIngredientListScroll = (event) => {
     const scrollContainer = event.target;
