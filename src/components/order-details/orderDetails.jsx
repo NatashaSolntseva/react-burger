@@ -1,27 +1,23 @@
-import React, { useContext } from "react";
-
 import doneImg from "../../image/doneImg.svg";
 
 import styles from "./orderDetails.module.css";
 
-//контекст
-import { OrderContext } from "../../services/orderContext";
+import { useSelector } from "react-redux";
 
 function OrderDetails() {
-  //контекст
-  const orderInfoContext = useContext(OrderContext);
-  const { orderId, isCreatingOrder, error } = orderInfoContext;
-  // console.log("orderInfoContext", orderInfoContext);
+  const { orderId, isOrderInfoLoading, isOrderInfoRequestFaild } = useSelector(
+    (store) => store.order
+  );
 
   return (
     <>
-      {isCreatingOrder && (
+      {isOrderInfoLoading && (
         <div className={`${styles.container} pt-30 pb-25`}>
           <div className={`${styles.loader}`}></div>
           <span className={`${styles.spanLoader}`}>Загрузка...</span>
         </div>
       )}
-      {!isCreatingOrder && !error && orderId && (
+      {!isOrderInfoLoading && !isOrderInfoRequestFaild && orderId && (
         <div className={`${styles.container} pt-30 pb-25`}>
           <div className="mb-8">
             <p className={`${styles.glow} text text_type_digits-large`}>
