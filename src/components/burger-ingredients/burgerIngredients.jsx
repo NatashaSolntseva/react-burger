@@ -61,9 +61,6 @@ function BurgerIngredients({ openModal }) {
     const sauceTabPosition = sauceRef.current.offsetTop;
     const mainTabPosition = mainRef.current.offsetTop;
     const scrollSetup = 400;
-    console.log("scrollPosition", scrollPosition);
-    console.log("sauceTabPosition", sauceTabPosition);
-    console.log("mainTabPosition", mainTabPosition);
     if (scrollPosition + scrollSetup <= sauceTabPosition) {
       setCurrentTab("buns");
     } else if (scrollPosition + scrollSetup <= mainTabPosition) {

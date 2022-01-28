@@ -61,7 +61,11 @@ function App() {
     }
   }
 
-  const closeModal = () => {
+  const handleIngredientModalClose = () => {
+    dispatch({ type: CLOSE_MODAL });
+  };
+
+  const handleOrderModalClose = () => {
     dispatch({ type: CLOSE_MODAL });
     dispatch({ type: CLEAR_ORDER_LIST });
   };
@@ -93,7 +97,7 @@ function App() {
       </DndProvider>
       {/* модальное окно  - подробное описание игредиента*/}
       {isIngredientDetailModalVisible && (
-        <Modal closeModal={closeModal}>
+        <Modal closeModal={handleIngredientModalClose}>
           <IngredientDetails
             image={modalIngredientData.image}
             name={modalIngredientData.name}
@@ -106,7 +110,7 @@ function App() {
       )}
       {/* модальное окно о готовности заказа. номер и т.д.*/}
       {isOrderDetailModalVisible && (
-        <Modal closeModal={closeModal}>
+        <Modal closeModal={handleOrderModalClose}>
           <OrderDetails />
         </Modal>
       )}
