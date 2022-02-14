@@ -18,13 +18,15 @@ import IngredientDetails from "../burger-ingredients/components/ingredient-detai
 // серверная часть
 
 import { getIngredientsApiRequest } from "../../utils/api";
+import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 import {
-  CLOSE_MODAL,
-  OPEN_MODAL_ORDER,
-  OPEN_MODAL_INGREDIENT,
-  CLEAR_ORDER_LIST,
-} from "../../services/actions/actions";
+  closeModal,
+  openModalOrder,
+  openModalIngredient,
+} from "../../services/actions/modalActions";
+
+import { clearOrderList } from "../../services/actions/constructorActions";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,21 +55,21 @@ function App() {
       const ingredient = ingredientsDataFromServer.find(
         (item) => item._id === itemId
       );
-      dispatch({ type: OPEN_MODAL_INGREDIENT, payload: ingredient });
+      dispatch(openModalIngredient(ingredient));
     } else {
       if (modalType === "orderDetail") {
-        dispatch({ type: OPEN_MODAL_ORDER });
+        dispatch(openModalOrder());
       }
     }
   }
 
   const handleIngredientModalClose = () => {
-    dispatch({ type: CLOSE_MODAL });
+    dispatch(closeModal());
   };
 
   const handleOrderModalClose = () => {
-    dispatch({ type: CLOSE_MODAL });
-    dispatch({ type: CLEAR_ORDER_LIST });
+    dispatch(closeModal());
+    dispatch(clearOrderList());
   };
 
   //___________________________________________render______________________________________________

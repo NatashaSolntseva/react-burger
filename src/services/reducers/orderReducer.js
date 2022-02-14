@@ -2,7 +2,7 @@ import {
   SEND_ORDER_NUMBER_REQUEST,
   SEND_ORDER_NUMBER_FAILED,
   SEND_ORDER_NUMBER_SUCCESS,
-} from "../actions/actions";
+} from "../actions/orderActions";
 
 const defaultOrderState = {
   orderId: null,

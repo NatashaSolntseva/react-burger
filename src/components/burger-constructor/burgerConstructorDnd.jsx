@@ -16,7 +16,7 @@ import BurgerConstructorElementDndWrapper from "./components/burger-constructor-
 
 import { getOrderNumberApi } from "../../utils/api";
 
-import { DELETE_INGREDIENT } from "../../services/actions/actions";
+import { deleteIngredient } from "../../services/actions/constructorActions";
 
 const BurgerConstructorDnd = forwardRef(({ openModal, isHover }, ref) => {
   const dispatch = useDispatch();
@@ -39,17 +39,22 @@ const BurgerConstructorDnd = forwardRef(({ openModal, isHover }, ref) => {
       alert("Вы не выбрали булочку!"); //TODO что-то более красивое
       return;
     }
-    dispatch(getOrderNumberApi(droppedIngredients.concat(droppedBun)));
+    const constructorIngredients = droppedIngredients.concat(droppedBun);
+    const orderIngredientList = constructorIngredients
+      .filter((el) => el.type !== "bun")
+      .map((el) => el._id)
+      .concat(
+        constructorIngredients.find((el) => (el.type === "bun" ? el : 0))._id,
+        constructorIngredients.find((el) => (el.type === "bun" ? el : 0))._id
+      );
+    dispatch(getOrderNumberApi(orderIngredientList));
     openModal({ modalType: "orderDetail" });
   };
 
   const handleDeleteIngredient = useCallback(
     (indexToDelete) => {
       console.log("delete");
-      dispatch({
-        type: DELETE_INGREDIENT,
-        payload: { indexToDelete },
-      });
+      dispatch(deleteIngredient(indexToDelete));
     },
     [dispatch]
   );
