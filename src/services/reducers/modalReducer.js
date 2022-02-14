@@ -3,7 +3,7 @@ import {
   OPEN_MODAL_ORDER,
   SET_MODAL_ERROR,
   CLOSE_MODAL,
-} from "../actions/actions";
+} from "../actions/modalActions";
 
 const modalInitialState = {
   modalIngredientData: {},
@@ -19,7 +19,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         ...state,
         hasModalError: true,
         isIngredientDetailModalVisible: true,
-        modalIngredientData: action.payload,
+        modalIngredientData: action.ingredient,
       };
     }
     case OPEN_MODAL_ORDER: {

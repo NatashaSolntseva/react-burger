@@ -2,7 +2,7 @@ import {
   GET_INGREDIENTS_API_REQUEST,
   GET_INGREDIENTS_API_FAILD,
   GET_INGREDIENTS_API_SUCCESS,
-} from "../actions/actions";
+} from "../actions/ingredientsActions";
 
 const defaultIngredientsState = {
   ingredientsApiRequest: true,

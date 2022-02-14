@@ -3,10 +3,13 @@ import {
   GET_INGREDIENTS_API_REQUEST,
   GET_INGREDIENTS_API_FAILD,
   GET_INGREDIENTS_API_SUCCESS,
-  SEND_ORDER_NUMBER_REQUEST,
+} from "../services/actions/ingredientsActions";
+
+import {
   SEND_ORDER_NUMBER_FAILED,
   SEND_ORDER_NUMBER_SUCCESS,
-} from "../services/actions/actions";
+  SEND_ORDER_NUMBER_REQUEST,
+} from "../services/actions/orderActions";
 
 export const getResponseData = (res) => {
   if (res.ok) {
@@ -34,17 +37,10 @@ export function getIngredientsApiRequest() {
       });
   };
 }
-
+//export const getOrderNumber = (order)
 //фомирование заказа, отправка на сервер данных об ингр-ах бургера
-export const getOrderNumberApi = (constructorIngredients) => {
+export const getOrderNumberApi = (orderIngredientList) => {
   return async (dispatch) => {
-    const orderIngredientList = constructorIngredients
-      .filter((el) => el.type !== "bun")
-      .map((el) => el._id)
-      .concat(
-        constructorIngredients.find((el) => (el.type === "bun" ? el : 0))._id,
-        constructorIngredients.find((el) => (el.type === "bun" ? el : 0))._id
-      );
     const postOrderOption = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -70,3 +66,4 @@ export const getOrderNumberApi = (constructorIngredients) => {
     }
   };
 };
+//

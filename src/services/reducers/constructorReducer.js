@@ -1,9 +1,9 @@
 import {
+  CLEAR_ORDER_LIST,
   DROP_SELECTED_INGREDIENT,
   DELETE_INGREDIENT,
-  CLEAR_ORDER_LIST,
   REORDER_CONSTRUCTOR_INGREDIENT,
-} from "../actions/actions";
+} from "../actions/constructorActions";
 
 const defaultBurgerConstructorState = {
   droppedIngredients: [],
@@ -32,7 +32,7 @@ export const constructorReducer = (
       return {
         ...state,
         droppedIngredients: state.droppedIngredients.filter(
-          (item, index) => index !== action.payload.indexToDelete
+          (item, index) => index !== action.indexToDelete
         ),
       };
     }
@@ -47,6 +47,8 @@ export const constructorReducer = (
       const { draggedElementIndex, targetElementIndex } = action.payload;
       //console.log("draggedElementIndex", draggedElementIndex);
       //console.log("targetElementIndex", targetElementIndex);
+      //const draggedElementIndex = action.draggedElementIndex;
+      //const targetElementIndex = action.index;
       const constructorIngredientsArr = [...state.droppedIngredients];
       const draggingElementIndex =
         constructorIngredientsArr[draggedElementIndex];

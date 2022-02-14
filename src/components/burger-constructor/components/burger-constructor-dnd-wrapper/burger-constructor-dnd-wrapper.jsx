@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import BurgerConstructorDnd from "../../burgerConstructorDnd";
 
-import { DROP_SELECTED_INGREDIENT } from "../../../../services/actions/actions";
+import { DROP_SELECTED_INGREDIENT } from "../../../../services/actions/constructorActions";
 
 function BurgerConstructorDndWrapper({ openModal }) {
   const dispatch = useDispatch();
