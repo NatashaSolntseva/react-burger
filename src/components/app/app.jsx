@@ -17,7 +17,6 @@ import IngredientDetails from "../burger-ingredients/components/ingredient-detai
 
 // серверная часть
 
-import { getIngredientsApiRequest } from "../../utils/api";
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 import {
@@ -39,7 +38,7 @@ function App() {
   } = useSelector((store) => store.ingredients);
 
   useEffect(() => {
-    dispatch(getIngredientsApiRequest());
+    dispatch(getIngredientsRequestApi());
   }, [dispatch]);
 
   // реализация функциона модельных окон

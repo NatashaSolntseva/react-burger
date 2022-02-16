@@ -1,4 +1,4 @@
-import { inputDataUrl } from "../../utils/data";
+import { inputDataUrl } from "../../utils/api";
 import type { AppDispatch, AppThunk } from "../../index";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.

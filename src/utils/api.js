@@ -1,15 +1,10 @@
-import { inputDataUrl } from "./data";
-import {
-  GET_INGREDIENTS_API_REQUEST,
-  GET_INGREDIENTS_API_FAILD,
-  GET_INGREDIENTS_API_SUCCESS,
-} from "../services/actions/ingredientsActions";
-
 import {
   SEND_ORDER_NUMBER_FAILED,
   SEND_ORDER_NUMBER_SUCCESS,
   SEND_ORDER_NUMBER_REQUEST,
 } from "../services/actions/orderActions";
+
+export const inputDataUrl = "https://norma.nomoreparties.space/api";
 
 export const getResponseData = (res) => {
   if (res.ok) {
@@ -18,25 +13,6 @@ export const getResponseData = (res) => {
   return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
 };
 
-export function getIngredientsApiRequest() {
-  return function (dispatch) {
-    dispatch({ type: GET_INGREDIENTS_API_REQUEST });
-    fetch(`${inputDataUrl}/ingredients`)
-      .then((res) => getResponseData(res))
-      .then((ingredients) => {
-        dispatch({
-          type: GET_INGREDIENTS_API_SUCCESS,
-          ingredients: ingredients.data,
-        });
-      })
-      .catch((error) => {
-        console.log(`Данные с сервера не получены, ошибка: ${error}`);
-        dispatch({
-          type: GET_INGREDIENTS_API_FAILD,
-        });
-      });
-  };
-}
 //export const getOrderNumber = (order)
 //фомирование заказа, отправка на сервер данных об ингр-ах бургера
 export const getOrderNumberApi = (orderIngredientList) => {
@@ -66,4 +42,3 @@ export const getOrderNumberApi = (orderIngredientList) => {
     }
   };
 };
-//
