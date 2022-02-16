@@ -14,7 +14,7 @@ import IngredientsMold from "./components/ingredients-mold/ingredientsMold";
 import BunMold from "./components/bun-mold/bunMold";
 import BurgerConstructorElementDndWrapper from "./components/burger-constructor-element-dnd-wrapper/burgerConstructorElementDndWrapper";
 
-import { getOrderNumberApi } from "../../utils/api";
+import { getOrderNumberApi } from "../../services/actions/orderActions";
 
 import { deleteIngredient } from "../../services/actions/constructorActions";
 

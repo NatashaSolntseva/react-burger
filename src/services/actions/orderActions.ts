@@ -16,7 +16,6 @@ export interface ISendOrderNumberRequest {
 export interface ISendOrderNumberSuccess {
   readonly type: typeof SEND_ORDER_NUMBER_SUCCESS;
   readonly orderID: number;
-  readonly payload: number;
 }
 
 export interface ISendOrderNumberFaild {
@@ -34,14 +33,10 @@ const sendOrderNumberRequest = (): ISendOrderNumberRequest => {
   };
 };
 
-const sendOrderNumberSuccess = (
-  orderID: number,
-  payload: number
-): ISendOrderNumberSuccess => {
+const sendOrderNumberSuccess = (orderID: number): ISendOrderNumberSuccess => {
   return {
     type: SEND_ORDER_NUMBER_SUCCESS,
     orderID,
-    payload,
   };
 };
 
@@ -51,11 +46,8 @@ const sendOrderNumberFailed = (): ISendOrderNumberFaild => {
   };
 };
 
-//TODO перенести сюда API
-/*
-//фомирование заказа, отправка на сервер данных об ингр-ах бургера
-export const getOrderNumberApi = (orderIngredientList) => {
-  return async (dispatch) => {
+export const getOrderNumberApi: AppThunk = (orderIngredientList) => {
+  return async (dispatch: AppDispatch) => {
     const postOrderOption = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -65,21 +57,16 @@ export const getOrderNumberApi = (orderIngredientList) => {
     };
 
     try {
-      dispatch({ type: SEND_ORDER_NUMBER_REQUEST });
+      dispatch(sendOrderNumberRequest());
       const res = await fetch(`${inputDataUrl}/orders`, postOrderOption);
       if (res.ok) {
         const serverResOrderId = await res.json();
-        dispatch({
-          type: SEND_ORDER_NUMBER_SUCCESS,
-          payload: serverResOrderId,
-        });
+        dispatch(sendOrderNumberSuccess(serverResOrderId));
       } else {
         throw new Error(`Error ${res.status}`);
       }
     } catch (error) {
-      dispatch({ type: SEND_ORDER_NUMBER_FAILED });
+      dispatch(sendOrderNumberFailed());
     }
   };
 };
-
-*/

@@ -32,7 +32,7 @@ export const orderReducer = (
     case SEND_ORDER_NUMBER_SUCCESS: {
       return {
         ...state,
-        orderId: action.payload,
+        orderId: action.orderID,
         isOrderInfoLoading: false,
         isOrderInfoRequestFaild: false,
       };
