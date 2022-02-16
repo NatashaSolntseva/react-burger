@@ -4,13 +4,23 @@ import {
   GET_INGREDIENTS_API_SUCCESS,
 } from "../actions/ingredientsActions";
 
-const defaultIngredientsState = {
+import { TIngredientsActions } from "../actions/ingredientsActions";
+
+type TdefaultIngredientsState = {
+  ingredientsApiRequest: boolean;
+  ingredientsApiFailed: boolean;
+  ingredientsDataFromServer: [];
+};
+const defaultIngredientsState: TdefaultIngredientsState = {
   ingredientsApiRequest: true,
   ingredientsApiFailed: false,
   ingredientsDataFromServer: [],
 };
 
-export const ingredientsReducer = (state = defaultIngredientsState, action) => {
+export const ingredientsReducer = (
+  state = defaultIngredientsState,
+  action: TIngredientsActions
+) => {
   switch (action.type) {
     case GET_INGREDIENTS_API_REQUEST: {
       return {
@@ -22,7 +32,7 @@ export const ingredientsReducer = (state = defaultIngredientsState, action) => {
     case GET_INGREDIENTS_API_SUCCESS: {
       return {
         ...state,
-        ingredientsDataFromServer: action.payload,
+        ingredientsDataFromServer: action.ingredients,
         ingredientsApiRequest: false,
       };
     }

@@ -52,7 +52,7 @@ const getIngredientsApiFaild = (): IGetIngredientsFailed => {
 export const getIngredientsRequestApi: AppThunk =
   () => (dispatch: AppDispatch) => {
     dispatch(getIngredientsApiRequest());
-    fetch(`${inputDataUrl}/ingredients`)
+    return fetch(`${inputDataUrl}/ingredients`)
       .then((res) => getResponseData(res))
       .then((ingredients) => {
         dispatch(getIngredientsApiSuccess(ingredients.data));

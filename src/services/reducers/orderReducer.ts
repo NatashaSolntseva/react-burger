@@ -4,13 +4,24 @@ import {
   SEND_ORDER_NUMBER_SUCCESS,
 } from "../actions/orderActions";
 
-const defaultOrderState = {
+import { TOrderActions } from "../actions/orderActions";
+
+type TdefaultOrderState = {
+  orderId: number | null;
+  isOrderInfoLoading: boolean;
+  isOrderInfoRequestFaild: boolean;
+};
+
+const defaultOrderState: TdefaultOrderState = {
   orderId: null,
   isOrderInfoLoading: false,
   isOrderInfoRequestFaild: false,
 };
 
-export const orderReducer = (state = defaultOrderState, action) => {
+export const orderReducer = (
+  state = defaultOrderState,
+  action: TOrderActions
+) => {
   switch (action.type) {
     case SEND_ORDER_NUMBER_REQUEST: {
       return {

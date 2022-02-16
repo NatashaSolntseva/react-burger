@@ -26,7 +26,7 @@ export function getIngredientsApiRequest() {
       .then((ingredients) => {
         dispatch({
           type: GET_INGREDIENTS_API_SUCCESS,
-          payload: ingredients.data,
+          ingredients: ingredients.data,
         });
       })
       .catch((error) => {
