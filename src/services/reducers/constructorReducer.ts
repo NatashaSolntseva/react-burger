@@ -5,18 +5,25 @@ import {
   REORDER_CONSTRUCTOR_INGREDIENT,
 } from "../actions/constructorActions";
 
-const defaultBurgerConstructorState = {
+import { TConstructorActions } from "../actions/constructorActions";
+
+type TdefaultBurgerConstructorState = {
+  droppedIngredients: [];
+  droppedBun: any;
+};
+
+const defaultBurgerConstructorState: TdefaultBurgerConstructorState = {
   droppedIngredients: [],
   droppedBun: null,
 };
 
 export const constructorReducer = (
   state = defaultBurgerConstructorState,
-  action
+  action: TConstructorActions
 ) => {
   switch (action.type) {
     case DROP_SELECTED_INGREDIENT: {
-      const { droppedIngredient } = action.payload;
+      const droppedIngredient = action.droppedIngredient;
       if (droppedIngredient.type === "bun") {
         return {
           ...state,
@@ -44,11 +51,8 @@ export const constructorReducer = (
       };
     } //TODO они меняются местами, а по хорошему нужно раздвигать элементы
     case REORDER_CONSTRUCTOR_INGREDIENT: {
-      const { draggedElementIndex, targetElementIndex } = action.payload;
-      //console.log("draggedElementIndex", draggedElementIndex);
-      //console.log("targetElementIndex", targetElementIndex);
-      //const draggedElementIndex = action.draggedElementIndex;
-      //const targetElementIndex = action.index;
+      const draggedElementIndex = action.draggedElementIndex;
+      const targetElementIndex = action.targetElementIndex;
       const constructorIngredientsArr = [...state.droppedIngredients];
       const draggingElementIndex =
         constructorIngredientsArr[draggedElementIndex];

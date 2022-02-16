@@ -5,14 +5,25 @@ import {
   CLOSE_MODAL,
 } from "../actions/modalActions";
 
-const modalInitialState = {
+import { TModalActions } from "../actions/modalActions";
+
+type TmodalInitialState = {
+  modalIngredientData: {};
+  isOrderDetailModalVisible: boolean;
+  isIngredientDetailModalVisible: boolean;
+  hasModalError: boolean;
+};
+const modalInitialState: TmodalInitialState = {
   modalIngredientData: {},
   isOrderDetailModalVisible: false,
   isIngredientDetailModalVisible: false,
   hasModalError: false,
 };
 
-export const modalReducer = (state = modalInitialState, action) => {
+export const modalReducer = (
+  state = modalInitialState,
+  action: TModalActions
+) => {
   switch (action.type) {
     case OPEN_MODAL_INGREDIENT: {
       return {

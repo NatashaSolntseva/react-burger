@@ -1,4 +1,4 @@
-import { inputDataUrl } from "../../utils/data";
+import { inputDataUrl } from "../../utils/api";
 import type { AppDispatch, AppThunk } from "../../index";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.
@@ -15,7 +15,7 @@ export interface ISendOrderNumberRequest {
 
 export interface ISendOrderNumberSuccess {
   readonly type: typeof SEND_ORDER_NUMBER_SUCCESS;
-  readonly order: number;
+  readonly orderID: number;
 }
 
 export interface ISendOrderNumberFaild {
@@ -33,10 +33,10 @@ const sendOrderNumberRequest = (): ISendOrderNumberRequest => {
   };
 };
 
-const sendOrderNumberSuccess = (order: number): ISendOrderNumberSuccess => {
+const sendOrderNumberSuccess = (orderID: number): ISendOrderNumberSuccess => {
   return {
     type: SEND_ORDER_NUMBER_SUCCESS,
-    order,
+    orderID,
   };
 };
 
@@ -46,4 +46,27 @@ const sendOrderNumberFailed = (): ISendOrderNumberFaild => {
   };
 };
 
-//TODO перенести сюда API
+export const getOrderNumberApi: AppThunk = (orderIngredientList) => {
+  return async (dispatch: AppDispatch) => {
+    const postOrderOption = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ingredients: orderIngredientList,
+      }),
+    };
+
+    try {
+      dispatch(sendOrderNumberRequest());
+      const res = await fetch(`${inputDataUrl}/orders`, postOrderOption);
+      if (res.ok) {
+        const serverResOrderId = await res.json();
+        dispatch(sendOrderNumberSuccess(serverResOrderId));
+      } else {
+        throw new Error(`Error ${res.status}`);
+      }
+    } catch (error) {
+      dispatch(sendOrderNumberFailed());
+    }
+  };
+};

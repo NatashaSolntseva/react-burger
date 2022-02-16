@@ -1,6 +1,5 @@
 import { TIngredient } from "../../utils/types";
-import { getResponseData } from "../../utils/api";
-import { inputDataUrl } from "../../utils/data";
+import { getResponseData, inputDataUrl } from "../../utils/api";
 import { AppDispatch, AppThunk } from "../..";
 
 export const GET_INGREDIENTS_API_REQUEST: "GET_INGREDIENTS_API_REQUEST" =
@@ -48,11 +47,11 @@ const getIngredientsApiFaild = (): IGetIngredientsFailed => {
     type: GET_INGREDIENTS_API_FAILD,
   };
 };
-//TODO не работает
+
 export const getIngredientsRequestApi: AppThunk =
   () => (dispatch: AppDispatch) => {
     dispatch(getIngredientsApiRequest());
-    fetch(`${inputDataUrl}/ingredients`)
+    return fetch(`${inputDataUrl}/ingredients`)
       .then((res) => getResponseData(res))
       .then((ingredients) => {
         dispatch(getIngredientsApiSuccess(ingredients.data));

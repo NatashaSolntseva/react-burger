@@ -10,7 +10,7 @@ export const REORDER_CONSTRUCTOR_INGREDIENT: "REORDER_CONSTRUCTOR_INGREDIENT" =
 
 export interface IDropSelectedIngredient {
   readonly type: typeof DROP_SELECTED_INGREDIENT;
-  readonly ingredient: TIngredient;
+  readonly droppedIngredient: TIngredient;
 }
 
 export interface IDeleteIngredient {
@@ -39,7 +39,7 @@ export const dropSelectedIngredient = (
 ): IDropSelectedIngredient => {
   return {
     type: DROP_SELECTED_INGREDIENT,
-    ingredient: { ...ingredient, uid: uuidv4() },
+    droppedIngredient: { ...ingredient, uid: uuidv4() },
   };
 };
 

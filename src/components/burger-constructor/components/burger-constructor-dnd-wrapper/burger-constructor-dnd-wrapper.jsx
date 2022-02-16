@@ -14,9 +14,7 @@ function BurgerConstructorDndWrapper({ openModal }) {
     drop({ burgerItem }) {
       dispatch({
         type: DROP_SELECTED_INGREDIENT,
-        payload: {
-          droppedIngredient: { ...burgerItem, uid: uuidv4() },
-        },
+        droppedIngredient: { ...burgerItem, uid: uuidv4() },
       });
     },
     collect: (monitor) => ({
