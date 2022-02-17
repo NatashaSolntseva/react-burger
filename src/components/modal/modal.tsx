@@ -31,7 +31,7 @@ const Modal: FC<TCloseModal> = ({ closeModal, children }) => {
 
   return createPortal(
     <>
-      <ModalOverlay onClick={onOverlayClick}>
+      <ModalOverlay closeModal={onOverlayClick}>
         <div className={styles.modal}>
           <div className={styles.modal_closebtn}>
             <CloseIcon type="primary" onClick={closeModal} />

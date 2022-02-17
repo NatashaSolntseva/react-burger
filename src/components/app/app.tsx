@@ -101,14 +101,7 @@ const App: FC = () => {
       {/* модальное окно  - подробное описание игредиента*/}
       {isIngredientDetailModalVisible && (
         <Modal closeModal={handleIngredientModalClose}>
-          <IngredientDetails
-            image={modalIngredientData.image}
-            name={modalIngredientData.name}
-            calories={modalIngredientData.calories}
-            fat={modalIngredientData.fat}
-            proteins={modalIngredientData.proteins}
-            carbohydrates={modalIngredientData.carbohydrates}
-          />
+          <IngredientDetails ingredient={modalIngredientData} />
         </Modal>
       )}
       {/* модальное окно о готовности заказа. номер и т.д.*/}

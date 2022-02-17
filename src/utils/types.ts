@@ -17,3 +17,10 @@ export interface IIngredient {
 }
 
 export type TCloseModal = { closeModal: () => void; children?: ReactNode };
+
+export type TOverlayCloseModal = {
+  closeModal: (evt: any) => void;
+  children?: ReactNode;
+};
+
+export type TDetailIngredient = { ingredient: IIngredient };
