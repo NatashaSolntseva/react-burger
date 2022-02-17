@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo, useCallback } from "react";
-import PropTypes from "prop-types";
+
 import { useSelector } from "react-redux";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -164,9 +164,3 @@ function BurgerIngredients({ openModal }) {
 }
 
 export default BurgerIngredients;
-
-const BurgerIngredientsPropTypes = PropTypes.shape({
-  openModal: PropTypes.func.isRequired,
-});
-
-BurgerIngredients.propTypes = BurgerIngredientsPropTypes.isRequired;

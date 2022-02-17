@@ -35,5 +35,5 @@ export interface IIngredientsGroup {
   groupName: string;
   groupElements: IIngredient[];
   openModal: ({}: any) => void;
-  count: any; //ingredientCounter useMemo
+  count: { [ingredient: string]: number }; //ingredientCounter useMemo
 }
