@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface IIngredient {
   _id: string;
   name: string;
@@ -13,3 +15,5 @@ export interface IIngredient {
   __v: number;
   uid?: string;
 }
+
+export type TCloseModal = { closeModal: () => void; children?: ReactNode };
