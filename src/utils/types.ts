@@ -1,4 +1,4 @@
-export type TIngredient = {
+export interface IIngredient {
   _id: string;
   name: string;
   type: string;
@@ -12,4 +12,4 @@ export type TIngredient = {
   image_large: string;
   __v: number;
   uid?: string;
-};
+}

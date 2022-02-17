@@ -1,5 +1,7 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, FC } from "react";
+//import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector } from "../../services/hooks/hooks";
+import { useAppDispatch } from "../../services/hooks/hooks";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -26,16 +28,17 @@ import {
 } from "../../services/actions/modalActions";
 
 import { clearOrderList } from "../../services/actions/constructorActions";
+import { IIngredient } from "../../utils/types";
 
-function App() {
-  const dispatch = useDispatch();
+const App: FC = () => {
+  const dispatch = useAppDispatch();
 
   //запрос данных ингредиентов с сервера
   const {
     ingredientsApiRequest,
     ingredientsApiFailed,
     ingredientsDataFromServer,
-  } = useSelector((store) => store.ingredients);
+  } = useAppSelector((store) => store.ingredients);
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
@@ -47,12 +50,12 @@ function App() {
     isOrderDetailModalVisible,
     isIngredientDetailModalVisible,
     modalIngredientData,
-  } = useSelector((store) => store.modal);
+  } = useAppSelector((store) => store.modal);
 
-  function openModal({ modalType, itemId }) {
+  function openModal({ modalType, itemId }: any) {
     if (modalType === "ingredientDetail") {
       const ingredient = ingredientsDataFromServer.find(
-        (item) => item._id === itemId
+        (item: IIngredient) => item._id === itemId
       );
       dispatch(openModalIngredient(ingredient));
     } else {
@@ -91,7 +94,6 @@ function App() {
           ingredientsDataFromServer.length && (
             <main className={styles.content}>
               <BurgerIngredients openModal={openModal} />
-              {/*<BurgerConstructor openModal={openModal} />*/}
               <BurgerConstructorDndWrapper openModal={openModal} />
             </main>
           )}
@@ -117,6 +119,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;
