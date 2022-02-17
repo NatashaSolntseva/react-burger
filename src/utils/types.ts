@@ -24,3 +24,16 @@ export type TOverlayCloseModal = {
 };
 
 export type TDetailIngredient = { ingredient: IIngredient };
+
+export interface IBurgerIngredientElement {
+  ingredient: IIngredient;
+  openModal: ({}: any) => void;
+  count: number;
+}
+
+export interface IIngredientsGroup {
+  groupName: string;
+  groupElements: IIngredient[];
+  openModal: ({}: any) => void;
+  count: any; //ingredientCounter useMemo
+}

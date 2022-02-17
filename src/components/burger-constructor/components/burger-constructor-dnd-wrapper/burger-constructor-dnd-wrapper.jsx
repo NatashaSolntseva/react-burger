@@ -11,10 +11,10 @@ function BurgerConstructorDndWrapper({ openModal }) {
   const dispatch = useDispatch();
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop({ burgerItem }) {
+    drop({ ingredient }) {
       dispatch({
         type: DROP_SELECTED_INGREDIENT,
-        droppedIngredient: { ...burgerItem, uid: uuidv4() },
+        droppedIngredient: { ...ingredient, uid: uuidv4() },
       });
     },
     collect: (monitor) => ({
