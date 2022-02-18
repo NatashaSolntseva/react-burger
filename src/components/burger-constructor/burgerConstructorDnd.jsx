@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { forwardRef, useCallback, useMemo } from "react";
 
@@ -126,9 +125,3 @@ const BurgerConstructorDnd = forwardRef(({ openModal, isHover }, ref) => {
 });
 
 export default BurgerConstructorDnd;
-
-const BurgerConstructorDndPropTypes = PropTypes.shape({
-  openModal: PropTypes.func.isRequired,
-});
-
-BurgerConstructorDnd.propTypes = BurgerConstructorDndPropTypes.isRequired;

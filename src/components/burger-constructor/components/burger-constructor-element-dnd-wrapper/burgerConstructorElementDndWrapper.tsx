@@ -1,21 +1,22 @@
-import { useRef, useEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 
 import { reorderConstructorIngredient } from "../../../../services/actions/constructorActions";
 import BurgerConstructorElement from "../burger-constructor-element/burgerConstructorElement";
 
-function BurgerConstructorElementDndWrapper({
+import { IBurgerConstructorElement } from "../../../../utils/types";
+
+const BurgerConstructorElementDndWrapper: FC<IBurgerConstructorElement> = ({
   ingredient,
   index,
   handleDeleteIngredient,
-}) {
+}) => {
   const dispatch = useDispatch();
 
   const ref = useRef(null);
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [, dragRef] = useDrag({
     type: "burger-constructor-element",
     item: { draggedElementIndex: index },
     collect: (monitor) => ({
@@ -23,10 +24,10 @@ function BurgerConstructorElementDndWrapper({
     }),
   });
 
-  const [{ isHover }, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop({
     accept: "burger-constructor-element",
-    drop({ draggedElementIndex }) {
-      dispatch(reorderConstructorIngredient(draggedElementIndex, index));
+    drop(item: { draggedElementIndex: number }) {
+      dispatch(reorderConstructorIngredient(item.draggedElementIndex, index));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -45,18 +46,9 @@ function BurgerConstructorElementDndWrapper({
       ingredient={ingredient}
       ref={ref}
       index={index}
-      isHover={isHover}
-      isDrag={isDrag}
       handleDeleteIngredient={handleDeleteIngredient}
     />
   );
-}
+};
 
 export default BurgerConstructorElementDndWrapper;
-
-const BurgerConstructorElementDndWrapperPropTypes = PropTypes.shape({
-  handleDeleteIngredient: PropTypes.func.isRequired,
-});
-
-BurgerConstructorElementDndWrapper.propTypes =
-  BurgerConstructorElementDndWrapperPropTypes.isRequired;

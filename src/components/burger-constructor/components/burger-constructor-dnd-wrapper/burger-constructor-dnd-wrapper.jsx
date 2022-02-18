@@ -1,21 +1,20 @@
-import PropTypes from "prop-types";
+import { FC } from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch } from "../../../../services/hooks/hooks";
 
 import BurgerConstructorDnd from "../../burgerConstructorDnd";
 
-import { DROP_SELECTED_INGREDIENT } from "../../../../services/actions/constructorActions";
+import { dropSelectedIngredient } from "../../../../services/actions/constructorActions";
+//import { IBurgerConstructorDnDWrapper } from "../../../../utils/types";
+import { TDetailIngredient } from "../../../../utils/types";
 
-function BurgerConstructorDndWrapper({ openModal }) {
+const BurgerConstructorDndWrapper = ({ openModal }) => {
   const dispatch = useDispatch();
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
     drop({ ingredient }) {
-      dispatch({
-        type: DROP_SELECTED_INGREDIENT,
-        droppedIngredient: { ...ingredient, uid: uuidv4() },
-      });
+      dispatch(dropSelectedIngredient(ingredient));
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -29,13 +28,7 @@ function BurgerConstructorDndWrapper({ openModal }) {
       ref={dropTarget}
     />
   );
-}
+};
 
 export default BurgerConstructorDndWrapper;
-
-const BurgerConstructorDndWrapperPropTypes = PropTypes.shape({
-  openModal: PropTypes.func.isRequired,
-});
-
-BurgerConstructorDndWrapper.propTypes =
-  BurgerConstructorDndWrapperPropTypes.isRequired;
+//TODO что-то с типизацией OpenModal

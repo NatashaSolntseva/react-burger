@@ -34,6 +34,26 @@ export interface IBurgerIngredientElement {
 export interface IIngredientsGroup {
   groupName: string;
   groupElements: IIngredient[];
-  openModal: ({}: any) => void;
+  openModal: ({}: any) => void; // openModal: (selectedIngredients: TIngredient[]) => void;
   count: { [ingredient: string]: number }; //ingredientCounter useMemo
+}
+
+export interface IBunMold {
+  children?: string;
+  position: string;
+}
+
+export interface IIngredientsMold {
+  children?: string;
+}
+
+/*export interface IBurgerConstructorDnDWrapper {
+  openModal: ({}: any) => void;
+}
+*/
+
+export interface IBurgerConstructorElement {
+  ingredient: IIngredient;
+  handleDeleteIngredient: (index: number) => void;
+  index: number;
 }
