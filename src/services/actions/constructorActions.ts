@@ -1,4 +1,4 @@
-import { TIngredient } from "../../utils/types";
+import { IIngredient } from "../../utils/types";
 import { v4 as uuidv4 } from "uuid";
 
 export const DROP_SELECTED_INGREDIENT: "DROP_SELECTED_INGREDIENT" =
@@ -10,7 +10,7 @@ export const REORDER_CONSTRUCTOR_INGREDIENT: "REORDER_CONSTRUCTOR_INGREDIENT" =
 
 export interface IDropSelectedIngredient {
   readonly type: typeof DROP_SELECTED_INGREDIENT;
-  readonly droppedIngredient: TIngredient;
+  readonly droppedIngredient: IIngredient;
 }
 
 export interface IDeleteIngredient {
@@ -35,7 +35,7 @@ export type TConstructorActions =
   | IReorderConstructorIngredient;
 
 export const dropSelectedIngredient = (
-  ingredient: TIngredient
+  ingredient: IIngredient
 ): IDropSelectedIngredient => {
   return {
     type: DROP_SELECTED_INGREDIENT,

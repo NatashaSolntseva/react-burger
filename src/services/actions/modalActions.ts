@@ -1,4 +1,4 @@
-import { TIngredient } from "../../utils/types";
+import { IIngredient } from "../../utils/types";
 //Добавление данных о просматриваемом в модальном окне IngredientDetails ингредиенте.
 export const SET_MODAL_ERROR: "SET_MODAL_ERROR" = "SET_MODAL_ERROR";
 export const OPEN_MODAL_INGREDIENT: "OPEN_MODAL_INGREDIENT" =
@@ -14,7 +14,7 @@ export interface ISetModalError {
 
 export interface IOpenModalIngredient {
   readonly type: typeof OPEN_MODAL_INGREDIENT;
-  readonly ingredient: TIngredient;
+  readonly ingredient: IIngredient;
 }
 
 export interface IOpenModalOrder {
@@ -37,9 +37,7 @@ export const setModalError = (): ISetModalError => {
   };
 };
 
-export const openModalIngredient = (
-  ingredient: TIngredient
-): IOpenModalIngredient => {
+export const openModalIngredient = (ingredient: any): IOpenModalIngredient => {
   return {
     type: OPEN_MODAL_INGREDIENT,
     ingredient,

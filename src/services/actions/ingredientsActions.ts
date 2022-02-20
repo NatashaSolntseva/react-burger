@@ -1,4 +1,4 @@
-import { TIngredient } from "../../utils/types";
+import { IIngredient } from "../../utils/types";
 import { getResponseData, inputDataUrl } from "../../utils/api";
 import { AppDispatch, AppThunk } from "../..";
 
@@ -15,7 +15,7 @@ export interface IGetIngredientsRequest {
 
 export interface IGetIngredientsSuccess {
   readonly type: typeof GET_INGREDIENTS_API_SUCCESS;
-  readonly ingredients: TIngredient[];
+  readonly ingredients: IIngredient[];
 }
 
 export interface IGetIngredientsFailed {
@@ -34,7 +34,7 @@ const getIngredientsApiRequest = (): IGetIngredientsRequest => {
 };
 
 const getIngredientsApiSuccess = (
-  ingredients: TIngredient[]
+  ingredients: IIngredient[]
 ): IGetIngredientsSuccess => {
   return {
     type: GET_INGREDIENTS_API_SUCCESS,

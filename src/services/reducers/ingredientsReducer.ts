@@ -6,10 +6,12 @@ import {
 
 import { TIngredientsActions } from "../actions/ingredientsActions";
 
+import { IIngredient } from "../../utils/types";
+
 type TdefaultIngredientsState = {
   ingredientsApiRequest: boolean;
   ingredientsApiFailed: boolean;
-  ingredientsDataFromServer: [];
+  ingredientsDataFromServer: IIngredient[];
 };
 const defaultIngredientsState: TdefaultIngredientsState = {
   ingredientsApiRequest: true,
@@ -20,7 +22,7 @@ const defaultIngredientsState: TdefaultIngredientsState = {
 export const ingredientsReducer = (
   state = defaultIngredientsState,
   action: TIngredientsActions
-) => {
+): TdefaultIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_API_REQUEST: {
       return {

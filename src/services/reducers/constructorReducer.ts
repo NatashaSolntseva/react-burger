@@ -7,9 +7,11 @@ import {
 
 import { TConstructorActions } from "../actions/constructorActions";
 
+import { IIngredient } from "../../utils/types";
+
 type TdefaultBurgerConstructorState = {
-  droppedIngredients: [];
-  droppedBun: any;
+  droppedIngredients: IIngredient[];
+  droppedBun: IIngredient | null;
 };
 
 const defaultBurgerConstructorState: TdefaultBurgerConstructorState = {
@@ -39,7 +41,7 @@ export const constructorReducer = (
       return {
         ...state,
         droppedIngredients: state.droppedIngredients.filter(
-          (item, index) => index !== action.indexToDelete
+          (i, index) => index !== action.indexToDelete
         ),
       };
     }

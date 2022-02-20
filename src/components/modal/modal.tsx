@@ -1,15 +1,16 @@
+import { FC } from "react";
 import { useEffect } from "react";
-import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "./modal-overlay/modalOverlay";
+import { TCloseModal } from "../../utils/types";
 
-const modalRoot = document.getElementById("modal-root");
+const Modal: FC<TCloseModal> = ({ closeModal, children }) => {
+  const modalRoot = document.getElementById("modal-root");
 
-const Modal = ({ closeModal, children }) => {
   useEffect(() => {
-    const onEscPress = (evt) => {
+    const onEscPress = (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
         evt.preventDefault();
         closeModal();
@@ -21,7 +22,7 @@ const Modal = ({ closeModal, children }) => {
     };
   }, [closeModal]);
 
-  const onOverlayClick = (evt) => {
+  const onOverlayClick = (evt: any) => {
     if (evt.target === evt.currentTarget) {
       // закрытие окна оверлэя по клику, но не по модальному окну
       closeModal();
@@ -30,7 +31,7 @@ const Modal = ({ closeModal, children }) => {
 
   return createPortal(
     <>
-      <ModalOverlay onClick={onOverlayClick}>
+      <ModalOverlay closeModal={onOverlayClick}>
         <div className={styles.modal}>
           <div className={styles.modal_closebtn}>
             <CloseIcon type="primary" onClick={closeModal} />
@@ -39,15 +40,8 @@ const Modal = ({ closeModal, children }) => {
         </div>
       </ModalOverlay>
     </>,
-    modalRoot
+    modalRoot!
   );
 };
 
 export default Modal;
-
-const modalPropsTypes = PropTypes.shape({
-  closeModal: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
-});
-
-Modal.propTypes = modalPropsTypes.isRequired;
