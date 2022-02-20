@@ -25,12 +25,16 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
   ({ openModal }, ref) => {
     const dispatch = useAppDispatch();
 
-    const droppedIngredients = useAppSelector(
+    /* const droppedIngredients = useAppSelector(
       (store) => store.burgerConstructor.droppedIngredients
     );
 
     const droppedBun = useAppSelector(
       (store) => store.burgerConstructor.droppedBun
+    );*/
+
+    const { droppedIngredients, droppedBun } = useAppSelector(
+      (store) => store.burgerConstructor
     );
 
     const totalPrice = useMemo(
@@ -46,21 +50,14 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
       if (!droppedBun) {
         alert("Вы не выбрали булочку!"); //TODO что-то более красивое
         return;
-      }
-      const constructorIngredients = droppedIngredients.concat(droppedBun);
-      const orderIngredientList = constructorIngredients
-        .filter((el: IIngredient) => el.type !== "bun")
-        .map((el: IIngredient) => el._id)
-        .concat(
-          constructorIngredients.find((el: IIngredient) =>
-            el.type === "bun" ? el : 0
-          )._id,
-          constructorIngredients.find((el: IIngredient) =>
-            el.type === "bun" ? el : 0
-          )._id
+      } else {
+        const constructorIngredients = droppedIngredients.concat(droppedBun);
+        const orderIngredientList = constructorIngredients.map(
+          (el: IIngredient) => el._id
         );
-      dispatch(getOrderNumberApi(orderIngredientList));
-      openModal({ modalType: "orderDetail" });
+        dispatch(getOrderNumberApi(orderIngredientList));
+        openModal({ modalType: "orderDetail" });
+      }
     };
 
     const handleDeleteIngredient = useCallback(
@@ -96,16 +93,18 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
             ) : (
               <ul className={styles.constructor_container}>
                 {droppedIngredients
-                  ? droppedIngredients.map((ingredient: any, index: number) => {
-                      return (
-                        <BurgerConstructorElementDndWrapper
-                          ingredient={ingredient}
-                          key={ingredient.uid}
-                          index={index}
-                          handleDeleteIngredient={handleDeleteIngredient}
-                        />
-                      );
-                    })
+                  ? droppedIngredients.map(
+                      (ingredient: IIngredient, index: number) => {
+                        return (
+                          <BurgerConstructorElementDndWrapper
+                            ingredient={ingredient}
+                            key={ingredient.uid}
+                            index={index}
+                            handleDeleteIngredient={handleDeleteIngredient}
+                          />
+                        );
+                      }
+                    )
                   : null}
               </ul>
             )}
@@ -140,6 +139,19 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
 
 export default BurgerConstructorDnd;
 
+/*
+          const orderIngredientList = constructorIngredients
+          .filter((el: IIngredient) => el.type !== "bun")
+          .map((el: IIngredient) => el._id)
+          .concat(
+            constructorIngredients.find((el: IIngredient) =>
+              el.type === "bun" ? el : 0
+            )._id,
+            constructorIngredients.find((el: IIngredient) =>
+              el.type === "bun" ? el : 0
+            )._id
+          );
+*/
 /*
 import { useSelector, useDispatch } from "react-redux";
 import { forwardRef, useCallback, useMemo } from "react";

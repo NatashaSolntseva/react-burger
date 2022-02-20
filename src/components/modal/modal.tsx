@@ -22,7 +22,7 @@ const Modal: FC<TCloseModal> = ({ closeModal, children }) => {
     };
   }, [closeModal]);
 
-  const onOverlayClick = (evt: MouseEvent) => {
+  const onOverlayClick = (evt: any) => {
     if (evt.target === evt.currentTarget) {
       // закрытие окна оверлэя по клику, но не по модальному окну
       closeModal();

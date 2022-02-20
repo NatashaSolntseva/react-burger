@@ -12,7 +12,7 @@ import styles from "./appStyles.module.css";
 import AppHeader from "../app-header/appHeader";
 import BurgerIngredients from "../burger-ingredients/burgerIngredients";
 
-import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper.jsx";
+import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/orderDetails";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";

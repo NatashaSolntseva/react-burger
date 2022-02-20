@@ -11,12 +11,12 @@ import { IIngredient } from "../../utils/types";
 
 type TdefaultBurgerConstructorState = {
   droppedIngredients: IIngredient[];
-  droppedBun: IIngredient;
+  droppedBun: IIngredient | null;
 };
 
 const defaultBurgerConstructorState: TdefaultBurgerConstructorState = {
   droppedIngredients: [],
-  droppedBun: {} as IIngredient,
+  droppedBun: null,
 };
 
 export const constructorReducer = (

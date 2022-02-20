@@ -14,7 +14,7 @@ export interface ISetModalError {
 
 export interface IOpenModalIngredient {
   readonly type: typeof OPEN_MODAL_INGREDIENT;
-  readonly ingredient: any;
+  readonly ingredient: IIngredient;
 }
 
 export interface IOpenModalOrder {

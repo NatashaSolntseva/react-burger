@@ -7,7 +7,7 @@ import {
 
 import { TModalActions } from "../actions/modalActions";
 
-import { IIngredient } from "../../utils/types";
+//import { IIngredient } from "../../utils/types";
 
 type TmodalInitialState = {
   modalIngredientData: any;

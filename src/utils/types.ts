@@ -32,14 +32,14 @@ export type TOpenModal = {
 
 export interface IBurgerIngredientElement {
   ingredient: IIngredient;
-  openModal: ({}: TOpenModal) => void;
+  openModal: ({ modalType, itemId }: TOpenModal) => void;
   count: number;
 }
 
 export interface IIngredientsGroup {
   groupName: string;
   groupElements: IIngredient[];
-  openModal: ({}: TOpenModal) => void; // openModal: (selectedIngredients: TIngredient[]) => void;
+  openModal: ({ modalType, itemId }: TOpenModal) => void; // openModal: (selectedIngredients: TIngredient[]) => void;
   count: { [ingredient: string]: number }; //ingredientCounter useMemo
 }
 
@@ -53,7 +53,7 @@ export interface IIngredientsMold {
 }
 
 export interface IBurgerConstructorDnDWrapper {
-  openModal: ({}: TOpenModal) => void;
+  openModal: ({ modalType }: TOpenModal) => void;
 }
 
 export interface IBurgerConstructorElement {
@@ -63,9 +63,9 @@ export interface IBurgerConstructorElement {
 }
 
 export interface IBurgerConstructor {
-  openModal: ({}: TOpenModal) => void; //selectedIngredients: IIngredient[]
+  openModal: ({ modalType }: TOpenModal) => void; //selectedIngredients: IIngredient[]
 }
 
 export interface IBurgerIngredients {
-  openModal: ({}: TOpenModal) => void;
+  openModal: ({ modalType, itemId }: TOpenModal) => void;
 }

@@ -15,7 +15,7 @@ export interface IGetIngredientsRequest {
 
 export interface IGetIngredientsSuccess {
   readonly type: typeof GET_INGREDIENTS_API_SUCCESS;
-  readonly ingredients: any | undefined;
+  readonly ingredients: IIngredient[];
 }
 
 export interface IGetIngredientsFailed {

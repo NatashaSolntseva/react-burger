@@ -9,7 +9,7 @@ import IngredientGroup from "./components/ingredient-group/ingredientGroup";
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
 
-import { IBurgerIngredients } from "../../utils/types";
+import { IBurgerIngredients, IIngredient } from "../../utils/types";
 
 const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
   const { ingredientsDataFromServer } = useAppSelector(
@@ -47,9 +47,9 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
   );
 
   // реализация функционала скрола
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const bunRef = useRef<HTMLParagraphElement>(null);
+  const sauceRef = useRef<HTMLParagraphElement>(null);
+  const mainRef = useRef<HTMLParagraphElement>(null);
 
   const [currentTab, setCurrentTab] = useState("buns");
 
@@ -62,9 +62,14 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
     [setCurrentTab]
   );
 
-  const handleIngredientListScroll = (event: React.UIEvent<HTMLElement>) => {
-    const scrollContainer = event.target;
+  const handleIngredientListScroll = (
+    event: React.UIEvent<HTMLUListElement>
+  ) => {
+    const scrollContainer = event.target as HTMLUListElement;
     const scrollPosition = scrollContainer.scrollTop;
+    if (!sauceRef.current || !mainRef.current) {
+      return;
+    }
     const sauceTabPosition = sauceRef.current.offsetTop;
     const mainTabPosition = mainRef.current.offsetTop;
     const scrollSetup = 400;
@@ -89,7 +94,8 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
       return {
         ...result,
         [ingredient._id]: droppedIngredients.filter(
-          (droppedIngredient: any) => droppedIngredient._id === ingredient._id
+          (droppedIngredient: IIngredient) =>
+            droppedIngredient._id === ingredient._id
         ).length,
       };
     }, {});
