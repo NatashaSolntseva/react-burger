@@ -25,16 +25,21 @@ export type TOverlayCloseModal = {
 
 export type TDetailIngredient = { ingredient: IIngredient };
 
+export type TOpenModal = {
+  modalType: "ingredientDetail" | "orderDetail";
+  itemId?: string;
+};
+
 export interface IBurgerIngredientElement {
   ingredient: IIngredient;
-  openModal: ({}: any) => void;
+  openModal: ({}: TOpenModal) => void;
   count: number;
 }
 
 export interface IIngredientsGroup {
   groupName: string;
   groupElements: IIngredient[];
-  openModal: ({}: any) => void; // openModal: (selectedIngredients: TIngredient[]) => void;
+  openModal: ({}: TOpenModal) => void; // openModal: (selectedIngredients: TIngredient[]) => void;
   count: { [ingredient: string]: number }; //ingredientCounter useMemo
 }
 
@@ -47,13 +52,20 @@ export interface IIngredientsMold {
   children?: string;
 }
 
-/*export interface IBurgerConstructorDnDWrapper {
-  openModal: ({}: any) => void;
+export interface IBurgerConstructorDnDWrapper {
+  openModal: ({}: TOpenModal) => void;
 }
-*/
 
 export interface IBurgerConstructorElement {
   ingredient: IIngredient;
   handleDeleteIngredient: (index: number) => void;
   index: number;
+}
+
+export interface IBurgerConstructor {
+  openModal: ({}: TOpenModal) => void; //selectedIngredients: IIngredient[]
+}
+
+export interface IBurgerIngredients {
+  openModal: ({}: TOpenModal) => void;
 }

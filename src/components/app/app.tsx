@@ -12,7 +12,7 @@ import styles from "./appStyles.module.css";
 import AppHeader from "../app-header/appHeader";
 import BurgerIngredients from "../burger-ingredients/burgerIngredients";
 
-import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
+import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper.jsx";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/orderDetails";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
@@ -29,6 +29,7 @@ import {
 
 import { clearOrderList } from "../../services/actions/constructorActions";
 import { IIngredient } from "../../utils/types";
+import { TOpenModal } from "../../utils/types";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const App: FC = () => {
     modalIngredientData,
   } = useAppSelector((store) => store.modal);
 
-  function openModal({ modalType, itemId }: any) {
+  function openModal({ modalType, itemId }: TOpenModal) {
     if (modalType === "ingredientDetail") {
       const ingredient = ingredientsDataFromServer.find(
         (item: IIngredient) => item._id === itemId
