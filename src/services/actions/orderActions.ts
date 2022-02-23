@@ -46,7 +46,9 @@ const sendOrderNumberFailed = (): ISendOrderNumberFaild => {
   };
 };
 
-export const getOrderNumberApi: AppThunk = (orderIngredientList) => {
+export const getOrderNumberApi: AppThunk = (
+  orderIngredientList: Array<string>
+) => {
   return async (dispatch: AppDispatch) => {
     const postOrderOption = {
       method: "POST",

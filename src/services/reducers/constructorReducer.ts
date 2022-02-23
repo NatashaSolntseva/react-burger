@@ -51,16 +51,18 @@ export const constructorReducer = (
         droppedIngredients: [],
         droppedBun: null,
       };
-    } //TODO они меняются местами, а по хорошему нужно раздвигать элементы
+    }
     case REORDER_CONSTRUCTOR_INGREDIENT: {
-      const draggedElementIndex = action.draggedElementIndex;
-      const targetElementIndex = action.targetElementIndex;
       const constructorIngredientsArr = [...state.droppedIngredients];
-      const draggingElementIndex =
-        constructorIngredientsArr[draggedElementIndex];
-      constructorIngredientsArr[draggedElementIndex] =
-        constructorIngredientsArr[targetElementIndex];
-      constructorIngredientsArr[targetElementIndex] = draggingElementIndex;
+      const draggedEl = constructorIngredientsArr.splice(
+        action.draggedElementIndex,
+        1
+      ); // удаляет и возвращает один элемент по индексу draggedElementIndex
+      constructorIngredientsArr.splice(
+        action.targetElementIndex,
+        0,
+        draggedEl[0]
+      ); //добавляем удаленный элемент на место таргета
       return {
         ...state,
         droppedIngredients: constructorIngredientsArr,
