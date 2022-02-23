@@ -54,12 +54,12 @@ export const clearOrderList = (): IClearOrderList => {
 };
 
 export const reorderConstructorIngredient = (
-  targetElementIndex: number,
-  draggedElementIndex: number
+  draggedElementIndex: number,
+  targetElementIndex: number
 ): IReorderConstructorIngredient => {
   return {
     type: REORDER_CONSTRUCTOR_INGREDIENT,
-    targetElementIndex,
     draggedElementIndex,
+    targetElementIndex,
   };
 };
