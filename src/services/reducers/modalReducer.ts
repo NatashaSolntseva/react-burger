@@ -3,23 +3,36 @@ import {
   OPEN_MODAL_ORDER,
   SET_MODAL_ERROR,
   CLOSE_MODAL,
-} from "../actions/actions";
+} from "../actions/modalActions";
 
-const modalInitialState = {
+import { TModalActions } from "../actions/modalActions";
+
+//import { IIngredient } from "../../utils/types";
+
+type TmodalInitialState = {
+  modalIngredientData: any;
+  isOrderDetailModalVisible: boolean;
+  isIngredientDetailModalVisible: boolean;
+  hasModalError: boolean;
+};
+const modalInitialState: TmodalInitialState = {
   modalIngredientData: {},
   isOrderDetailModalVisible: false,
   isIngredientDetailModalVisible: false,
   hasModalError: false,
 };
 
-export const modalReducer = (state = modalInitialState, action) => {
+export const modalReducer = (
+  state = modalInitialState,
+  action: TModalActions
+) => {
   switch (action.type) {
     case OPEN_MODAL_INGREDIENT: {
       return {
         ...state,
         hasModalError: true,
         isIngredientDetailModalVisible: true,
-        modalIngredientData: action.payload,
+        modalIngredientData: action.ingredient,
       };
     }
     case OPEN_MODAL_ORDER: {

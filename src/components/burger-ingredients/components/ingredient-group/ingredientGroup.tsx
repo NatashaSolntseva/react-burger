@@ -1,11 +1,13 @@
 import { forwardRef } from "react";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../../../utils/dataTypes";
 
 import styles from "./ingredientGroupStyles.module.css";
 import IngredientElementDndWrapper from "../ingredients-dnd-wrapper/ingredient-dnd-wrapper";
 
-const IngredientGroup = forwardRef(
+import { IIngredient } from "../../../../utils/types";
+
+import { IIngredientsGroup } from "../../../../utils/types";
+
+const IngredientGroup = forwardRef<HTMLParagraphElement, IIngredientsGroup>(
   ({ groupName, groupElements, openModal, count }, ref) => {
     return (
       <div>
@@ -15,10 +17,10 @@ const IngredientGroup = forwardRef(
           </p>
         </div>
         <div className={`${styles.content}`}>
-          {groupElements.map((burgerItem) => (
+          {groupElements.map((burgerItem: IIngredient) => (
             <IngredientElementDndWrapper
               key={burgerItem._id}
-              burgerItem={burgerItem}
+              ingredient={burgerItem}
               openModal={openModal}
               count={count[burgerItem._id]}
             />
@@ -30,15 +32,3 @@ const IngredientGroup = forwardRef(
 );
 
 export default IngredientGroup;
-
-IngredientGroup.propTypes = {
-  groupName: PropTypes.string.isRequired,
-};
-
-const IngredientGroupPropTypes = PropTypes.shape({
-  groupName: PropTypes.string.isRequired,
-  groupElement: ingredientTypes,
-  openModal: PropTypes.func.isRequired,
-});
-
-IngredientGroup.propTypes = IngredientGroupPropTypes.isRequired;

@@ -1,5 +1,7 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, FC } from "react";
+//import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector } from "../../services/hooks/hooks";
+import { useAppDispatch } from "../../services/hooks/hooks";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -17,27 +19,30 @@ import IngredientDetails from "../burger-ingredients/components/ingredient-detai
 
 // серверная часть
 
-import { getIngredientsApiRequest } from "../../utils/api";
+import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 import {
-  CLOSE_MODAL,
-  OPEN_MODAL_ORDER,
-  OPEN_MODAL_INGREDIENT,
-  CLEAR_ORDER_LIST,
-} from "../../services/actions/actions";
+  closeModal,
+  openModalOrder,
+  openModalIngredient,
+} from "../../services/actions/modalActions";
 
-function App() {
-  const dispatch = useDispatch();
+import { clearOrderList } from "../../services/actions/constructorActions";
+import { IIngredient } from "../../utils/types";
+import { TOpenModal } from "../../utils/types";
+
+const App: FC = () => {
+  const dispatch = useAppDispatch();
 
   //запрос данных ингредиентов с сервера
   const {
     ingredientsApiRequest,
     ingredientsApiFailed,
     ingredientsDataFromServer,
-  } = useSelector((store) => store.ingredients);
+  } = useAppSelector((store) => store.ingredients);
 
   useEffect(() => {
-    dispatch(getIngredientsApiRequest());
+    dispatch(getIngredientsRequestApi());
   }, [dispatch]);
 
   // реализация функциона модельных окон
@@ -46,28 +51,28 @@ function App() {
     isOrderDetailModalVisible,
     isIngredientDetailModalVisible,
     modalIngredientData,
-  } = useSelector((store) => store.modal);
+  } = useAppSelector((store) => store.modal);
 
-  function openModal({ modalType, itemId }) {
+  function openModal({ modalType, itemId }: TOpenModal) {
     if (modalType === "ingredientDetail") {
       const ingredient = ingredientsDataFromServer.find(
-        (item) => item._id === itemId
+        (item: IIngredient) => item._id === itemId
       );
-      dispatch({ type: OPEN_MODAL_INGREDIENT, payload: ingredient });
+      dispatch(openModalIngredient(ingredient));
     } else {
       if (modalType === "orderDetail") {
-        dispatch({ type: OPEN_MODAL_ORDER });
+        dispatch(openModalOrder());
       }
     }
   }
 
   const handleIngredientModalClose = () => {
-    dispatch({ type: CLOSE_MODAL });
+    dispatch(closeModal());
   };
 
   const handleOrderModalClose = () => {
-    dispatch({ type: CLOSE_MODAL });
-    dispatch({ type: CLEAR_ORDER_LIST });
+    dispatch(closeModal());
+    dispatch(clearOrderList());
   };
 
   //___________________________________________render______________________________________________
@@ -90,7 +95,6 @@ function App() {
           ingredientsDataFromServer.length && (
             <main className={styles.content}>
               <BurgerIngredients openModal={openModal} />
-              {/*<BurgerConstructor openModal={openModal} />*/}
               <BurgerConstructorDndWrapper openModal={openModal} />
             </main>
           )}
@@ -98,14 +102,7 @@ function App() {
       {/* модальное окно  - подробное описание игредиента*/}
       {isIngredientDetailModalVisible && (
         <Modal closeModal={handleIngredientModalClose}>
-          <IngredientDetails
-            image={modalIngredientData.image}
-            name={modalIngredientData.name}
-            calories={modalIngredientData.calories}
-            fat={modalIngredientData.fat}
-            proteins={modalIngredientData.proteins}
-            carbohydrates={modalIngredientData.carbohydrates}
-          />
+          <IngredientDetails ingredient={modalIngredientData} />
         </Modal>
       )}
       {/* модальное окно о готовности заказа. номер и т.д.*/}
@@ -116,6 +113,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

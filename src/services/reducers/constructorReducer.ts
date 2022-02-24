@@ -1,22 +1,31 @@
 import {
+  CLEAR_ORDER_LIST,
   DROP_SELECTED_INGREDIENT,
   DELETE_INGREDIENT,
-  CLEAR_ORDER_LIST,
   REORDER_CONSTRUCTOR_INGREDIENT,
-} from "../actions/actions";
+} from "../actions/constructorActions";
 
-const defaultBurgerConstructorState = {
+import { TConstructorActions } from "../actions/constructorActions";
+
+import { IIngredient } from "../../utils/types";
+
+type TdefaultBurgerConstructorState = {
+  droppedIngredients: IIngredient[];
+  droppedBun: IIngredient | null;
+};
+
+const defaultBurgerConstructorState: TdefaultBurgerConstructorState = {
   droppedIngredients: [],
   droppedBun: null,
 };
 
 export const constructorReducer = (
   state = defaultBurgerConstructorState,
-  action
+  action: TConstructorActions
 ) => {
   switch (action.type) {
     case DROP_SELECTED_INGREDIENT: {
-      const { droppedIngredient } = action.payload;
+      const droppedIngredient = action.droppedIngredient;
       if (droppedIngredient.type === "bun") {
         return {
           ...state,
@@ -32,7 +41,7 @@ export const constructorReducer = (
       return {
         ...state,
         droppedIngredients: state.droppedIngredients.filter(
-          (item, index) => index !== action.payload.indexToDelete
+          (i, index) => index !== action.indexToDelete
         ),
       };
     }
@@ -42,17 +51,18 @@ export const constructorReducer = (
         droppedIngredients: [],
         droppedBun: null,
       };
-    } //TODO они меняются местами, а по хорошему нужно раздвигать элементы
+    }
     case REORDER_CONSTRUCTOR_INGREDIENT: {
-      const { draggedElementIndex, targetElementIndex } = action.payload;
-      //console.log("draggedElementIndex", draggedElementIndex);
-      //console.log("targetElementIndex", targetElementIndex);
       const constructorIngredientsArr = [...state.droppedIngredients];
-      const draggingElementIndex =
-        constructorIngredientsArr[draggedElementIndex];
-      constructorIngredientsArr[draggedElementIndex] =
-        constructorIngredientsArr[targetElementIndex];
-      constructorIngredientsArr[targetElementIndex] = draggingElementIndex;
+      const draggedEl = constructorIngredientsArr.splice(
+        action.draggedElementIndex,
+        1
+      ); // удаляет и возвращает один элемент по индексу draggedElementIndex
+      constructorIngredientsArr.splice(
+        action.targetElementIndex,
+        0,
+        draggedEl[0]
+      ); //добавляем удаленный элемент на место таргета
       return {
         ...state,
         droppedIngredients: constructorIngredientsArr,

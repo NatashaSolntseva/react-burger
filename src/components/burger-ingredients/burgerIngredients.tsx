@@ -1,6 +1,7 @@
+import React, { FC } from "react";
 import { useState, useRef, useMemo, useCallback } from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+
+import { useAppSelector } from "../../services/hooks/hooks";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientGroup from "./components/ingredient-group/ingredientGroup";
@@ -8,12 +9,14 @@ import IngredientGroup from "./components/ingredient-group/ingredientGroup";
 import styles from "./burgerIngredientsStyles.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css";
 
-function BurgerIngredients({ openModal }) {
-  const { ingredientsDataFromServer } = useSelector(
+import { IBurgerIngredients, IIngredient } from "../../utils/types";
+
+const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
+  const { ingredientsDataFromServer } = useAppSelector(
     (store) => store.ingredients
   );
 
-  const { droppedIngredients, droppedBun } = useSelector(
+  const { droppedIngredients, droppedBun } = useAppSelector(
     ({ burgerConstructor: { droppedIngredients, droppedBun } }) => {
       return { droppedIngredients, droppedBun };
     }
@@ -44,9 +47,9 @@ function BurgerIngredients({ openModal }) {
   );
 
   // реализация функционала скрола
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const bunRef = useRef<HTMLParagraphElement>(null);
+  const sauceRef = useRef<HTMLParagraphElement>(null);
+  const mainRef = useRef<HTMLParagraphElement>(null);
 
   const [currentTab, setCurrentTab] = useState("buns");
 
@@ -59,9 +62,14 @@ function BurgerIngredients({ openModal }) {
     [setCurrentTab]
   );
 
-  const handleIngredientListScroll = (event) => {
-    const scrollContainer = event.target;
+  const handleIngredientListScroll = (
+    event: React.UIEvent<HTMLUListElement>
+  ) => {
+    const scrollContainer = event.target as HTMLUListElement;
     const scrollPosition = scrollContainer.scrollTop;
+    if (!sauceRef.current || !mainRef.current) {
+      return;
+    }
     const sauceTabPosition = sauceRef.current.offsetTop;
     const mainTabPosition = mainRef.current.offsetTop;
     const scrollSetup = 400;
@@ -86,7 +94,8 @@ function BurgerIngredients({ openModal }) {
       return {
         ...result,
         [ingredient._id]: droppedIngredients.filter(
-          (droppedIngredient) => droppedIngredient._id === ingredient._id
+          (droppedIngredient: IIngredient) =>
+            droppedIngredient._id === ingredient._id
         ).length,
       };
     }, {});
@@ -161,12 +170,6 @@ function BurgerIngredients({ openModal }) {
       </ul>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;
-
-const BurgerIngredientsPropTypes = PropTypes.shape({
-  openModal: PropTypes.func.isRequired,
-});
-
-BurgerIngredients.propTypes = BurgerIngredientsPropTypes.isRequired;
