@@ -23,7 +23,7 @@ export type TOverlayCloseModal = {
   children?: ReactNode;
 };
 
-export type TDetailIngredient = { ingredient: IIngredient | any };
+export type TDetailIngredient = { ingredient: IIngredient | any }; //TODO убрать any
 
 export type TOpenModal = {
   modalType: "ingredientDetail" | "orderDetail";
@@ -68,4 +68,10 @@ export interface IBurgerConstructor {
 
 export interface IBurgerIngredients {
   openModal: ({ modalType, itemId }: TOpenModal) => void;
+}
+
+export interface IFormCaption {
+  children: string;
+  linkCaption: string;
+  link: string;
 }

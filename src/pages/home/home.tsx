@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../services/hooks/hooks";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import styles from "./home.module.css";
+import styles from "./homeStyle.module.css";
 
 // компоненты
 
