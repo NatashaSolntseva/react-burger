@@ -23,7 +23,7 @@ export type TOverlayCloseModal = {
   children?: ReactNode;
 };
 
-export type TDetailIngredient = { ingredient: IIngredient };
+export type TDetailIngredient = { ingredient: IIngredient | any };
 
 export type TOpenModal = {
   modalType: "ingredientDetail" | "orderDetail";
