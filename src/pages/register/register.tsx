@@ -11,11 +11,22 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const LoginPage: FC = () => {
+const RegisterPage: FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
     <AppForm>
+      <FormInputWrapper>
+        <Input
+          name="name"
+          value={name}
+          type="text"
+          placeholder="Имя"
+          errorText="Ошибка"
+          onChange={(evt) => setName(evt.target.value)}
+        />
+      </FormInputWrapper>
       <FormInputWrapper>
         <Input
           name="email"
@@ -34,16 +45,11 @@ const LoginPage: FC = () => {
         />
       </FormInputWrapper>
       <AppFormSubmit />
-      <FormCaption linkCaption=" Зарегистрироваться" link="/register">
-        Вы - новый пользователь?
+      <FormCaption linkCaption=" Войти" link="/login">
+        Уже зарегистрированы?
       </FormCaption>
-      <div className="mt-4">
-        <FormCaption linkCaption=" Восстановить пароль" link="/forgot-password">
-          Забыли пароль?
-        </FormCaption>
-      </div>
     </AppForm>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
