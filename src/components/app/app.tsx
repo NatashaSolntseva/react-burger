@@ -9,6 +9,7 @@ import RegisterPage from "../../pages/register/register";
 import ForgotPswPage from "../../pages/fogot-password/forgot-password";
 import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
+import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 
 const App: FC = () => {
   return (
@@ -33,6 +34,9 @@ const App: FC = () => {
           </Route>
           <Route path="/profile">
             <ProfilePage />
+          </Route>
+          <Route path="/ingredient">
+            <IngredientPage />
           </Route>
         </Switch>
       </Router>
