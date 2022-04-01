@@ -75,3 +75,12 @@ export interface IFormCaption {
   linkCaption: string;
   link: string;
 }
+
+export interface IAppForm {
+  children: ReactNode;
+  title: string;
+}
+
+export interface IAppFormSubmit {
+  children: ReactNode;
+}

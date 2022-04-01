@@ -16,7 +16,7 @@ const RegisterPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <AppForm>
+    <AppForm title="Регистрация">
       <FormInputWrapper>
         <Input
           name="name"
@@ -44,7 +44,7 @@ const RegisterPage: FC = () => {
           onChange={(evt) => setPassword(evt.target.value)}
         />
       </FormInputWrapper>
-      <AppFormSubmit />
+      <AppFormSubmit>Зарегистрироваться</AppFormSubmit>
       <FormCaption linkCaption=" Войти" link="/login">
         Уже зарегистрированы?
       </FormCaption>
