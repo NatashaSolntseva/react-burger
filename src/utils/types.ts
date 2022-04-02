@@ -86,3 +86,14 @@ export interface IAppForm {
 export interface IAppFormSubmit {
   children: ReactNode;
 }
+
+export interface ILocation extends Location {
+  from: {
+    key: string;
+    pathname: string;
+    search: string;
+    hash: string;
+    state: object;
+  };
+  background?: Location;
+}
