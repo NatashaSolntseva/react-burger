@@ -7,38 +7,65 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function AppHeader() {
+import { NavLink, useRouteMatch } from "react-router-dom";
+
+const AppHeader = () => {
+  const isConstructor = !!useRouteMatch({ path: "/", exact: true }); //подкрашивает белым активные иконки, хук определяет где мы находимся
+  const isFeed = !!useRouteMatch({ path: "/feed" });
+  const isProfile = !!useRouteMatch({ path: "/profile" });
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <nav className={styles.nav__menu_left}>
-          <button className={`${styles.menu_btn} pt-4 pb-4 pl-5 pr-5`}>
-            <BurgerIcon type="primary" />
-            <span className="text text_type_main-default pl-2">
-              Конструктор
-            </span>
-          </button>
-          <button className={`${styles.menu_btn} pt-4 pb-4 pl-5 pr-5`}>
-            <ListIcon type="secondary" />
-            <span className="text text_type_main-default text_color_inactive pl-2">
-              Лента заказов
-            </span>
-          </button>
+          <ul className={styles.header__list}>
+            <li>
+              <NavLink
+                exact
+                to="/"
+                className={`pl-5 pr-5 ${styles.header__link}`}
+                activeClassName={styles.header__link_active}
+              >
+                <BurgerIcon type={isConstructor ? "primary" : "secondary"} />
+                <p className="text text_type_main-default ml-2">Конструктор</p>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                exact
+                to="/feed"
+                className={`pl-5 pr-5 ${styles.header__link}`}
+                activeClassName={styles.header__link_active}
+              >
+                <ListIcon type={isFeed ? "primary" : "secondary"} />
+                <p className="text text_type_main-default ml-2">
+                  Лента заказов
+                </p>
+              </NavLink>
+            </li>
+          </ul>
         </nav>
-        <div className={styles.logo}>
+        <NavLink to="/" className={styles.logo}>
           <Logo />
-        </div>
+        </NavLink>
         <nav className={styles.nav__menu_right}>
-          <button className={`${styles.menu_btn} pt-4 pb-4 pl-5 pr-5`}>
-            <ProfileIcon type="secondary" />
-            <span className="text text_type_main-default text_color_inactive pl-2">
-              Личный кабинет
-            </span>
-          </button>
+          <ul className={styles.header__list}>
+            <li>
+              <NavLink
+                to="/profile"
+                className={`pl-5 pr-5 ${styles.header__link}`}
+                activeClassName={styles.header__link_active}
+              >
+                <ProfileIcon type={isProfile ? "primary" : "secondary"} />
+                <p className="text text_type_main-default ml-2">
+                  Личный кабинет
+                </p>
+              </NavLink>
+            </li>
+          </ul>
         </nav>
       </div>
     </header>
   );
-}
+};
 
 export default AppHeader;

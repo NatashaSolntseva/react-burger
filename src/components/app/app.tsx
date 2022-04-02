@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
+// страницы
 import HomePage from "../../pages/home/home";
 import LoginPage from "../../pages/login/login";
 import RegisterPage from "../../pages/register/register";
@@ -16,8 +17,8 @@ import FeedPage from "../../pages/feed/feed";
 const App: FC = () => {
   return (
     <>
-      <AppHeader />
       <Router>
+        <AppHeader />
         <Switch>
           <Route path="/" exact={true}>
             <HomePage />
