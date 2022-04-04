@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useState } from "react";
 
 import AppForm from "../../components/app-form/appForm";
@@ -10,12 +10,34 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+import { loginUser } from "../../services/actions/userActions";
 
 const LoginPage: FC = () => {
+  const dispatch = useAppDispatch();
+  const { userIsAuth } = useAppSelector((store) => store.user);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  /*
+  const handleSubmitOnSignInForm = () => {
+    console.log("Login submit");
+    alert("login submit");
+  };
+  */
+
+  const handleSubmitOnSignInForm = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      console.log("submit form done");
+      dispatch(loginUser(email, password));
+    },
+    [dispatch, email, password]
+  );
+
   return (
-    <AppForm title="Вход">
+    <AppForm title="Вход" onSubmit={handleSubmitOnSignInForm}>
       <FormInputWrapper>
         <Input
           name="email"

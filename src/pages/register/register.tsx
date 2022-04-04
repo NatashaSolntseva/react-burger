@@ -26,16 +26,14 @@ const RegisterPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //console.log(name);
-
-  const accessToken = getCookie("token");
+  //const accessToken = getCookie("token");
 
   const handleSubmitOnRegistrationForm = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
       dispatch(registerNewUser(email, password, name));
     },
-    [dispatch, email, password, name, accessToken]
+    [dispatch, email, password, name]
   );
 
   if (userIsAuth) {

@@ -53,11 +53,14 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  signInUserRequest(data: IUserSignInForm) {
+  signInUserRequest(email: string, password: string, accessToken: string) {
     return fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(data),
+      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
     }).then(this._getResponseData);
   }
 
@@ -69,7 +72,7 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  updateToen() {
+  updateToken() {
     return fetch(`${BASE_URL}/auth/token`, {
       method: "POST",
       headers: this._headers,

@@ -2,6 +2,10 @@ import {
   REGISTER_NEW_USER_REQUEST,
   REGISTER_NEW_USER_SUCCESS,
   REGISTER_NEW_USER_FAILD,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_REQUEST,
+  LOGIN_USER_FAILD,
+  LOGOUT_USER_REQUEST,
 } from "../actions/userActions";
 
 import { TUserRequestActions } from "../actions/userActions";
@@ -40,6 +44,26 @@ export const userDataReducer = (
     case REGISTER_NEW_USER_FAILD:
       return {
         ...state,
+      };
+    case LOGIN_USER_REQUEST:
+      return {
+        ...state,
+      };
+    case LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        userName: action.name,
+        userEmail: action.email,
+      };
+    case LOGIN_USER_FAILD:
+      return {
+        ...state,
+      };
+    case LOGOUT_USER_REQUEST:
+      return {
+        userEmail: "",
+        userName: "",
+        userPassword: "",
       };
     default:
       return state;
