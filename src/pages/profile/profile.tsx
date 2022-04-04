@@ -1,14 +1,35 @@
-import { FC, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { FC, useCallback, useState } from "react";
+import { NavLink, useHistory } from "react-router-dom";
 
 import styles from "./profile.module.css";
 
 import FormInputWrapper from "../../components/form-input-wrapper/formInputWrapper";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch } from "../../services/hooks/hooks";
+import { deleteCookie, getCookie } from "../../utils/cookies";
+import Api from "../../utils/api";
+import { LOGOUT_USER_REQUEST } from "../../services/actions/userActions";
 
 const ProfilePage: FC = () => {
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  const handleLogoutClick = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      const refreshToken = getCookie("refreshToken");
+      console.log("refreshToen", refreshToken);
+      refreshToken && Api.signOutUserRequest(refreshToken);
+      deleteCookie("refreshToken");
+      deleteCookie("accessToken");
+      dispatch({ type: LOGOUT_USER_REQUEST });
+    },
+    [dispatch]
+  );
+
   return (
     <div className={styles.wrapper}>
       <aside className={styles.navwrapper}>
@@ -34,6 +55,7 @@ const ProfilePage: FC = () => {
           <li>
             <button
               className={`text text_type_main-medium text_color_inactive pt-4 pb-5 ${styles.button}`}
+              onClick={handleLogoutClick}
             >
               Выход
             </button>

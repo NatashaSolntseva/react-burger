@@ -119,3 +119,7 @@ export const loginUser: AppThunk = (
       });
   };
 };
+
+export const logoutUser: AppThunk = () => {
+  return function (dispatch: AppDispatch) {};
+};

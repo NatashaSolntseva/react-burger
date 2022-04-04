@@ -64,11 +64,11 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  signOutUserRequest() {
+  signOutUserRequest(refreshToken: string) {
     return fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
-      headers: this._headers,
-      body: JSON.stringify({ token: getCookie("refreshToken") }),
+      headers: { ...this._headers, Authorization: `Bearer ${refreshToken}` },
+      body: JSON.stringify({ token: refreshToken }),
     }).then(this._getResponseData);
   }
 
