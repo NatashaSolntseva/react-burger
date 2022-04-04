@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, SyntheticEvent } from "react";
 
 import { Location } from "history";
 
@@ -81,6 +81,7 @@ export interface IFormCaption {
 export interface IAppForm {
   children: ReactNode;
   title: string;
+  onSubmit?: (evt: SyntheticEvent) => void;
 }
 
 export interface IAppFormSubmit {
@@ -97,3 +98,10 @@ export interface ILocation extends Location {
   };
   background?: Location;
 }
+
+export type TUser = {
+  user: {
+    email: string;
+    name: string;
+  };
+};

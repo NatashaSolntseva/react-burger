@@ -12,6 +12,7 @@ import { TOrderActions } from "./services/actions/orderActions";
 import { TIngredientsActions } from "./services/actions/ingredientsActions";
 import { TConstructorActions } from "./services/actions/constructorActions";
 import { TModalActions } from "./services/actions/modalActions";
+import { TUserRequestActions } from "./services/actions/userActions";
 
 import "./index.css";
 import App from "./components/app/app";
@@ -20,7 +21,8 @@ type TApplicationActions =
   | TOrderActions
   | TConstructorActions
   | TIngredientsActions
-  | TModalActions;
+  | TModalActions
+  | TUserRequestActions;
 
 export type RootState = ReturnType<typeof storeState.getState>;
 export type AppThunk<TReturn = void> = ActionCreator<

@@ -36,20 +36,20 @@ class Api {
 
   //TODO getOrderNumber
 
-  //для 2 пункта задания TODO
-  createNewUser(data: IUserSignInForm, acessToken: string) {
-    return fetch(`${BASE_URL}auth/register`, {
-      method: "POST",
-      headers: { ...this._headers, Authorization: `Bearer ${acessToken}` },
-      body: JSON.stringify(data),
-    }).then(this._getResponseData);
-  }
-
-  registerNewUserReuest(data: IUserSignInForm) {
+  registerNewUserRequest(
+    email: string,
+    password: string,
+    name: string,
+    accessToken: string
+  ) {
     return fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(data),
+      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+      }),
     }).then(this._getResponseData);
   }
 
@@ -76,6 +76,11 @@ class Api {
       body: JSON.stringify({ token: getCookie("refreshToken") }),
     }).then(this._getResponseData);
   }
+
+  /*
+GET https://norma.nomoreparties.space/api/auth/user - эндпоинт получения данных о пользователе.
+PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обновления данных о пользователе.
+*/
 
   getUserRequest() {
     return fetch(`${BASE_URL}/auth/user`, {
@@ -116,3 +121,19 @@ class Api {
 }
 
 export default new Api({ url: BASE_URL });
+
+/*
+После успешной авторизации приходят два токена.
+Первый (accessToken) используется для внутренних запросов к серверу — получения или обновления данных о пользователе.
+Если токен просрочился и данные о пользователе нельзя получить или обновить, то используйте маршрут /auth/token и отправляйте на него второй токен — refreshToken для получения нового accessToken.
+После этого повторите запрос на получение или обновление данных о пользователе.
+
+
+
+POST https://norma.nomoreparties.space/api/auth/login - эндпоинт для авторизации.
+POST https://norma.nomoreparties.space/api/auth/register - эндпоинт для регистрации пользователя.
+POST https://norma.nomoreparties.space/api/auth/logout - эндпоинт для выхода из системы.
+POST https://norma.nomoreparties.space/api/auth/token - эндпоинт обновления токена.
+
+
+*/
