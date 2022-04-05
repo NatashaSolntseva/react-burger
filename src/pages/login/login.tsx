@@ -20,17 +20,10 @@ const LoginPage: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  /*
-  const handleSubmitOnSignInForm = () => {
-    console.log("Login submit");
-    alert("login submit");
-  };
-  */
-
   const handleSubmitOnSignInForm = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
-      console.log("submit form done");
+      //console.log("submit form done");
       dispatch(loginUser(email, password));
     },
     [dispatch, email, password]

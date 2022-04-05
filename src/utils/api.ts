@@ -106,19 +106,19 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
     }).then(this._getResponseData);
   }
 
-  resetUserPassword(data: { password: string; token: string }) {
-    return fetch(`${BASE_URL}/password-reset/reset`, {
-      method: "POST",
-      headers: this._headers,
-      body: JSON.stringify(data),
-    }).then(this._getResponseData);
-  }
-
-  remindPassword(email: string) {
+  remindPassword(email: string, accessToken: string) {
     return fetch(`${BASE_URL}/password-reset`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ email }),
+    }).then(this._getResponseData);
+  }
+
+  resetUserPassword(password: string, accessToken: string) {
+    return fetch(`${BASE_URL}/password-reset/reset`, {
+      method: "POST",
+      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({ password: password, token: accessToken }),
     }).then(this._getResponseData);
   }
 }

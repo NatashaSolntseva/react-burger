@@ -6,6 +6,12 @@ import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_FAILD,
   LOGOUT_USER_REQUEST,
+  REMIND_PASSWORD_REQUEST,
+  REMIND_PASSWORD_SUCCESS,
+  REMIND_PASSWORD_ERROR,
+  SET_PASSWORD_REQUEST,
+  SET_PASSWORD_SUCCESS,
+  SET_PASSWORD_ERROR,
 } from "../actions/userActions";
 
 import { TUserRequestActions } from "../actions/userActions";
@@ -15,6 +21,8 @@ type TUserState = {
   userEmail: string;
   userPassword: string;
   userIsAuth: boolean;
+  resetPswResult: boolean;
+  setPswResult: boolean;
 };
 
 const defaultUserState: TUserState = {
@@ -22,6 +30,8 @@ const defaultUserState: TUserState = {
   userEmail: "",
   userPassword: "",
   userIsAuth: false,
+  resetPswResult: false,
+  setPswResult: false,
 };
 
 export const userDataReducer = (
@@ -65,6 +75,26 @@ export const userDataReducer = (
         userName: "",
         userPassword: "",
       };
+    case REMIND_PASSWORD_REQUEST:
+      return {
+        ...state,
+      };
+    case REMIND_PASSWORD_SUCCESS:
+      return {
+        resetPswResult: action.result,
+      };
+    case REMIND_PASSWORD_ERROR:
+      return {
+        ...state,
+      };
+    case SET_PASSWORD_REQUEST:
+      return {};
+    case SET_PASSWORD_SUCCESS:
+      return {
+        setPswResult: action.result,
+      };
+    case SET_PASSWORD_ERROR:
+      return {};
     default:
       return state;
   }

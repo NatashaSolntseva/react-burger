@@ -1,11 +1,14 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 
 import styles from "./profile.module.css";
 
 import FormInputWrapper from "../../components/form-input-wrapper/formInputWrapper";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../services/hooks/hooks";
+import {
+  Button,
+  Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { deleteCookie, getCookie } from "../../utils/cookies";
 import Api from "../../utils/api";
 import { LOGOUT_USER_REQUEST } from "../../services/actions/userActions";
@@ -16,6 +19,16 @@ const ProfilePage: FC = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  /*const [userName, userEmail, userPassword] = useAppSelector(
+    (store) => store.user
+  );
+
+  const isInfoChanged = useMemo(
+    () => name !== userName || email !== userEmail || password !== userPassword,
+    [userName, userEmail, userPassword, name, email, password]
+  );*/
 
   const handleLogoutClick = useCallback(
     (evt: React.SyntheticEvent) => {
@@ -29,6 +42,16 @@ const ProfilePage: FC = () => {
     },
     [dispatch]
   );
+
+  const handleResetChanges = useCallback((evt: React.SyntheticEvent) => {
+    evt.preventDefault();
+    alert("Отмена нажата");
+  }, []);
+
+  const handleSaveChanges = useCallback((evt: React.SyntheticEvent) => {
+    evt.preventDefault();
+    alert("Сохранить нажата");
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -95,14 +118,25 @@ const ProfilePage: FC = () => {
             name="password"
             type="password"
             value="123456"
-            onChange={() => {}}
+            onChange={(evt) => setPassword(evt.target.value)}
             icon="EditIcon"
             placeholder="Пароль"
           />
         </FormInputWrapper>
+        <div className={styles.form__buttons}>
+          <Button type="secondary" size="medium" onClick={handleResetChanges}>
+            Отмена
+          </Button>
+          <Button type="primary" size="medium" onClick={handleSaveChanges}>
+            Сохранить
+          </Button>
+        </div>
       </form>
     </div>
   );
 };
 
 export default ProfilePage;
+
+//TODO  условный рендернинг кнопок - TS ругается на хранилище
+//TODO  серверная часть

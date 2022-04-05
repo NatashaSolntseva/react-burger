@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import {
   Input,
   PasswordInput,
@@ -8,13 +8,26 @@ import AppForm from "../../components/app-form/appForm";
 import AppFormSubmit from "../../components/app-form-submit/appFormSubmit";
 import FormInputWrapper from "../../components/form-input-wrapper/formInputWrapper";
 import FormCaption from "../../components/form-caption/formCaption";
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+import { setUserNewPassword } from "../../services/actions/userActions";
+import { Redirect } from "react-router-dom";
 
 const ResetPswPage: FC = () => {
+  const dispatch = useAppDispatch();
   const [password, setPassword] = useState("");
-  const [value, setValue] = useState("");
+  const [tokenValue, setTokenValue] = useState("");
+
+  const handleSaveNewPswSubmit = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      dispatch(setUserNewPassword(password, tokenValue));
+      //alert("save");
+    },
+    [dispatch, password, tokenValue]
+  );
 
   return (
-    <AppForm title="Восстановление пароля">
+    <AppForm title="Восстановление пароля" onSubmit={handleSaveNewPswSubmit}>
       <FormInputWrapper>
         <PasswordInput
           name="password"
@@ -25,8 +38,8 @@ const ResetPswPage: FC = () => {
       <FormInputWrapper>
         <Input
           name="code"
-          value={value}
-          onChange={(evt) => setValue(evt.target.value)}
+          value={tokenValue}
+          onChange={(evt) => setTokenValue(evt.target.value)}
           type="text"
           placeholder="Введите код из письма"
           error={false}

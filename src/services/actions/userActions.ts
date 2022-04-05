@@ -13,19 +13,21 @@ export const REGISTER_NEW_USER_FAILD: "REGISTER_NEW_USER_FAILD" =
 export const LOGIN_USER_REQUEST: "LOGIN_USER_REQUEST" = "LOGIN_USER_REQUEST";
 export const LOGIN_USER_SUCCESS: "LOGIN_USER_SUCCESS" = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_FAILD: "LOGIN_USER_FAILD" = "LOGIN_USER_FAILD";
-//TODO
+
 export const LOGOUT_USER_REQUEST: "LOGOUT_USER_REQUEST" = "LOGOUT_USER_REQUEST";
 
-export const RESET_USER_REQUEST: "RESET_USER_REQUES" = "RESET_USER_REQUES";
-export const RESET_USER_SUCCESS: "RESET_USER_SUCCESS" = "RESET_USER_SUCCESS";
-export const RESET_USER_ERROR: "RESET_USER_ERROR" = "RESET_USER_ERROR";
+export const REMIND_PASSWORD_REQUEST: "REMIND_PASSWORD_REQUEST" =
+  "REMIND_PASSWORD_REQUEST";
+export const REMIND_PASSWORD_SUCCESS: "REMIND_PASSWORD_SUCCESS" =
+  "REMIND_PASSWORD_SUCCESS";
+export const REMIND_PASSWORD_ERROR: "REMIND_PASSWORD_ERROR" =
+  "REMIND_PASSWORD_ERROR";
 
 export const SET_PASSWORD_REQUEST: "SET_PASSWORD_REQUEST" =
   "SET_PASSWORD_REQUEST";
 export const SET_PASSWORD_SUCCESS: "SET_PASSWORD_SUCCESS" =
   "SET_PASSWORD_SUCCESS";
 export const SET_PASSWORD_ERROR: "SET_PASSWORD_ERROR" = "SET_PASSWORD_ERROR";
-//TODO
 
 export interface IRegisterNewUserRequest {
   readonly type: typeof REGISTER_NEW_USER_REQUEST;
@@ -55,6 +57,28 @@ export interface ILogoutUserRequest {
   readonly type: typeof LOGOUT_USER_REQUEST;
 }
 
+export interface IRemindPasswordRequest {
+  readonly type: typeof REMIND_PASSWORD_REQUEST;
+}
+export interface IRemindPasswordSuccess {
+  readonly type: typeof REMIND_PASSWORD_SUCCESS;
+  readonly result: boolean;
+}
+export interface IRemindPasswordFaild {
+  readonly type: typeof REMIND_PASSWORD_ERROR;
+}
+
+export interface ISetPasswordRequest {
+  readonly type: typeof SET_PASSWORD_REQUEST;
+}
+export interface ISetPasswordSuccess {
+  readonly type: typeof SET_PASSWORD_SUCCESS;
+  readonly result: boolean;
+}
+export interface ISetPasswordFaild {
+  readonly type: typeof SET_PASSWORD_ERROR;
+}
+
 //TODO
 
 export type TUserRequestActions =
@@ -64,7 +88,13 @@ export type TUserRequestActions =
   | ILoginUserRequest
   | ILoginUserSuccess
   | ILoginUserFaild
-  | ILogoutUserRequest;
+  | ILogoutUserRequest
+  | IRemindPasswordRequest
+  | IRemindPasswordSuccess
+  | IRemindPasswordFaild
+  | ISetPasswordRequest
+  | ISetPasswordSuccess
+  | ISetPasswordFaild;
 
 export const registerNewUser: AppThunk = (
   email: string,
@@ -119,7 +149,46 @@ export const loginUser: AppThunk = (
       });
   };
 };
-
+/*
 export const logoutUser: AppThunk = () => {
   return function (dispatch: AppDispatch) {};
+};
+*/
+
+export const getRemindUserPassword: AppThunk = (
+  email: string,
+  accessToken: string
+) => {
+  return function (dispatch: AppDispatch) {
+    dispatch({ type: REMIND_PASSWORD_REQUEST });
+    Api.remindPassword(email, accessToken)
+      .then((res) => {
+        dispatch({ type: REMIND_PASSWORD_SUCCESS, result: res.success });
+      })
+      .catch((error) => {
+        console.log(
+          `Ошибка при попытке воссановления пароля пользователя. ${error}`
+        );
+        dispatch({ type: REMIND_PASSWORD_ERROR });
+      });
+  };
+};
+
+export const setUserNewPassword: AppThunk = (
+  password: string,
+  token: string
+) => {
+  return function (dispatch: AppDispatch) {
+    dispatch({ type: SET_PASSWORD_REQUEST });
+    Api.resetUserPassword(password, token)
+      .then((res) => [
+        dispatch({ type: SET_PASSWORD_SUCCESS, result: res.success }),
+      ])
+      .catch((error) => {
+        console.log(
+          `Ошибка при попытке сохранения нового пароля пользователя. ${error}`
+        );
+        dispatch({ type: SET_PASSWORD_ERROR });
+      });
+  };
 };
