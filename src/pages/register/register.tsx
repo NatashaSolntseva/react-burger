@@ -15,7 +15,6 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 
 import { registerNewUser } from "../../services/actions/userActions";
 
-import { getCookie } from "../../utils/cookies";
 import { Redirect } from "react-router-dom";
 
 const RegisterPage: FC = () => {

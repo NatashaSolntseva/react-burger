@@ -6,12 +6,6 @@ const BASE_URL = "https://norma.nomoreparties.space/api";
 
 type TBaseUrl = { url: string };
 
-interface IUserSignInForm {
-  email: string;
-  password: string;
-  name?: string;
-}
-
 class Api {
   _url: string;
   _headers: { [name: string]: string };
@@ -94,15 +88,21 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
       },
     }).then(this._getResponseData);
   }
-
-  patchUserRequest(data: { name: string; email: string }) {
+  //TODO !!!!!
+  patchUserRequest(
+    name: string,
+    email: string,
+    password: string,
+    accessToken: string
+  ) {
     return fetch(`${BASE_URL}/auth/user`, {
       method: "PATCH",
-      headers: {
-        ...this._headers,
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
-      body: JSON.stringify(data),
+      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        name: name,
+      }),
     }).then(this._getResponseData);
   }
 

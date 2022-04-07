@@ -5,6 +5,7 @@ import { ILocation } from "../../utils/types";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
+import ProtectedRoute from "../protected-route/protected-route";
 // страницы
 import HomePage from "../../pages/home/home";
 import LoginPage from "../../pages/login/login";
@@ -38,9 +39,9 @@ const App: FC = () => {
         <Route path="/reset-password">
           <ResetPswPage />
         </Route>
-        <Route path="/profile">
+        <ProtectedRoute path="/profile">
           <ProfilePage />
-        </Route>
+        </ProtectedRoute>
         <Route path="/ingredient">
           <IngredientPage />
         </Route>

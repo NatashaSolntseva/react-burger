@@ -12,10 +12,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { loginUser } from "../../services/actions/userActions";
+import { Redirect, useHistory } from "react-router-dom";
 
 const LoginPage: FC = () => {
   const dispatch = useAppDispatch();
   const { userIsAuth } = useAppSelector((store) => store.user);
+
+  const history = useHistory();
+  const { historyState }: any = history.location;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +27,14 @@ const LoginPage: FC = () => {
   const handleSubmitOnSignInForm = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
-      //console.log("submit form done");
       dispatch(loginUser(email, password));
     },
     [dispatch, email, password]
   );
+
+  if (userIsAuth) {
+    return <Redirect to={historyState?.from || "/"} />;
+  }
 
   return (
     <AppForm title="Вход" onSubmit={handleSubmitOnSignInForm}>

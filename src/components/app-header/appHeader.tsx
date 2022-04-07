@@ -8,11 +8,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { NavLink, useRouteMatch } from "react-router-dom";
+import { useAppSelector } from "../../services/hooks/hooks";
 
 const AppHeader = () => {
   const isConstructor = !!useRouteMatch({ path: "/", exact: true }); //подкрашивает белым активные иконки, хук определяет где мы находимся
   const isFeed = !!useRouteMatch({ path: "/feed" });
   const isProfile = !!useRouteMatch({ path: "/profile" });
+
+  const { userIsAuth, userName } = useAppSelector((store) => store.user);
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -57,7 +61,7 @@ const AppHeader = () => {
               >
                 <ProfileIcon type={isProfile ? "primary" : "secondary"} />
                 <p className="text text_type_main-default ml-2">
-                  Личный кабинет
+                  {userIsAuth ? `Личный кабинет ${userName}` : "Личный кабинет"}
                 </p>
               </NavLink>
             </li>

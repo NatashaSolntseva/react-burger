@@ -1,6 +1,6 @@
 import { AppThunk, AppDispatch } from "../..";
 import Api from "../../utils/api";
-import { getCookie, setCookie } from "../../utils/cookies";
+import { setCookie } from "../../utils/cookies";
 import { TUser } from "../../utils/types";
 
 export const REGISTER_NEW_USER_REQUEST: "REGISTER_NEW_USER_REQUEST" =
@@ -28,6 +28,18 @@ export const SET_PASSWORD_REQUEST: "SET_PASSWORD_REQUEST" =
 export const SET_PASSWORD_SUCCESS: "SET_PASSWORD_SUCCESS" =
   "SET_PASSWORD_SUCCESS";
 export const SET_PASSWORD_ERROR: "SET_PASSWORD_ERROR" = "SET_PASSWORD_ERROR";
+
+export const CHANGE_NAME_REQUEST: "CHANGE_NAME_REQUEST" = "CHANGE_NAME_REQUEST";
+export const CHANGE_EMAIL_REQUEST: "CHANGE_EMAIL_REQUEST" =
+  "CHANGE_EMAIL_REQUEST";
+export const CHANGE_PASSWOTD_REQUEST: "CHANGE_PASSWORD_REQUEST" =
+  "CHANGE_PASSWORD_REQUEST";
+
+export const GET_USER_DATA_REQUEST: "GET_USER_DATA_REQUEST" =
+  "GET_USER_DATA_REQUEST";
+export const GET_USER_DATA_SUCCESS: "GET_USER_DATA_SUCCESS" =
+  "GET_USER_DATA_SUCCESS";
+export const GET_USER_DATA_ERROR: "GET_USER_DATA_ERROR" = "GET_USER_DATA_ERROR";
 
 export interface IRegisterNewUserRequest {
   readonly type: typeof REGISTER_NEW_USER_REQUEST;
@@ -79,6 +91,16 @@ export interface ISetPasswordFaild {
   readonly type: typeof SET_PASSWORD_ERROR;
 }
 
+export interface IGetUserDataRequest {
+  readonly type: typeof GET_USER_DATA_REQUEST;
+}
+export interface IGetUserDataSuccess {
+  readonly type: typeof GET_USER_DATA_SUCCESS;
+}
+export interface IGetUserDataError {
+  readonly type: typeof GET_USER_DATA_ERROR;
+}
+
 //TODO
 
 export type TUserRequestActions =
@@ -94,7 +116,10 @@ export type TUserRequestActions =
   | IRemindPasswordFaild
   | ISetPasswordRequest
   | ISetPasswordSuccess
-  | ISetPasswordFaild;
+  | ISetPasswordFaild
+  | IGetUserDataRequest
+  | IGetUserDataSuccess
+  | IGetUserDataError;
 
 export const registerNewUser: AppThunk = (
   email: string,
@@ -181,14 +206,56 @@ export const setUserNewPassword: AppThunk = (
   return function (dispatch: AppDispatch) {
     dispatch({ type: SET_PASSWORD_REQUEST });
     Api.resetUserPassword(password, token)
-      .then((res) => [
-        dispatch({ type: SET_PASSWORD_SUCCESS, result: res.success }),
-      ])
+      .then((res) =>
+        dispatch({ type: SET_PASSWORD_SUCCESS, result: res.success })
+      )
       .catch((error) => {
         console.log(
           `Ошибка при попытке сохранения нового пароля пользователя. ${error}`
         );
         dispatch({ type: SET_PASSWORD_ERROR });
+      });
+  };
+};
+/*получение данных о пользователе для страницы profıle*/
+
+export const getUser: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
+    dispatch({ type: GET_USER_DATA_REQUEST });
+    Api.getUserRequest()
+      .then((res) => {
+        dispatch({
+          type: GET_USER_DATA_SUCCESS,
+          email: res?.user.email,
+          name: res?.user.name,
+        });
+      })
+      .catch((error) => {
+        console.log(
+          `Ошибка при попытке получения данных пользователя. ${error}`
+        );
+        dispatch({ type: GET_USER_DATA_ERROR });
+      });
+  };
+};
+/*обновлениеданных о пользователе на странице profıle*/
+
+export const patchUser: AppThunk = (
+  email: string,
+  password: string,
+  name: string,
+  accessToken: string
+) => {
+  return function (dispatch: AppDispatch) {
+    Api.patchUserRequest(email, password, name, accessToken)
+      .then((res) =>
+        dispatch({ type: REGISTER_NEW_USER_SUCCESS, payload: res })
+      )
+      .catch((error) => {
+        console.log(
+          `Ошибка при попытке сохранения новых данных пользователя. ${error}`
+        );
+        dispatch({ type: REGISTER_NEW_USER_FAILD });
       });
   };
 };

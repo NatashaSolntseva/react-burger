@@ -1,3 +1,4 @@
+import { fail } from "assert";
 import {
   REGISTER_NEW_USER_REQUEST,
   REGISTER_NEW_USER_SUCCESS,
@@ -42,12 +43,11 @@ export const userDataReducer = (
     case REGISTER_NEW_USER_REQUEST:
       return {
         ...state,
-        userIsAuth: true,
       };
     case REGISTER_NEW_USER_SUCCESS:
       return {
         ...state,
-        userIsAuth: false,
+        userIsAuth: true,
         userName: action.payload.user.name,
         userEmail: action.payload.user.email,
       };
@@ -62,6 +62,7 @@ export const userDataReducer = (
     case LOGIN_USER_SUCCESS:
       return {
         ...state,
+        userIsAuth: true,
         userName: action.name,
         userEmail: action.email,
       };
@@ -74,6 +75,7 @@ export const userDataReducer = (
         userEmail: "",
         userName: "",
         userPassword: "",
+        userIsAuth: false,
       };
     case REMIND_PASSWORD_REQUEST:
       return {

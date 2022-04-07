@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 
 import styles from "./profile.module.css";
@@ -11,24 +11,41 @@ import {
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { deleteCookie, getCookie } from "../../utils/cookies";
 import Api from "../../utils/api";
-import { LOGOUT_USER_REQUEST } from "../../services/actions/userActions";
+import {
+  LOGOUT_USER_REQUEST,
+  patchUser,
+} from "../../services/actions/userActions";
 
 const ProfilePage: FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { userName, userEmail, userPassword } = useAppSelector(
+    (store) => store.user
+  );
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  /*const [userName, userEmail, userPassword] = useAppSelector(
-    (store) => store.user
-  );
+  useEffect(() => {
+    if (userName) {
+      setName(userName);
+      setEmail(userEmail);
+    }
+  }, [userName, userEmail]);
+
+  console.log("name", name);
+  console.log("email", email);
+  console.log("password", password);
+  console.log("userName", userName);
+  console.log("userEmail", userEmail);
+  console.log("userPassword", userPassword);
 
   const isInfoChanged = useMemo(
     () => name !== userName || email !== userEmail || password !== userPassword,
     [userName, userEmail, userPassword, name, email, password]
-  );*/
+  );
+  console.log("isInfo", isInfoChanged);
 
   const handleLogoutClick = useCallback(
     (evt: React.SyntheticEvent) => {
@@ -43,15 +60,23 @@ const ProfilePage: FC = () => {
     [dispatch]
   );
 
-  const handleResetChanges = useCallback((evt: React.SyntheticEvent) => {
-    evt.preventDefault();
-    alert("Отмена нажата");
-  }, []);
+  const handleResetChanges = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      setName(userName);
+      setEmail(userEmail);
+      setPassword("");
+    },
+    [userName, userEmail]
+  );
 
-  const handleSaveChanges = useCallback((evt: React.SyntheticEvent) => {
-    evt.preventDefault();
-    alert("Сохранить нажата");
-  }, []);
+  const handleSaveChanges = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      dispatch(patchUser(email, password, name));
+    },
+    [dispatch, email, password, name]
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -117,20 +142,22 @@ const ProfilePage: FC = () => {
           <Input
             name="password"
             type="password"
-            value="123456"
+            value={password}
             onChange={(evt) => setPassword(evt.target.value)}
             icon="EditIcon"
             placeholder="Пароль"
           />
         </FormInputWrapper>
-        <div className={styles.form__buttons}>
-          <Button type="secondary" size="medium" onClick={handleResetChanges}>
-            Отмена
-          </Button>
-          <Button type="primary" size="medium" onClick={handleSaveChanges}>
-            Сохранить
-          </Button>
-        </div>
+        {isInfoChanged && (
+          <div className={styles.form__buttons}>
+            <Button type="secondary" size="medium" onClick={handleResetChanges}>
+              Отмена
+            </Button>
+            <Button type="primary" size="medium" onClick={handleSaveChanges}>
+              Сохранить
+            </Button>
+          </div>
+        )}
       </form>
     </div>
   );
@@ -138,5 +165,6 @@ const ProfilePage: FC = () => {
 
 export default ProfilePage;
 
-//TODO  условный рендернинг кнопок - TS ругается на хранилище
-//TODO  серверная часть
+//TODO  условный рендернинг кнопок - userPassword <empty string> в хранилице
+//TODO  серверная часть - патч юзера
+//TODO что-то не то с хранилищем пароля
