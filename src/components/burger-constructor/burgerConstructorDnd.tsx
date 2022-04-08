@@ -20,18 +20,13 @@ import { deleteIngredient } from "../../services/actions/constructorActions";
 import { IBurgerConstructor } from "../../utils/types";
 
 import { IIngredient } from "../../utils/types";
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
   ({ openModal }, ref) => {
     const dispatch = useAppDispatch();
-
-    /* const droppedIngredients = useAppSelector(
-      (store) => store.burgerConstructor.droppedIngredients
-    );
-
-    const droppedBun = useAppSelector(
-      (store) => store.burgerConstructor.droppedBun
-    );*/
+    const history = useHistory();
+    const { userIsAuth } = useAppSelector((store) => store.user);
 
     const { droppedIngredients, droppedBun } = useAppSelector(
       (store) => store.burgerConstructor
@@ -46,7 +41,7 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
       [droppedIngredients, droppedBun]
     );
 
-    const onSubmitClick = () => {
+    const handleSubmit = () => {
       if (!droppedBun) {
         alert("Вы не выбрали булочку!"); //TODO что-то более красивое
         return;
@@ -67,6 +62,10 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
       },
       [dispatch]
     );
+
+    const handleSignIn = useCallback(() => {
+      history.replace({ pathname: "/login" });
+    }, [history]);
 
     return (
       <section
@@ -128,8 +127,12 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
             <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="large" onClick={onSubmitClick}>
-            Оформить заказ
+          <Button
+            type="primary"
+            size="large"
+            onClick={userIsAuth ? handleSubmit : handleSignIn}
+          >
+            {userIsAuth ? "Оформить заказ" : "Войти"}
           </Button>
         </div>
       </section>

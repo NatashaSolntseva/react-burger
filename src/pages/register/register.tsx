@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { useState } from "react";
 
 import AppForm from "../../components/app-form/appForm";
@@ -11,12 +11,36 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+
+import { registerNewUser } from "../../services/actions/userActions";
+
+import { Redirect } from "react-router-dom";
+
 const RegisterPage: FC = () => {
+  const dispatch = useAppDispatch();
+  const { userIsAuth } = useAppSelector((store) => store.user);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  //const accessToken = getCookie("token");
+
+  const handleSubmitOnRegistrationForm = useCallback(
+    (evt: React.SyntheticEvent) => {
+      evt.preventDefault();
+      dispatch(registerNewUser(email, password, name));
+    },
+    [dispatch, email, password, name]
+  );
+
+  if (userIsAuth) {
+    return <Redirect to={{ pathname: "/" }} />;
+  }
+
   return (
-    <AppForm title="Регистрация">
+    <AppForm title="Регистрация" onSubmit={handleSubmitOnRegistrationForm}>
       <FormInputWrapper>
         <Input
           name="name"

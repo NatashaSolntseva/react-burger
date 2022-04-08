@@ -1,10 +1,11 @@
 import { FC } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 
 import { ILocation } from "../../utils/types";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
+import ProtectedRoute from "../protected-route/protected-route";
 // страницы
 import HomePage from "../../pages/home/home";
 import LoginPage from "../../pages/login/login";
@@ -17,8 +18,9 @@ import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
 
 const App: FC = () => {
-  let location = useLocation<ILocation>();
-  let background = location.state && location.state.background;
+  const location = useLocation<ILocation>();
+  const background = location.state && location.state.background;
+  const history = useHistory();
   return (
     <>
       <AppHeader />
@@ -38,10 +40,10 @@ const App: FC = () => {
         <Route path="/reset-password">
           <ResetPswPage />
         </Route>
-        <Route path="/profile">
+        <ProtectedRoute path="/profile">
           <ProfilePage />
-        </Route>
-        <Route path="/ingredient">
+        </ProtectedRoute>
+        <Route path="/ingredient/:id" exact>
           <IngredientPage />
         </Route>
         <Route path="/feed">
@@ -51,6 +53,7 @@ const App: FC = () => {
           <NotFound404Page />
         </Route>
       </Switch>
+      {background && <Route path="/ingredients:id"></Route>}
     </>
   );
 };

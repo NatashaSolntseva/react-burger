@@ -13,26 +13,30 @@ const IngredientDetails: FC<TDetailIngredient> = ({ ingredient }) => {
       <img
         className={`${styles.icon}`}
         alt="изображение ингредиента"
-        src={ingredient.image}
+        src={ingredient?.image}
       />
-      <p className="text text_type_main-medium">{ingredient.name}</p>
+      <p className="text text_type_main-medium">{ingredient?.name}</p>
       <div className={`${styles.captioncontainer} mt-8 text_color_inactive`}>
         <div className={`${styles.element} mr-5`}>
           <p className="text text_type_main-default">Калории,ккал</p>
-          <p className="text text_type_digits-default">{ingredient.calories}</p>
+          <p className="text text_type_digits-default">
+            {ingredient?.calories}
+          </p>
         </div>
         <div className={`${styles.element} mr-5`}>
           <p className="text text_type_main-default">Белки, г</p>
-          <p className="text text_type_digits-default">{ingredient.proteins}</p>
+          <p className="text text_type_digits-default">
+            {ingredient?.proteins}
+          </p>
         </div>
         <div className={`${styles.element} mr-5`}>
           <p className="text text_type_main-default">Жиры, г</p>
-          <p className="text text_type_digits-default">{ingredient.fat}</p>
+          <p className="text text_type_digits-default">{ingredient?.fat}</p>
         </div>
         <div className={`${styles.element} mr-5`}>
           <p className="text text_type_main-default">Углеводы, г</p>
           <p className="text text_type_digits-default">
-            {ingredient.carbohydrates}
+            {ingredient?.carbohydrates}
           </p>
         </div>
       </div>
