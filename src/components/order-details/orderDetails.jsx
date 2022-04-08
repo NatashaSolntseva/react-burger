@@ -4,6 +4,8 @@ import styles from "./orderDetails.module.css";
 
 import { useSelector } from "react-redux";
 
+import Loader from "../loader/loader";
+
 function OrderDetails() {
   const { orderId, isOrderInfoLoading, isOrderInfoRequestFaild } = useSelector(
     (store) => store.order
@@ -11,12 +13,7 @@ function OrderDetails() {
 
   return (
     <>
-      {isOrderInfoLoading && (
-        <div className={`${styles.container} pt-30 pb-25`}>
-          <div className={`${styles.loader}`}></div>
-          <span className={`${styles.spanLoader}`}>Загрузка...</span>
-        </div>
-      )}
+      {isOrderInfoLoading && <Loader />}
       {!isOrderInfoLoading && !isOrderInfoRequestFaild && orderId && (
         <div className={`${styles.container} pt-30 pb-25`}>
           <div className="mb-8">

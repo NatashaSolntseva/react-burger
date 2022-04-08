@@ -1,5 +1,12 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+import { deleteCookie, getCookie } from "../../utils/cookies";
+import Api from "../../utils/api";
+import {
+  LOGOUT_USER_REQUEST,
+  patchUser,
+} from "../../services/actions/userActions";
 
 import styles from "./profile.module.css";
 
@@ -8,13 +15,6 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { deleteCookie, getCookie } from "../../utils/cookies";
-import Api from "../../utils/api";
-import {
-  LOGOUT_USER_REQUEST,
-  patchUser,
-} from "../../services/actions/userActions";
 
 const ProfilePage: FC = () => {
   const history = useHistory();
@@ -87,7 +87,7 @@ const ProfilePage: FC = () => {
             <NavLink
               className={`text text_type_main-medium pt-4 pb-5 ${styles.listelement}`}
               activeClassName={styles.listelement_active}
-              to="/profile/orders"
+              to="/orders"
             >
               История заказов
             </NavLink>

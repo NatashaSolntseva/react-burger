@@ -1,6 +1,26 @@
-.wrapper {
+.notFound404__container {
+  height: 100vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.notFound404__wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 220px;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.notFound404__link {
+  text-decoration: none;
+  padding-top: 40px;
+  cursor: pointer;
+  color: #8585ad;
+  transition: all 0.3s ease;
+}
+
+.notFound404__link:hover {
+  color: #f2f2f3;
 }

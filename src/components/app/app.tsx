@@ -16,6 +16,7 @@ import ProfilePage from "../../pages/profile/profile";
 import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
+import OrderHistoryPage from "../../pages/order-history/order-histort";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
@@ -38,10 +39,13 @@ const App: FC = () => {
           <ForgotPswPage />
         </Route>
         <Route path="/reset-password">
-          <ResetPswPage />
+          <ResetPswPage />s
         </Route>
         <ProtectedRoute path="/profile">
           <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/orders">
+          <OrderHistoryPage />
         </ProtectedRoute>
         <Route path="/ingredient/:id" exact>
           <IngredientPage />

@@ -15,6 +15,7 @@ import BurgerConstructorDndWrapper from "../../components/burger-constructor/com
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/orderDetails";
 import IngredientDetails from "../../components/burger-ingredients/components/ingredient-detail/ingredientDetails";
+import Loader from "../../components/loader/loader";
 
 // серверная часть
 
@@ -77,11 +78,11 @@ const HomePage: FC = () => {
   //___________________________________________render______________________________________________
   return (
     <div className={styles.app}>
-      {ingredientsApiRequest && <h1>загрузка данных</h1>}
+      {ingredientsApiRequest && <Loader />}
       {ingredientsApiFailed && (
         <main>
           <section>
-            <h1 className="text text_type_main-large mt-3">
+            <h1 className="text text_type_main-large">
               Ох, ошибка загрузки данных...
             </h1>
           </section>
