@@ -34,24 +34,17 @@ const ProfilePage: FC = () => {
     }
   }, [userName, userEmail]);
 
-  console.log("name", name);
-  console.log("email", email);
-  console.log("password", password);
-  console.log("userName", userName);
-  console.log("userEmail", userEmail);
-  console.log("userPassword", userPassword);
-
   const isInfoChanged = useMemo(
     () => name !== userName || email !== userEmail || password !== userPassword,
     [userName, userEmail, userPassword, name, email, password]
   );
-  console.log("isInfo", isInfoChanged);
+  //console.log("isInfo", isInfoChanged);
 
   const handleLogoutClick = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
       const refreshToken = getCookie("refreshToken");
-      console.log("refreshToen", refreshToken);
+      // console.log("refreshToen", refreshToken);
       refreshToken && Api.signOutUserRequest(refreshToken);
       deleteCookie("refreshToken");
       deleteCookie("accessToken");
@@ -73,9 +66,9 @@ const ProfilePage: FC = () => {
   const handleSaveChanges = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
-      dispatch(patchUser(email, password, name));
+      dispatch(patchUser(name, email, password));
     },
-    [dispatch, email, password, name]
+    [dispatch, name, email, password]
   );
 
   return (

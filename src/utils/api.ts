@@ -79,6 +79,8 @@ GET https://norma.nomoreparties.space/api/auth/user - эндпоинт полу�
 PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обновления данных о пользователе.
 */
 
+  /* GET запрос о данных пользователя */
+
   getUserRequest() {
     return fetch(`${BASE_URL}/auth/user`, {
       method: "GET",
@@ -89,6 +91,8 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
     }).then(this._getResponseData);
   }
   //TODO !!!!!
+  /* PATCH запрос с обновленными данными пользователя*/
+
   patchUserRequest(
     name: string,
     email: string,
@@ -97,7 +101,10 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
   ) {
     return fetch(`${BASE_URL}/auth/user`, {
       method: "PATCH",
-      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
+      headers: {
+        ...this._headers,
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
       body: JSON.stringify({
         email: email,
         password: password,

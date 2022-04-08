@@ -1,6 +1,6 @@
 import { AppThunk, AppDispatch } from "../..";
 import Api from "../../utils/api";
-import { setCookie } from "../../utils/cookies";
+import { getCookie, setCookie } from "../../utils/cookies";
 import { TUser } from "../../utils/types";
 
 export const REGISTER_NEW_USER_REQUEST: "REGISTER_NEW_USER_REQUEST" =
@@ -231,31 +231,48 @@ export const getUser: AppThunk = () => {
         });
       })
       .catch((error) => {
-        console.log(
-          `Ошибка при попытке получения данных пользователя. ${error}`
-        );
-        dispatch({ type: GET_USER_DATA_ERROR });
+        if (error.message === "jwt expired" || "jwt malformed") {
+          if (!getCookie("refreshToken")) {
+            throw new Error("refreshToken в cookie отсутствует");
+          }
+          Api.updateToken()
+            .then((res) => {
+              setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
+              setCookie("refreshToken", res.refreshToken);
+              dispatch({
+                type: GET_USER_DATA_SUCCESS,
+                email: res?.user.email,
+                name: res?.user.name,
+              });
+            })
+            .catch((error) => {
+              console.log(`Ошибка при обновлении токена. ${error}`);
+            });
+        } else {
+          console.log(
+            `Ошибка при попытке получения данных пользователя. ${error}`
+          );
+          dispatch({ type: GET_USER_DATA_ERROR });
+        }
       });
   };
 };
 /*обновлениеданных о пользователе на странице profıle*/
 
 export const patchUser: AppThunk = (
+  name: string,
   email: string,
   password: string,
-  name: string,
   accessToken: string
 ) => {
   return function (dispatch: AppDispatch) {
-    Api.patchUserRequest(email, password, name, accessToken)
-      .then((res) =>
-        dispatch({ type: REGISTER_NEW_USER_SUCCESS, payload: res })
-      )
+    Api.patchUserRequest(name, email, password, accessToken)
+      .then((res) => dispatch({ type: GET_USER_DATA_SUCCESS, payload: res }))
       .catch((error) => {
         console.log(
           `Ошибка при попытке сохранения новых данных пользователя. ${error}`
         );
-        dispatch({ type: REGISTER_NEW_USER_FAILD });
+        dispatch({ type: GET_USER_DATA_ERROR });
       });
   };
 };

@@ -5,6 +5,7 @@ import styles from "./ingredientPage.module.css";
 import IngredientDetails from "../../components/burger-ingredients/components/ingredient-detail/ingredientDetails";
 
 import { IIngredient } from "../../utils/types";
+import { useAppSelector } from "../../services/hooks/hooks";
 
 const selected: IIngredient = {
   _id: "60666c42cc7b410027a1a9b5",
@@ -22,6 +23,9 @@ const selected: IIngredient = {
 };
 
 const IngredientPage: FC = () => {
+  const { modalIngredientData } = useAppSelector((store) => store.modal);
+  console.log("clickedIngredient", modalIngredientData);
+
   return (
     <div className={styles.wrapper}>
       <IngredientDetails ingredient={selected} />
