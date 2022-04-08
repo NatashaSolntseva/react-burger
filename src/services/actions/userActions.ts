@@ -133,9 +133,7 @@ export const registerNewUser: AppThunk = (
     });
     Api.registerNewUserRequest(email, password, name, accessToken)
       .then((res) => {
-        setCookie("token", res.accessToken.split("Bearer ")[1], {
-          expires: 1200000,
-        });
+        setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", res.refreshToken);
         dispatch({ type: REGISTER_NEW_USER_SUCCESS, payload: res });
       })
@@ -157,9 +155,7 @@ export const loginUser: AppThunk = (
     dispatch({ type: LOGIN_USER_REQUEST });
     Api.signInUserRequest(email, password, accessToken)
       .then((res) => {
-        setCookie("token", res.accessToken.split("Bearer ")[1], {
-          expires: 1200000,
-        });
+        setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", res.refreshToken);
         dispatch({
           type: LOGIN_USER_SUCCESS,
@@ -174,11 +170,6 @@ export const loginUser: AppThunk = (
       });
   };
 };
-/*
-export const logoutUser: AppThunk = () => {
-  return function (dispatch: AppDispatch) {};
-};
-*/
 
 export const getRemindUserPassword: AppThunk = (
   email: string,
@@ -262,10 +253,10 @@ export const getUser: AppThunk = () => {
 export const patchUser: AppThunk = (
   name: string,
   email: string,
-  password: string,
-  accessToken: string
+  password: string
 ) => {
   return function (dispatch: AppDispatch) {
+    const accessToken = getCookie("accessToken");
     Api.patchUserRequest(name, email, password, accessToken)
       .then((res) => dispatch({ type: GET_USER_DATA_SUCCESS, payload: res }))
       .catch((error) => {

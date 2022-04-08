@@ -101,10 +101,7 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
   ) {
     return fetch(`${BASE_URL}/auth/user`, {
       method: "PATCH",
-      headers: {
-        ...this._headers,
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
+      headers: { ...this._headers, Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify({
         email: email,
         password: password,

@@ -1,4 +1,3 @@
-import { fail } from "assert";
 import {
   REGISTER_NEW_USER_REQUEST,
   REGISTER_NEW_USER_SUCCESS,

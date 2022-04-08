@@ -44,7 +44,6 @@ const ProfilePage: FC = () => {
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
       const refreshToken = getCookie("refreshToken");
-      // console.log("refreshToen", refreshToken);
       refreshToken && Api.signOutUserRequest(refreshToken);
       deleteCookie("refreshToken");
       deleteCookie("accessToken");
@@ -159,5 +158,3 @@ const ProfilePage: FC = () => {
 export default ProfilePage;
 
 //TODO  условный рендернинг кнопок - userPassword <empty string> в хранилице
-//TODO  серверная часть - патч юзера
-//TODO что-то не то с хранилищем пароля
