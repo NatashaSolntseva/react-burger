@@ -101,8 +101,6 @@ export interface IGetUserDataError {
   readonly type: typeof GET_USER_DATA_ERROR;
 }
 
-//TODO
-
 export type TUserRequestActions =
   | IRegisterNewUserRequest
   | IRegisterNewUserSuccess

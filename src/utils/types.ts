@@ -105,3 +105,9 @@ export type TUser = {
     name: string;
   };
 };
+
+export interface IFeedsOrders {}
+
+export interface IStatisticStatusList {
+  title: string;
+}

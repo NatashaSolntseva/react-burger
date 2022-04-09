@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { deleteCookie, getCookie } from "../../utils/cookies";
 import Api from "../../utils/api";
@@ -17,7 +17,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const ProfilePage: FC = () => {
-  const history = useHistory();
   const dispatch = useAppDispatch();
   const { userName, userEmail, userPassword } = useAppSelector(
     (store) => store.user

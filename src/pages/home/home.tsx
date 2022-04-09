@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react";
+import { FC } from "react";
 
 import { useAppSelector } from "../../services/hooks/hooks";
 import { useAppDispatch } from "../../services/hooks/hooks";
@@ -8,17 +8,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 import styles from "./homeStyle.module.css";
 
-// компоненты
-
 import BurgerIngredients from "../../components/burger-ingredients/burgerIngredients";
 import BurgerConstructorDndWrapper from "../../components/burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/orderDetails";
 import Loader from "../../components/loader/loader";
-
-// серверная часть
-
-import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 import {
   closeModal,
@@ -33,18 +27,11 @@ import { TOpenModal } from "../../utils/types";
 const HomePage: FC = () => {
   const dispatch = useAppDispatch();
 
-  //запрос данных ингредиентов с сервера
   const {
     ingredientsApiRequest,
     ingredientsApiFailed,
     ingredientsDataFromServer,
   } = useAppSelector((store) => store.ingredients);
-
-  useEffect(() => {
-    dispatch(getIngredientsRequestApi());
-  }, [dispatch]);
-
-  // реализация функциона модельных окон
 
   const { isOrderDetailModalVisible } = useAppSelector((store) => store.modal);
 

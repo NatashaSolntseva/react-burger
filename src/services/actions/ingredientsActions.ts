@@ -1,6 +1,6 @@
 import { IIngredient } from "../../utils/types";
 import Api from "../../utils/api";
-import { AppDispatch, AppThunk } from "../..";
+import { AppDispatch, AppThunk, RootState } from "../..";
 
 export const GET_INGREDIENTS_API_REQUEST: "GET_INGREDIENTS_API_REQUEST" =
   "GET_INGREDIENTS_API_REQUEST";
@@ -60,4 +60,10 @@ export const getIngredientsRequestApi: AppThunk = () => {
         dispatch(getIngredientsApiFaild());
       });
   };
+};
+
+export const findIngredientById = (id: string) => (state: RootState) => {
+  return state.ingredients.ingredientsDataFromServer.find(
+    (item: IIngredient) => item._id === id
+  );
 };

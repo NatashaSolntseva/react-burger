@@ -1,0 +1,12 @@
+.feedStatistic {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  box-sizing: border-box;
+}
+
+.feedStatsistic__listWrapper {
+  display: flex;
+  gap: 36px;
+  justify-content: space-between;
+}

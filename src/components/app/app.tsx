@@ -1,7 +1,10 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 
 import { ILocation } from "../../utils/types";
+import { useAppDispatch } from "../../services/hooks/hooks";
+
+import { closeModal } from "../../services/actions/modalActions";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
@@ -13,20 +16,23 @@ import RegisterPage from "../../pages/register/register";
 import ForgotPswPage from "../../pages/fogot-password/forgot-password";
 import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
-import IngredientPage from "../../pages/ingredient-info/ingredient-page";
+//import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
 import OrderHistoryPage from "../../pages/order-history/order-histort";
 import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
-import { closeModal } from "../../services/actions/modalActions";
-import { useAppDispatch } from "../../services/hooks/hooks";
+import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
   const background = location.state && location.state.background;
   const history = useHistory();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getIngredientsRequestApi());
+  }, [dispatch]);
 
   const handleIngredientModalClose = useCallback(() => {
     dispatch(closeModal());
@@ -58,8 +64,8 @@ const App: FC = () => {
         <ProtectedRoute path="/orders">
           <OrderHistoryPage />
         </ProtectedRoute>
-        <Route path="/ingredient/:id" exact>
-          <IngredientPage />
+        <Route path="/ingredients/:id" exact>
+          <IngredientDetails />
         </Route>
         <Route path="/feed">
           <FeedPage />
