@@ -28,8 +28,6 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  //TODO getOrderNumber
-
   registerNewUserRequest(
     email: string,
     password: string,
@@ -90,7 +88,7 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
       },
     }).then(this._getResponseData);
   }
-  //TODO !!!!!
+
   /* PATCH запрос с обновленными данными пользователя*/
 
   patchUserRequest(

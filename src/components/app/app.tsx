@@ -1,7 +1,10 @@
-import { FC } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 
 import { ILocation } from "../../utils/types";
+import { useAppDispatch } from "../../services/hooks/hooks";
+
+import { closeModal } from "../../services/actions/modalActions";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
@@ -13,14 +16,29 @@ import RegisterPage from "../../pages/register/register";
 import ForgotPswPage from "../../pages/fogot-password/forgot-password";
 import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
-import IngredientPage from "../../pages/ingredient-info/ingredient-page";
+//import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
+import OrderHistoryPage from "../../pages/order-history/order-histort";
+import Modal from "../modal/modal";
+import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
+import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
   const background = location.state && location.state.background;
   const history = useHistory();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getIngredientsRequestApi());
+  }, [dispatch]);
+
+  const handleIngredientModalClose = useCallback(() => {
+    dispatch(closeModal());
+    history.replace("/");
+  }, [dispatch, history]);
+
   return (
     <>
       <AppHeader />
@@ -38,13 +56,16 @@ const App: FC = () => {
           <ForgotPswPage />
         </Route>
         <Route path="/reset-password">
-          <ResetPswPage />
+          <ResetPswPage />s
         </Route>
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
-        <Route path="/ingredient/:id" exact>
-          <IngredientPage />
+        <ProtectedRoute path="/orders">
+          <OrderHistoryPage />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id" exact>
+          <IngredientDetails />
         </Route>
         <Route path="/feed">
           <FeedPage />
@@ -53,7 +74,13 @@ const App: FC = () => {
           <NotFound404Page />
         </Route>
       </Switch>
-      {background && <Route path="/ingredients:id"></Route>}
+      {background && (
+        <Route path="/ingredients/:id">
+          <Modal closeModal={handleIngredientModalClose}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
     </>
   );
 };

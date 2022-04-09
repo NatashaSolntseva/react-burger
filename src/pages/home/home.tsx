@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react";
+import { FC } from "react";
 
 import { useAppSelector } from "../../services/hooks/hooks";
 import { useAppDispatch } from "../../services/hooks/hooks";
@@ -8,17 +8,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 import styles from "./homeStyle.module.css";
 
-// компоненты
-
 import BurgerIngredients from "../../components/burger-ingredients/burgerIngredients";
 import BurgerConstructorDndWrapper from "../../components/burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/orderDetails";
-import IngredientDetails from "../../components/burger-ingredients/components/ingredient-detail/ingredientDetails";
-
-// серверная часть
-
-import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
+import Loader from "../../components/loader/loader";
 
 import {
   closeModal,
@@ -33,24 +27,13 @@ import { TOpenModal } from "../../utils/types";
 const HomePage: FC = () => {
   const dispatch = useAppDispatch();
 
-  //запрос данных ингредиентов с сервера
   const {
     ingredientsApiRequest,
     ingredientsApiFailed,
     ingredientsDataFromServer,
   } = useAppSelector((store) => store.ingredients);
 
-  useEffect(() => {
-    dispatch(getIngredientsRequestApi());
-  }, [dispatch]);
-
-  // реализация функциона модельных окон
-
-  const {
-    isOrderDetailModalVisible,
-    isIngredientDetailModalVisible,
-    modalIngredientData,
-  } = useAppSelector((store) => store.modal);
+  const { isOrderDetailModalVisible } = useAppSelector((store) => store.modal);
 
   function openModal({ modalType, itemId }: TOpenModal) {
     if (modalType === "ingredientDetail") {
@@ -65,10 +48,6 @@ const HomePage: FC = () => {
     }
   }
 
-  const handleIngredientModalClose = () => {
-    dispatch(closeModal());
-  };
-
   const handleOrderModalClose = () => {
     dispatch(closeModal());
     dispatch(clearOrderList());
@@ -77,11 +56,11 @@ const HomePage: FC = () => {
   //___________________________________________render______________________________________________
   return (
     <div className={styles.app}>
-      {ingredientsApiRequest && <h1>загрузка данных</h1>}
+      {ingredientsApiRequest && <Loader />}
       {ingredientsApiFailed && (
         <main>
           <section>
-            <h1 className="text text_type_main-large mt-3">
+            <h1 className="text text_type_main-large">
               Ох, ошибка загрузки данных...
             </h1>
           </section>
@@ -97,12 +76,7 @@ const HomePage: FC = () => {
             </main>
           )}
       </DndProvider>
-      {/* модальное окно  - подробное описание игредиента*/}
-      {isIngredientDetailModalVisible && (
-        <Modal closeModal={handleIngredientModalClose}>
-          <IngredientDetails ingredient={modalIngredientData} />
-        </Modal>
-      )}
+
       {/* модальное окно о готовности заказа. номер и т.д.*/}
       {isOrderDetailModalVisible && (
         <Modal closeModal={handleOrderModalClose}>
