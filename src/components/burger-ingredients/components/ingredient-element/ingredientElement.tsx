@@ -7,26 +7,32 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 
 import { IBurgerIngredientElement } from "../../../../utils/types";
 
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { ILocation } from "../../../../utils/types";
+
 const IngredientElement = forwardRef<
-  HTMLDivElement,
+  HTMLLIElement,
   IBurgerIngredientElement & { isDragging: boolean }
 >(({ ingredient, openModal, isDragging, count }, ref) => {
   const handleOpenModal = () => {
     openModal({ modalType: "ingredientDetail", itemId: ingredient._id });
   };
+  const location = useLocation<ILocation>();
 
   return (
-    <div
-      className={
-        isDragging
-          ? `${styles.ingredient_element} ${styles.dragging_element}`
-          : `${styles.ingredient_element}`
-      }
-    >
-      <div
-        className={styles.ingredient_content}
+    <li ref={ref}>
+      <Link
+        to={{
+          pathname: `/ingredients/${ingredient._id}`,
+          state: { background: location },
+        }}
+        className={
+          isDragging
+            ? `${styles.ingredient} ${styles.ingredient_dragging}`
+            : `${styles.ingredient}`
+        }
         onClick={handleOpenModal}
-        ref={ref}
       >
         <img
           alt="Изображение игредиента бургера"
@@ -38,9 +44,9 @@ const IngredientElement = forwardRef<
           <CurrencyIcon type="primary" />
         </p>
         <p className="text text_type_main-default">{ingredient.name}</p>
-      </div>
-      {count !== 0 && <Counter size="default" count={count} />}
-    </div>
+        {count !== 0 && <Counter size="default" count={count} />}
+      </Link>
+    </li>
   );
 });
 

@@ -14,7 +14,6 @@ import BurgerIngredients from "../../components/burger-ingredients/burgerIngredi
 import BurgerConstructorDndWrapper from "../../components/burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/orderDetails";
-import IngredientDetails from "../../components/burger-ingredients/components/ingredient-detail/ingredientDetails";
 import Loader from "../../components/loader/loader";
 
 // серверная часть
@@ -47,11 +46,7 @@ const HomePage: FC = () => {
 
   // реализация функциона модельных окон
 
-  const {
-    isOrderDetailModalVisible,
-    isIngredientDetailModalVisible,
-    modalIngredientData,
-  } = useAppSelector((store) => store.modal);
+  const { isOrderDetailModalVisible } = useAppSelector((store) => store.modal);
 
   function openModal({ modalType, itemId }: TOpenModal) {
     if (modalType === "ingredientDetail") {
@@ -65,10 +60,6 @@ const HomePage: FC = () => {
       }
     }
   }
-
-  const handleIngredientModalClose = () => {
-    dispatch(closeModal());
-  };
 
   const handleOrderModalClose = () => {
     dispatch(closeModal());
@@ -98,12 +89,7 @@ const HomePage: FC = () => {
             </main>
           )}
       </DndProvider>
-      {/* модальное окно  - подробное описание игредиента*/}
-      {isIngredientDetailModalVisible && (
-        <Modal closeModal={handleIngredientModalClose}>
-          <IngredientDetails ingredient={modalIngredientData} />
-        </Modal>
-      )}
+
       {/* модальное окно о готовности заказа. номер и т.д.*/}
       {isOrderDetailModalVisible && (
         <Modal closeModal={handleOrderModalClose}>

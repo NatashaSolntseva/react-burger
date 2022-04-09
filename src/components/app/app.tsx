@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 
 import { ILocation } from "../../utils/types";
@@ -17,11 +17,22 @@ import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
 import OrderHistoryPage from "../../pages/order-history/order-histort";
+import Modal from "../modal/modal";
+import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
+import { closeModal } from "../../services/actions/modalActions";
+import { useAppDispatch } from "../../services/hooks/hooks";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
   const background = location.state && location.state.background;
   const history = useHistory();
+  const dispatch = useAppDispatch();
+
+  const handleIngredientModalClose = useCallback(() => {
+    dispatch(closeModal());
+    history.replace("/");
+  }, [dispatch, history]);
+
   return (
     <>
       <AppHeader />
@@ -57,7 +68,13 @@ const App: FC = () => {
           <NotFound404Page />
         </Route>
       </Switch>
-      {background && <Route path="/ingredients:id"></Route>}
+      {background && (
+        <Route path="/ingredients/:id">
+          <Modal closeModal={handleIngredientModalClose}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
     </>
   );
 };

@@ -2,9 +2,11 @@ import { FC } from "react";
 
 import styles from "./ingredientDetails.module.css";
 
-import { TDetailIngredient } from "../../../../utils/types";
+import { useAppSelector } from "../../../../services/hooks/hooks";
 
-const IngredientDetails: FC<TDetailIngredient> = ({ ingredient }) => {
+const IngredientDetails: FC = () => {
+  let ingredient = useAppSelector((store) => store.modal.modalIngredientData);
+
   return (
     <div className={`${styles.container} p-10`}>
       <p className={`${styles.header} text text_type_main-large`}>
