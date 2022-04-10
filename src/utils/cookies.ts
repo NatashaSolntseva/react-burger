@@ -20,7 +20,7 @@ export function setCookie(
   value: string | number | boolean,
   props: ICookie = {}
 ): void {
-  props = props || {};
+  props = props || { path: "/" };
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
     const d = new Date();

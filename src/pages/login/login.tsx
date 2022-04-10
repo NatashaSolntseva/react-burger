@@ -19,7 +19,7 @@ const LoginPage: FC = () => {
   const { userIsAuth } = useAppSelector((store) => store.user);
 
   const history = useHistory();
-  const { historyState }: any = history.location;
+  const { state }: any = history.location;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ const LoginPage: FC = () => {
   );
 
   if (userIsAuth) {
-    return <Redirect to={historyState?.from || "/"} />;
+    return <Redirect to={state?.from || "/"} />;
   }
 
   return (

@@ -1,9 +1,14 @@
 import { FC } from "react";
 import { useAppSelector } from "../../services/hooks/hooks";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import Loader from "../loader/loader";
 
 const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
-  const { userIsAuth } = useAppSelector((store) => store.user);
+  const { isAuthChecked, userIsAuth } = useAppSelector((store) => store.user);
+
+  if (!isAuthChecked) {
+    return <Loader />;
+  }
 
   return (
     <Route
@@ -12,7 +17,7 @@ const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
         userIsAuth ? (
           children
         ) : (
-          <Redirect to={{ pathname: "/login", state: { form: location } }} />
+          <Redirect to={{ pathname: "/login", state: { from: location } }} />
         )
       }
     />

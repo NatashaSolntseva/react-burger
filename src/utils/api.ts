@@ -1,8 +1,6 @@
 import { getCookie } from "./cookies";
 
-export const inputDataUrl = "https://norma.nomoreparties.space/api";
-
-const BASE_URL = "https://norma.nomoreparties.space/api";
+export const BASE_URL = "https://norma.nomoreparties.space/api";
 
 type TBaseUrl = { url: string };
 

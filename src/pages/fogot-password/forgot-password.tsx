@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from "react";
+import { Redirect, useHistory } from "react-router-dom";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import AppForm from "../../components/app-form/appForm";
@@ -9,12 +10,13 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { getRemindUserPassword } from "../../services/actions/userActions";
 
 import { getCookie } from "../../utils/cookies";
-import { Redirect } from "react-router-dom";
 
 const ForgotPswPage: FC = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
+  const { historyState }: any = history.location;
   const [email, setEmail] = useState("");
-  const { resetPswResult } = useAppSelector((store) => store.user);
+  const { userIsAuth, resetPswResult } = useAppSelector((store) => store.user);
 
   const handleResetPswSubmit = useCallback(
     (evt: React.SyntheticEvent) => {
@@ -26,6 +28,10 @@ const ForgotPswPage: FC = () => {
     },
     [dispatch, email]
   );
+
+  if (userIsAuth) {
+    return <Redirect to={historyState?.from || "/"} />;
+  }
 
   return (
     <>

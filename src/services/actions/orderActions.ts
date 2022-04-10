@@ -1,4 +1,4 @@
-import { inputDataUrl } from "../../utils/api";
+import { BASE_URL } from "../../utils/api";
 import type { AppDispatch, AppThunk } from "../../index";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.
@@ -60,7 +60,7 @@ export const getOrderNumberApi: AppThunk = (
 
     try {
       dispatch(sendOrderNumberRequest());
-      const res = await fetch(`${inputDataUrl}/orders`, postOrderOption);
+      const res = await fetch(`${BASE_URL}/orders`, postOrderOption);
       if (res.ok) {
         const serverResOrderId = await res.json();
         dispatch(sendOrderNumberSuccess(serverResOrderId));

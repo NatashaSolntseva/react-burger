@@ -41,6 +41,8 @@ export const GET_USER_DATA_SUCCESS: "GET_USER_DATA_SUCCESS" =
   "GET_USER_DATA_SUCCESS";
 export const GET_USER_DATA_ERROR: "GET_USER_DATA_ERROR" = "GET_USER_DATA_ERROR";
 
+export const AUTH_CHECKED: "AUTH_CHECKED" = "AUTH_CHECKED";
+
 export interface IRegisterNewUserRequest {
   readonly type: typeof REGISTER_NEW_USER_REQUEST;
 }
@@ -57,9 +59,7 @@ export interface ILoginUserRequest {
 }
 export interface ILoginUserSuccess {
   readonly type: typeof LOGIN_USER_SUCCESS;
-  readonly email: string;
-  readonly name: string;
-  readonly isLogin: boolean;
+  readonly payload: TUser;
 }
 export interface ILoginUserFaild {
   readonly type: typeof LOGIN_USER_FAILD;
@@ -96,9 +96,14 @@ export interface IGetUserDataRequest {
 }
 export interface IGetUserDataSuccess {
   readonly type: typeof GET_USER_DATA_SUCCESS;
+  readonly payload: TUser;
 }
 export interface IGetUserDataError {
   readonly type: typeof GET_USER_DATA_ERROR;
+}
+
+export interface IAuthChecked {
+  readonly type: typeof AUTH_CHECKED;
 }
 
 export type TUserRequestActions =
@@ -117,7 +122,8 @@ export type TUserRequestActions =
   | ISetPasswordFaild
   | IGetUserDataRequest
   | IGetUserDataSuccess
-  | IGetUserDataError;
+  | IGetUserDataError
+  | IAuthChecked;
 
 export const registerNewUser: AppThunk = (
   email: string,
@@ -157,15 +163,42 @@ export const loginUser: AppThunk = (
         setCookie("refreshToken", res.refreshToken);
         dispatch({
           type: LOGIN_USER_SUCCESS,
-          email: res.user.email,
-          name: res.user.name,
-          isLogin: res.success,
+          payload: res,
         });
       })
       .catch((error) => {
         console.log(`Ошибка при попытке логина пользователя. ${error}`);
         dispatch({ type: LOGIN_USER_FAILD });
       });
+  };
+};
+/*
+//TODO
+export const checkUserAuth: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
+    if (getCookie("accessToken")) {
+      console.log("user Logged in");
+      dispatch({ type: AUTH_CHECKED });
+    } else {
+      console.log(" user dont loggedin");
+      dispatch({ type: AUTH_CHECKED });
+    }
+  };
+};*/
+
+export const checkUserAuth: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
+    if (getCookie("accessToken")) {
+      Api.getUserRequest().then((res) => {
+        dispatch({ type: AUTH_CHECKED });
+        dispatch({
+          type: GET_USER_DATA_SUCCESS,
+          payload: res,
+        });
+      });
+    } else {
+      dispatch({ type: AUTH_CHECKED });
+    }
   };
 };
 
@@ -215,8 +248,7 @@ export const getUser: AppThunk = () => {
       .then((res) => {
         dispatch({
           type: GET_USER_DATA_SUCCESS,
-          email: res?.user.email,
-          name: res?.user.name,
+          payload: res,
         });
       })
       .catch((error) => {
@@ -230,8 +262,7 @@ export const getUser: AppThunk = () => {
               setCookie("refreshToken", res.refreshToken);
               dispatch({
                 type: GET_USER_DATA_SUCCESS,
-                email: res?.user.email,
-                name: res?.user.name,
+                payload: res,
               });
             })
             .catch((error) => {

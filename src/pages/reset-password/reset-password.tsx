@@ -17,7 +17,7 @@ const ResetPswPage: FC = () => {
   const [password, setPassword] = useState("");
   const [tokenValue, setTokenValue] = useState("");
 
-  const { userIsAuth } = useAppSelector((store) => store.user);
+  const { userIsAuth, resetPswResult } = useAppSelector((store) => store.user);
 
   const history = useHistory();
   const { historyState }: any = history.location;
@@ -30,7 +30,7 @@ const ResetPswPage: FC = () => {
     [dispatch, password, tokenValue]
   );
 
-  if (userIsAuth) {
+  if (userIsAuth || !resetPswResult) {
     return <Redirect to={historyState?.from || "/"} />;
   }
 
@@ -69,3 +69,10 @@ export default ResetPswPage;
 //Кроме этого, неавторизованный пользователь не может напрямую попасть на маршрут /reset-password.
 // Подумайте, как защитить маршрут /reset-password от пользователей,
 // которые не заходили на маршрут /forgot-password ранее и не вводили почту для восстановления пароля.
+
+/*
+  TODO:
+  пользователь не должен напрямую попасть на маршрут /reset-password.
+  На эту страницу никакой пользователь не должен попадать напрямую. Только после нажатия на восстановить пароль нужно делать переход на эту страницу.
+   Для этого нужно сделать проверку, был ли пользователь на странице forgot-password перед тем, как попасть на reset-password
+*/

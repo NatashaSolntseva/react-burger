@@ -16,13 +16,13 @@ import RegisterPage from "../../pages/register/register";
 import ForgotPswPage from "../../pages/fogot-password/forgot-password";
 import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
-//import IngredientPage from "../../pages/ingredient-info/ingredient-page";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
 import OrderHistoryPage from "../../pages/order-history/order-histort";
 import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
+import { checkUserAuth } from "../../services/actions/userActions";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
@@ -32,6 +32,7 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
   const handleIngredientModalClose = useCallback(() => {
