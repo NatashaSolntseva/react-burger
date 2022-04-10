@@ -18,6 +18,7 @@ const IngredientElement = forwardRef<
   const handleOpenModal = () => {
     openModal({ modalType: "ingredientDetail", itemId: ingredient._id });
   };
+
   const location = useLocation<ILocation>();
 
   return (
