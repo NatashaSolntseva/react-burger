@@ -7,10 +7,8 @@ import {
 
 import { TModalActions } from "../actions/modalActions";
 
-//import { IIngredient } from "../../utils/types";
-
 type TmodalInitialState = {
-  modalIngredientData: any;
+  modalIngredientData: any | null | undefined;
   isOrderDetailModalVisible: boolean;
   isIngredientDetailModalVisible: boolean;
   hasModalError: boolean;

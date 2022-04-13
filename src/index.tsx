@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import storeState from "./services/store";
 import { Provider } from "react-redux";
@@ -11,6 +12,7 @@ import { TOrderActions } from "./services/actions/orderActions";
 import { TIngredientsActions } from "./services/actions/ingredientsActions";
 import { TConstructorActions } from "./services/actions/constructorActions";
 import { TModalActions } from "./services/actions/modalActions";
+import { TUserRequestActions } from "./services/actions/userActions";
 
 import "./index.css";
 import App from "./components/app/app";
@@ -19,7 +21,8 @@ type TApplicationActions =
   | TOrderActions
   | TConstructorActions
   | TIngredientsActions
-  | TModalActions;
+  | TModalActions
+  | TUserRequestActions;
 
 export type RootState = ReturnType<typeof storeState.getState>;
 export type AppThunk<TReturn = void> = ActionCreator<
@@ -30,7 +33,9 @@ export type AppDispatch = typeof storeState.dispatch;
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={storeState}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

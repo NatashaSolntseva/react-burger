@@ -1,6 +1,6 @@
 import { IIngredient } from "../../utils/types";
-import { getResponseData, inputDataUrl } from "../../utils/api";
-import { AppDispatch, AppThunk } from "../..";
+import Api from "../../utils/api";
+import { AppDispatch, AppThunk, RootState } from "../..";
 
 export const GET_INGREDIENTS_API_REQUEST: "GET_INGREDIENTS_API_REQUEST" =
   "GET_INGREDIENTS_API_REQUEST";
@@ -48,16 +48,22 @@ const getIngredientsApiFaild = (): IGetIngredientsFailed => {
   };
 };
 
-export const getIngredientsRequestApi: AppThunk =
-  () => (dispatch: AppDispatch) => {
+export const getIngredientsRequestApi: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch(getIngredientsApiRequest());
-    return fetch(`${inputDataUrl}/ingredients`)
-      .then((res) => getResponseData(res))
-      .then((ingredients) => {
-        dispatch(getIngredientsApiSuccess(ingredients.data));
+    Api.getIngredients()
+      .then((res) => {
+        dispatch(getIngredientsApiSuccess(res.data));
       })
       .catch((error) => {
         console.log(`Данные с сервера не получены, ошибка: ${error}`);
         dispatch(getIngredientsApiFaild());
       });
   };
+};
+
+export const findIngredientById = (id: string) => (state: RootState) => {
+  return state.ingredients.ingredientsDataFromServer.find(
+    (item: IIngredient) => item._id === id
+  );
+};

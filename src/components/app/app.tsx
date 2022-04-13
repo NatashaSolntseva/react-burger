@@ -1,117 +1,88 @@
-import { useEffect, FC } from "react";
-//import { useSelector, useDispatch } from "react-redux";
-import { useAppSelector } from "../../services/hooks/hooks";
+import { FC, useCallback, useEffect } from "react";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
+
+import { ILocation } from "../../utils/types";
 import { useAppDispatch } from "../../services/hooks/hooks";
 
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-import styles from "./appStyles.module.css";
+import { closeModal } from "../../services/actions/modalActions";
 
 // компоненты
 import AppHeader from "../app-header/appHeader";
-import BurgerIngredients from "../burger-ingredients/burgerIngredients";
-
-import BurgerConstructorDndWrapper from "../burger-constructor/components/burger-constructor-dnd-wrapper/burger-constructor-dnd-wrapper";
+import ProtectedRoute from "../protected-route/protected-route";
+// страницы
+import HomePage from "../../pages/home/home";
+import LoginPage from "../../pages/login/login";
+import RegisterPage from "../../pages/register/register";
+import ForgotPswPage from "../../pages/fogot-password/forgot-password";
+import ResetPswPage from "../../pages/reset-password/reset-password";
+import ProfilePage from "../../pages/profile/profile";
+import NotFound404Page from "../../pages/not-found-404/not-found-404";
+import FeedPage from "../../pages/feed/feed";
+import OrderHistoryPage from "../../pages/order-history/order-histort";
 import Modal from "../modal/modal";
-import OrderDetails from "../order-details/orderDetails";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
-
-// серверная часть
-
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
-
-import {
-  closeModal,
-  openModalOrder,
-  openModalIngredient,
-} from "../../services/actions/modalActions";
-
-import { clearOrderList } from "../../services/actions/constructorActions";
-import { IIngredient } from "../../utils/types";
-import { TOpenModal } from "../../utils/types";
+import { checkUserAuth } from "../../services/actions/userActions";
 
 const App: FC = () => {
+  const location = useLocation<ILocation>();
+  const background = location.state && location.state.background;
+  const history = useHistory();
   const dispatch = useAppDispatch();
-
-  //запрос данных ингредиентов с сервера
-  const {
-    ingredientsApiRequest,
-    ingredientsApiFailed,
-    ingredientsDataFromServer,
-  } = useAppSelector((store) => store.ingredients);
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
-  // реализация функциона модельных окон
-
-  const {
-    isOrderDetailModalVisible,
-    isIngredientDetailModalVisible,
-    modalIngredientData,
-  } = useAppSelector((store) => store.modal);
-
-  function openModal({ modalType, itemId }: TOpenModal) {
-    if (modalType === "ingredientDetail") {
-      const ingredient = ingredientsDataFromServer.find(
-        (item: IIngredient) => item._id === itemId
-      );
-      dispatch(openModalIngredient(ingredient));
-    } else {
-      if (modalType === "orderDetail") {
-        dispatch(openModalOrder());
-      }
-    }
-  }
-
-  const handleIngredientModalClose = () => {
+  const handleIngredientModalClose = useCallback(() => {
     dispatch(closeModal());
-  };
+    history.replace("/");
+  }, [dispatch, history]);
 
-  const handleOrderModalClose = () => {
-    dispatch(closeModal());
-    dispatch(clearOrderList());
-  };
-
-  //___________________________________________render______________________________________________
   return (
-    <div className={styles.app}>
+    <>
       <AppHeader />
-      {ingredientsApiRequest && <h1>загрузка данных</h1>}
-      {ingredientsApiFailed && (
-        <main>
-          <section>
-            <h1 className="text text_type_main-large mt-3">
-              Ох, ошибка загрузки данных...
-            </h1>
-          </section>
-        </main>
+      <Switch location={background || location}>
+        <Route path="/" exact={true}>
+          <HomePage />
+        </Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        <Route path="/register">
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password">
+          <ForgotPswPage />
+        </Route>
+        <Route path="/reset-password">
+          <ResetPswPage />s
+        </Route>
+        <ProtectedRoute path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/orders">
+          <OrderHistoryPage />
+        </ProtectedRoute>
+        <Route path="/ingredients/:id" exact>
+          <IngredientDetails />
+        </Route>
+        <Route path="/feed">
+          <FeedPage />
+        </Route>
+        <Route>
+          <NotFound404Page />
+        </Route>
+      </Switch>
+      {background && (
+        <Route path="/ingredients/:id">
+          <Modal closeModal={handleIngredientModalClose}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
       )}
-      <DndProvider backend={HTML5Backend}>
-        {!ingredientsApiRequest &&
-          !ingredientsApiFailed &&
-          ingredientsDataFromServer.length && (
-            <main className={styles.content}>
-              <BurgerIngredients openModal={openModal} />
-              <BurgerConstructorDndWrapper openModal={openModal} />
-            </main>
-          )}
-      </DndProvider>
-      {/* модальное окно  - подробное описание игредиента*/}
-      {isIngredientDetailModalVisible && (
-        <Modal closeModal={handleIngredientModalClose}>
-          <IngredientDetails ingredient={modalIngredientData} />
-        </Modal>
-      )}
-      {/* модальное окно о готовности заказа. номер и т.д.*/}
-      {isOrderDetailModalVisible && (
-        <Modal closeModal={handleOrderModalClose}>
-          <OrderDetails />
-        </Modal>
-      )}
-    </div>
+    </>
   );
 };
 

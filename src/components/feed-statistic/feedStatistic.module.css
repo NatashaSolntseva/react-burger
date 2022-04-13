@@ -1,0 +1,19 @@
+.feedStatistic {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  box-sizing: border-box;
+}
+
+.feedStatsistic__listWrapper {
+  display: flex;
+  gap: 36px;
+  justify-content: space-between;
+}
+
+/*
+  TODO:
+  пользователь не должен напрямую попасть на маршрут /reset-password.
+  На эту страницу никакой пользователь не должен попадать напрямую. Только после нажатия на восстановить пароль нужно делать переход на эту страницу.
+   Для этого нужно сделать проверку, был ли пользователь на странице forgot-password перед тем, как попасть на reset-password
+*/

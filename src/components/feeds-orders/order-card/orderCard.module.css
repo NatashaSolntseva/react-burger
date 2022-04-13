@@ -1,0 +1,14 @@
+.orderCard__content {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 40px;
+  background-color: #1c1c21;
+  border: 1px solid white;
+}
+
+.orderCard__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, SyntheticEvent } from "react";
+
+import { Location } from "history";
 
 export interface IIngredient {
   _id: string;
@@ -23,7 +25,7 @@ export type TOverlayCloseModal = {
   children?: ReactNode;
 };
 
-export type TDetailIngredient = { ingredient: IIngredient };
+export type TDetailIngredient = { ingredient: IIngredient | any }; //TODO убрать any
 
 export type TOpenModal = {
   modalType: "ingredientDetail" | "orderDetail";
@@ -68,4 +70,44 @@ export interface IBurgerConstructor {
 
 export interface IBurgerIngredients {
   openModal: ({ modalType, itemId }: TOpenModal) => void;
+}
+
+export interface IFormCaption {
+  children: string;
+  linkCaption: string;
+  link: string;
+}
+
+export interface IAppForm {
+  children: ReactNode;
+  title: string;
+  onSubmit?: (evt: SyntheticEvent) => void;
+}
+
+export interface IAppFormSubmit {
+  children: ReactNode;
+}
+
+export interface ILocation extends Location {
+  from: {
+    key: string;
+    pathname: string;
+    search: string;
+    hash: string;
+    state: object;
+  };
+  background?: Location;
+}
+
+export type TUser = {
+  user: {
+    email: string;
+    name: string;
+  };
+};
+
+export interface IFeedsOrders {}
+
+export interface IStatisticStatusList {
+  title: string;
 }
