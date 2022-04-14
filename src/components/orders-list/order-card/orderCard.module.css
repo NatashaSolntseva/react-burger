@@ -20,9 +20,6 @@
   align-items: center;
 }
 
-.orderCard__title {
-}
-
 .orderCard__priceWrapper {
   display: flex;
   align-items: center;
@@ -44,4 +41,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.orderCard__subTitle {
+  color: #00cccc;
 }

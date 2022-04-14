@@ -1,12 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { deleteCookie, getCookie } from "../../utils/cookies";
-import Api from "../../utils/api";
-import {
-  LOGOUT_USER_REQUEST,
-  patchUser,
-} from "../../services/actions/userActions";
+
+import { patchUser } from "../../services/actions/userActions";
 
 import styles from "./profile.module.css";
 
@@ -15,6 +10,7 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import ProfileNav from "../../components/profile-nav/pforile-nav";
 
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -39,18 +35,6 @@ const ProfilePage: FC = () => {
   );
   //console.log("isInfo", isInfoChanged);
 
-  const handleLogoutClick = useCallback(
-    (evt: React.SyntheticEvent) => {
-      evt.preventDefault();
-      const refreshToken = getCookie("refreshToken");
-      refreshToken && Api.signOutUserRequest(refreshToken);
-      deleteCookie("refreshToken");
-      deleteCookie("accessToken");
-      dispatch({ type: LOGOUT_USER_REQUEST });
-    },
-    [dispatch]
-  );
-
   const handleResetChanges = useCallback(
     (evt: React.SyntheticEvent) => {
       evt.preventDefault();
@@ -71,43 +55,7 @@ const ProfilePage: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <aside className={styles.navwrapper}>
-        <ul className={styles.list}>
-          <li>
-            <NavLink
-              className={`text text_type_main-medium pt-4 pb-5 ${styles.listelement}`}
-              activeClassName={styles.listelement_active}
-              to="/profile"
-            >
-              Профиль
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={`text text_type_main-medium pt-4 pb-5 ${styles.listelement}`}
-              activeClassName={styles.listelement_active}
-              to="/orders"
-            >
-              История заказов
-            </NavLink>
-          </li>
-          <li>
-            <button
-              className={`text text_type_main-medium text_color_inactive pt-4 pb-5 ${styles.button}`}
-              onClick={handleLogoutClick}
-            >
-              Выход
-            </button>
-          </li>
-        </ul>
-        <div className={`mt-20`}>
-          <p
-            className={`text text_type_main-default text_color_inactive ${styles.info}`}
-          >
-            В этом разделе вы можете&nbsp; изменить свои персональные данные
-          </p>
-        </div>
-      </aside>
+      <ProfileNav />
       <form className={styles.form}>
         <FormInputWrapper>
           <Input
@@ -155,5 +103,3 @@ const ProfilePage: FC = () => {
 };
 
 export default ProfilePage;
-
-//TODO  условный рендернинг кнопок - userPassword <empty string> в хранилице

@@ -1,13 +1,14 @@
-import styles from "./feedsOrders.module.css";
+import styles from "./ordersList.module.css";
 
 import { FC } from "react";
-
-import { IFeedsOrders } from "../../utils/types";
+import Loader from "../loader/loader";
 import OrderCard from "./order-card/order-card";
 
-const FeedsOrders: FC<IFeedsOrders> = () => {
+const OrdersList: FC = () => {
   return (
-    <ul className={styles.orders__list}>
+    <ul className={styles.ordersList__list}>
+      <OrderCard />
+      <OrderCard />
       <OrderCard />
       <OrderCard />
       <OrderCard />
@@ -24,4 +25,4 @@ const FeedsOrders: FC<IFeedsOrders> = () => {
   );
 };
 
-export default FeedsOrders;
+export default OrdersList;

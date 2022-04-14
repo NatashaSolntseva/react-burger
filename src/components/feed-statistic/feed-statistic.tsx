@@ -7,7 +7,7 @@ const FeedStatistic: FC = () => {
   return (
     <section className={styles.feedStatistic}>
       <div className={styles.feedStatsistic__listWrapper}>
-        <LifeStatistic title="Готовы:" />
+        <LifeStatistic title="Готовы:" hightlightSelection />
         <LifeStatistic title="В работе:" />
       </div>
       <StatisticTotal title="Выполнено за все время:">28752</StatisticTotal>

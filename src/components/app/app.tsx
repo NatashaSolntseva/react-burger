@@ -23,6 +23,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 import { checkUserAuth } from "../../services/actions/userActions";
+import OrderInfo from "../order-info/order-info";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
@@ -59,26 +60,45 @@ const App: FC = () => {
         <Route path="/reset-password">
           <ResetPswPage />s
         </Route>
-        <ProtectedRoute path="/profile">
-          <ProfilePage />
-        </ProtectedRoute>
-        <ProtectedRoute path="/orders">
-          <OrderHistoryPage />
-        </ProtectedRoute>
         <Route path="/ingredients/:id" exact>
           <IngredientDetails />
         </Route>
-        <Route path="/feed">
+        <Route path="/feed/">
           <FeedPage />
         </Route>
+        <Route path="/feed/:id">
+          <OrderInfo />
+        </Route>
+        <ProtectedRoute path="/profile/orders">
+          <OrderHistoryPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+
         <Route>
           <NotFound404Page />
         </Route>
       </Switch>
+
       {background && (
         <Route path="/ingredients/:id">
           <Modal closeModal={handleIngredientModalClose}>
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+      {background && (
+        <Route path="/feed/:id">
+          <Modal closeModal={handleIngredientModalClose}>
+            <OrderInfo />
+          </Modal>
+        </Route>
+      )}
+      {background && (
+        <Route path="/profile/orders/:id">
+          <Modal closeModal={handleIngredientModalClose}>
+            <OrderInfo />
           </Modal>
         </Route>
       )}

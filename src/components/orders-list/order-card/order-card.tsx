@@ -1,19 +1,20 @@
 import styles from "./orderCard.module.css";
 
 import { FC } from "react";
-import { IFeedsOrders, ILocation } from "../../../utils/types";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ILocation } from "../../../utils/types";
 import getDateFormat from "../../../utils/date";
+
 import IngredientIcon from "../../ingredient-icon/ingredientIcon";
 
-const OrderCard: FC<IFeedsOrders> = () => {
+const OrderCard: FC = () => {
   const location = useLocation<ILocation>();
   return (
     <li className={styles.orderCard__item}>
       <Link
         to={{
-          pathname: "/feed/:id",
+          pathname: "/profile/orders/:id",
           state: { background: location },
         }}
         className={styles.orderCard__link}
@@ -29,6 +30,11 @@ const OrderCard: FC<IFeedsOrders> = () => {
         <h2 className={`text text_type_main-medium ${styles.orderCard__title}`}>
           {"Black Hole Singularity острый бургер"}
         </h2>
+        <p
+          className={`text text_type_main-default mt-2 ${styles.orderCard__subTitle}`}
+        >
+          Готовится
+        </p>
         <div className={styles.orderCard__ingredientsList_wrapper}>
           <ul className={styles.orderCard__ingredientsList}>
             <IngredientIcon

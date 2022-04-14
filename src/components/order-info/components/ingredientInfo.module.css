@@ -1,0 +1,15 @@
+.ingredientInfo__wrapper {
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+}
+
+.ingredientInfo__title {
+  width: 100%;
+  max-width: 415px;
+}
+
+.ingredientInfo__price {
+  width: 50%;
+  text-align: end;
+}
