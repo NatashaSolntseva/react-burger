@@ -66,7 +66,7 @@ const App: FC = () => {
         <Route path="/feed/">
           <FeedPage />
         </Route>
-        <Route path="/feed/:id">
+        <Route path="/feed/:id" exact>
           <OrderInfo />
         </Route>
         <ProtectedRoute path="/profile/orders">

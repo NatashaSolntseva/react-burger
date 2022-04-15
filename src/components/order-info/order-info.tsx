@@ -4,13 +4,21 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import styles from "./orderInfo.module.css";
 import getDateFormat from "../../utils/date";
 import IngredientInfo from "./components/ingredient-info";
+import { useParams } from "react-router-dom";
+import { useAppSelector } from "../../services/hooks/hooks";
+import { findOrderById } from "../../services/actions/orderActions";
 
 const OrderInfo: FC = () => {
+  const params = useParams<{ id: string }>();
+  const { ordersData } = useAppSelector((store) => store.feed);
+  //получили состав заказа, в т.ч. id ингредиентов
+  const exactOrder = useAppSelector(findOrderById(params.id));
+
   return (
     <div className={styles.orderInfo__wrapper}>
-      <p className="text text_type_digits-default">#{"034540"} </p>
+      <p className="text text_type_digits-default">#{exactOrder.number} </p>
       <h2 className={`text text_type_main-medium ${styles.orderInfo__title}`}>
-        {"Black Hole Singularity острый бургер"}
+        {exactOrder.name}
       </h2>
       <p className={`text text_type_main-default ${styles.orderInfo__status}`}>
         Готовится
@@ -30,7 +38,7 @@ const OrderInfo: FC = () => {
       </ul>
       <div className={styles.orderInfo__footer}>
         <time className="text text_type_main-default text_color_inactive">
-          {getDateFormat("2022-04-13T15:15:15.552Z")} i-GMT+3
+          {getDateFormat(exactOrder.createdAt)} i-GMT+3
         </time>
         <div className={styles.orderInfo__price}>
           <span className="text text_type_digits-default">510</span>

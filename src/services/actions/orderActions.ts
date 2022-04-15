@@ -1,5 +1,6 @@
 import { BASE_URL } from "../../utils/api";
-import type { AppDispatch, AppThunk } from "../../index";
+import type { AppDispatch, AppThunk, RootState } from "../../index";
+import { TWsOrder } from "../../utils/types";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.
 export const SEND_ORDER_NUMBER_REQUEST: "SEND_ORDER_NUMBER_REQUEST" =
@@ -71,4 +72,21 @@ export const getOrderNumberApi: AppThunk = (
       dispatch(sendOrderNumberFailed());
     }
   };
+};
+
+export const findOrderById = (id: string) => (state: RootState) => {
+  const order = state.feed.ordersData?.orders.find(
+    (order: TWsOrder) => order._id === id
+  );
+  return order
+    ? order
+    : {
+        _id: "",
+        status: "",
+        name: "",
+        createdAt: "",
+        updatedAt: "",
+        number: 0,
+        ingredients: [""],
+      };
 };

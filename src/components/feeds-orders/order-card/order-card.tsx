@@ -34,7 +34,7 @@ const OrderCard: FC<IOrderCard> = ({ orderData }) => {
     <li className={styles.orderCard__item}>
       <Link
         to={{
-          pathname: "/feed/:id",
+          pathname: `${orderData._id}`,
           state: { background: location },
         }}
         className={styles.orderCard__link}
