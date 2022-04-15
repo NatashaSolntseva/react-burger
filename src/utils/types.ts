@@ -107,11 +107,18 @@ export type TUser = {
   };
 };
 
-export interface IFeedsOrders {}
+export interface IFeedsOrders {
+  orders: any;
+}
+
+export interface IOrderCard {
+  orderData: any;
+}
 
 export interface IStatisticStatusList {
   title: string;
   hightlightSelection?: boolean;
+  orders?: number[] | null | undefined;
 }
 
 export interface IIngredientIcon {
@@ -135,3 +142,18 @@ export type TWsAnswer = {
   totalToday: number;
   orders: Array<TWsOrder>;
 };
+
+export type TWsOrdersActions = {
+  wsAllOrdersData: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+};
+
+export interface IFeedStatistic {
+  total: (number | string) & ReactNode;
+  totalToday: (number | string) & ReactNode;
+  doneOrders?: number[] | null;
+  pendingOrders?: number[] | null;
+}

@@ -6,6 +6,7 @@ import { IStatisticStatusList } from "../../../utils/types";
 const LifeStatistic: FC<IStatisticStatusList> = ({
   title,
   hightlightSelection,
+  orders,
 }) => {
   const style = hightlightSelection ? { color: "#00cccc" } : {};
   return (
@@ -16,21 +17,13 @@ const LifeStatistic: FC<IStatisticStatusList> = ({
         {title}
       </h2>
       <ul className={`${styles.lifeStatistic__list}`}>
-        <li className={"text text_type_digits-default"} style={style}>
-          034533
-        </li>
-        <li className={"text text_type_digits-default"} style={style}>
-          034532
-        </li>
-        <li className={"text text_type_digits-default"} style={style}>
-          034530
-        </li>
-        <li className={"text text_type_digits-default"} style={style}>
-          034527
-        </li>
-        <li className={"text text_type_digits-default"} style={style}>
-          034525
-        </li>
+        {orders?.slice(0, 10).map((order) => {
+          return (
+            <li className={"text text_type_digits-default"} style={style}>
+              {order}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

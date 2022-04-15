@@ -13,25 +13,22 @@ import {
 } from "./actions/feedActions";
 
 const wsFeedActions = {
-  wsStart: WS_CONNECTION_START,
-  wsSuccess: WS_CONNECTION_SUCCESS,
-  wsError: WS_CONNECTION_ERROR,
-  wsMessage: WS_GET_MESSAGE,
-  wsClose: WS_CONNECTION_CLOSED,
+  wsAllOrdersData: WS_CONNECTION_START,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+  onMessage: WS_GET_MESSAGE,
 };
 
-const enhancer = composeWithDevTools(applyMiddleware(thunk));
-/*
+//const enhancer = composeWithDevTools(applyMiddleware(thunk));
+
 const enhancer = composeWithDevTools(
   applyMiddleware(
     thunk,
-    socketMiddleware(
-      "wss://norma.nomoreparties.space/api/orders/all",
-      wsFeedActions
-    )
+    socketMiddleware("wss://norma.nomoreparties.space/orders", wsFeedActions)
   )
 );
-*/
+
 const storeState = createStore(rootReducer, enhancer);
 
 export default storeState;

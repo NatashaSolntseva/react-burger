@@ -33,7 +33,7 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
-    dispatch(checkUserAuth());
+    // dispatch(checkUserAuth());
   }, [dispatch]);
 
   const handleIngredientModalClose = useCallback(() => {

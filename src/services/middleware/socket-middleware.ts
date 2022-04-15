@@ -1,46 +1,50 @@
 import { AnyAction, MiddlewareAPI } from "redux";
-import { getCookie } from "../../utils/cookies";
-import { WS_CONNECTION_CLOSED } from "../actions/feedActions";
+import { TWsOrdersActions } from "../../utils/types";
 
 export const socketMiddleware = (
   wsUrl: string,
-  wsActions: { [key in any]: any },
-  isAuth?: boolean
+  wsActions: TWsOrdersActions
 ) => {
   return (store: MiddlewareAPI) => {
     let socket: WebSocket | null = null;
 
     return (next: (A: AnyAction) => void) => (action: AnyAction) => {
       const { dispatch } = store;
-      const { type, payload } = action;
-      const { wsStart, wsSuccess, wsError, wsMessage, wsClose } = wsActions;
-      const accessToken = isAuth && getCookie("accessToken");
+      const { type } = action;
+      const { wsAllOrdersData, onOpen, onClose, onError, onMessage } =
+        wsActions;
+      console.log(wsActions);
+      console.log(type);
 
-      if (type === wsStart) {
-        socket = isAuth
-          ? new WebSocket(`${wsUrl}?token=${accessToken}`)
-          : new WebSocket(`${wsUrl}/all`);
+      if (type === wsAllOrdersData) {
+        socket = new WebSocket(`${wsUrl}/all`);
       }
 
       if (socket) {
         socket.onopen = (event) => {
-          dispatch({ type: wsSuccess, payload: event });
+          console.log("Соединение установлено");
+          dispatch({ type: onOpen, payload: event });
         };
 
         socket.onerror = (event) => {
-          dispatch({ type: wsError, payload: event });
+          console.log(`Ошибка ${event}`);
+          dispatch({ type: onError, payload: event });
         };
 
         socket.onmessage = (event) => {
-          const data = JSON.parse(event.data);
+          const { data } = event;
+          //console.log(data);
+          const parsedData = JSON.parse(data);
+          const { ...resetParsedData } = parsedData;
 
-          dispatch({ type: wsMessage, payload: data });
+          dispatch({ type: onMessage, payload: resetParsedData });
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: WS_CONNECTION_CLOSED, payload: event });
+          dispatch({ type: onClose, payload: event });
         };
       }
+      next(action);
     };
   };
 };

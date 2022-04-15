@@ -1,14 +1,35 @@
 import styles from "./orderCard.module.css";
 
 import { FC } from "react";
-import { IFeedsOrders, ILocation } from "../../../utils/types";
+import { IIngredient, ILocation, IOrderCard } from "../../../utils/types";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import getDateFormat from "../../../utils/date";
 import IngredientIcon from "../../ingredient-icon/ingredientIcon";
+import { useAppSelector } from "../../../services/hooks/hooks";
 
-const OrderCard: FC<IFeedsOrders> = () => {
+const OrderCard: FC<IOrderCard> = ({ orderData }) => {
   const location = useLocation<ILocation>();
+  //console.log("orderData", orderData);
+  const { ingredientsDataFromServer } = useAppSelector(
+    (store) => store.ingredients
+  );
+  //console.log("inhredients", ingredientsDataFromServer);
+
+  ///ищем те что в составе заказа
+  const ingedientsInOrders: IIngredient[] = ingredientsDataFromServer.filter(
+    (ingredient) => {
+      return orderData.ingredients.indexOf(ingredient._id) > -1;
+    }
+  );
+  //console.log("ingedientsInOrders", ingedientsInOrders);
+  //TODO теряются булки?? одна не считается? id
+  // считаем сумму заказа
+  const totalPrice: number = ingedientsInOrders.reduce(
+    (price: number, ingredient: IIngredient) => price + ingredient.price,
+    0
+  );
+
   return (
     <li className={styles.orderCard__item}>
       <Link
@@ -21,31 +42,33 @@ const OrderCard: FC<IFeedsOrders> = () => {
         <p
           className={`text text_type_digits-default ${styles.orderCard__header}`}
         >
-          #{"034540"}{" "}
+          #{orderData.number}{" "}
           <time className={`text text_type_main-default text_color_inactive`}>
-            {getDateFormat("2022-04-13T15:15:15.552Z")} i-GMT+3
+            {getDateFormat(orderData.createdAt)} i-GMT+3
           </time>
         </p>
         <h2 className={`text text_type_main-medium ${styles.orderCard__title}`}>
-          {"Black Hole Singularity острый бургер"}
+          {orderData.name}
         </h2>
         <div className={styles.orderCard__ingredientsList_wrapper}>
           <ul className={styles.orderCard__ingredientsList}>
-            <IngredientIcon
-              img="https://code.s3.yandex.net/react/code/sauce-03-mobile.png"
-              hiddenIconsCount={4}
-            />
-            <IngredientIcon img="https://code.s3.yandex.net/react/code/meat-03-mobile.png" />
-            <IngredientIcon img="https://code.s3.yandex.net/react/code/sauce-04-mobile.png" />
-            <IngredientIcon img="https://code.s3.yandex.net/react/code/sauce-01-mobile.png" />
-            <IngredientIcon img="https://code.s3.yandex.net/react/code/meat-04-mobile.png" />
-            <IngredientIcon img="https://code.s3.yandex.net/react/code/sauce-03-mobile.png" />
+            {ingedientsInOrders.length > 5 && (
+              <IngredientIcon
+                img={
+                  ingedientsInOrders[ingedientsInOrders.length - 6].image_mobile
+                }
+                hiddenIconsCount={ingedientsInOrders.length - 5}
+              />
+            )}
+            {ingedientsInOrders.slice(-5).map((ingredient, i) => {
+              return <IngredientIcon img={ingredient.image_mobile} key={i} />;
+            })}
           </ul>
           <p className={styles.orderCard__priceWrapper}>
             <span
               className={`text text_type_digits-default ${styles.orderCard__price}`}
             >
-              {"510"}
+              {totalPrice}
             </span>
             <CurrencyIcon type="primary" />
           </p>

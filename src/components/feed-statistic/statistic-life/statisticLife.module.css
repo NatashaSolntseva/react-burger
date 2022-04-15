@@ -9,10 +9,12 @@
 
 .lifeStatistic__list {
   min-height: 152px;
+  max-height: 170px;
   list-style: none;
   margin: 24px 0 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-wrap: wrap;
 }
