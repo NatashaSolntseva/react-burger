@@ -1,11 +1,12 @@
-import styles from "./ordersList.module.css";
+import styles from "./ordersLists.module.css";
 
 import { FC } from "react";
 import Loader from "../loader/loader";
-import OrderCard from "./order-card/order-card";
-import { IOrdersList } from "../../utils/types";
 
-const OrdersList: FC<IOrdersList> = ({ ordersData }) => {
+import { IOrdersList } from "../../utils/types";
+import OrderCard from "./components/order-card";
+
+const OrdersLists: FC<IOrdersList> = ({ ordersData }) => {
   //console.log("ordersData in OrderList", ordersData);
   return !ordersData ? (
     <Loader />
@@ -19,4 +20,4 @@ const OrdersList: FC<IOrdersList> = ({ ordersData }) => {
   );
 };
 
-export default OrdersList;
+export default OrdersLists;

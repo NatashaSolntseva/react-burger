@@ -16,7 +16,6 @@ import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
-import OrderHistoryPage from "../../pages/order-history/order-histort";
 import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
@@ -67,11 +66,12 @@ const App: FC = () => {
         <Route path="/feed/">
           <FeedPage />
         </Route>
-        {/*<Route path="/feed/:id" exact>
+        <Route path="/feed/:id" exact>
           <OrderInfo />
-  </Route>*/}
-        <ProtectedRoute path="/profile/orders">
-          <OrderHistoryPage />
+        </Route>
+
+        <ProtectedRoute path="/profile/orders/:id" exact>
+          <OrderInfo />
         </ProtectedRoute>
         <ProtectedRoute path="/profile">
           <ProfilePage />

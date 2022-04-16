@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { Route } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 
 import { patchUser } from "../../services/actions/userActions";
@@ -12,11 +13,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ProfileNav from "../../components/profile-nav/pforile-nav";
 
+import {
+  WS_AUTH_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+} from "../../services/actions/feedActions";
+import Loader from "../../components/loader/loader";
+import OrdersLists from "../../components/orders-lists/orders-lists";
+
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
   const { userName, userEmail, userPassword } = useAppSelector(
     (store) => store.user
   );
+  const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,6 +37,13 @@ const ProfilePage: FC = () => {
       setEmail(userEmail);
     }
   }, [userName, userEmail]);
+
+  useEffect(() => {
+    dispatch({ type: WS_AUTH_CONNECTION_START });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
 
   const isInfoChanged = useMemo(
     () => name !== userName || email !== userEmail || password !== userPassword,
@@ -56,50 +72,69 @@ const ProfilePage: FC = () => {
   return (
     <div className={styles.wrapper}>
       <ProfileNav />
-      <form className={styles.form}>
-        <FormInputWrapper>
-          <Input
-            name="name"
-            type="text"
-            value={name}
-            onChange={(evt) => setName(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Имя"
-          />
-        </FormInputWrapper>
-        <FormInputWrapper>
-          <Input
-            name="login"
-            type="text"
-            value={email}
-            onChange={(evt) => setEmail(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Логин"
-          />
-        </FormInputWrapper>
-        <FormInputWrapper>
-          <Input
-            name="password"
-            type="password"
-            value={password}
-            onChange={(evt) => setPassword(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Пароль"
-          />
-        </FormInputWrapper>
-        {isInfoChanged && (
-          <div className={styles.form__buttons}>
-            <Button type="secondary" size="medium" onClick={handleResetChanges}>
-              Отмена
-            </Button>
-            <Button type="primary" size="medium" onClick={handleSaveChanges}>
-              Сохранить
-            </Button>
-          </div>
+      <Route path="/profile" exact>
+        <form className={styles.form}>
+          <FormInputWrapper>
+            <Input
+              name="name"
+              type="text"
+              value={name}
+              onChange={(evt) => setName(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Имя"
+            />
+          </FormInputWrapper>
+          <FormInputWrapper>
+            <Input
+              name="login"
+              type="text"
+              value={email}
+              onChange={(evt) => setEmail(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Логин"
+            />
+          </FormInputWrapper>
+          <FormInputWrapper>
+            <Input
+              name="password"
+              type="password"
+              value={password}
+              onChange={(evt) => setPassword(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Пароль"
+            />
+          </FormInputWrapper>
+          {isInfoChanged && (
+            <div className={styles.form__buttons}>
+              <Button
+                type="secondary"
+                size="medium"
+                onClick={handleResetChanges}
+              >
+                Отмена
+              </Button>
+              <Button type="primary" size="medium" onClick={handleSaveChanges}>
+                Сохранить
+              </Button>
+            </div>
+          )}
+        </form>
+      </Route>
+      <Route path="/profile/orders">
+        {wsConnected && ordersData ? (
+          <section className={styles.orderHistoryPage__content}>
+            <OrdersLists
+              ordersData={ordersData.orders && [...ordersData.orders].reverse()}
+            />
+          </section>
+        ) : (
+          <Loader />
         )}
-      </form>
+      </Route>
     </div>
   );
 };
 
 export default ProfilePage;
+
+//сначала идут более поздние по ТЗ

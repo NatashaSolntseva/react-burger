@@ -1,34 +1,41 @@
 import styles from "./orderCard.module.css";
 
 import { FC } from "react";
-import { IIngredient, ILocation, IOrderCard } from "../../../utils/types";
+import { useAppSelector } from "../../../services/hooks/hooks";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IIngredient, ILocation, IOrderCard } from "../../../utils/types";
 import getDateFormat from "../../../utils/date";
-import IngredientIcon from "../../ingredient-icon/ingredientIcon";
-import { useAppSelector } from "../../../services/hooks/hooks";
 
+import IngredientIcon from "../../ingredient-icon/ingredientIcon";
+//TODO общая карточка
 const OrderCard: FC<IOrderCard> = ({ orderData }) => {
   const location = useLocation<ILocation>();
-  //console.log("orderData", orderData);
   const { ingredientsDataFromServer } = useAppSelector(
     (store) => store.ingredients
   );
-  //console.log("inhredients", ingredientsDataFromServer);
-
-  ///ищем те что в составе заказа
   const ingedientsInOrders: IIngredient[] = ingredientsDataFromServer.filter(
     (ingredient) => {
       return orderData.ingredients.indexOf(ingredient._id) > -1;
     }
   );
-  //console.log("ingedientsInOrders", ingedientsInOrders);
-  //TODO теряются булки?? одна не считается? id
-  // считаем сумму заказа
   const totalPrice: number = ingedientsInOrders.reduce(
     (price: number, ingredient: IIngredient) => price + ingredient.price,
     0
   );
+
+  let status = "";
+  switch (orderData.status) {
+    case "created":
+      status = "Создан";
+      break;
+    case "pending":
+      status = "Готовится";
+      break;
+    case "done":
+      status = "Выполнен";
+      break;
+  }
 
   return (
     <li className={styles.orderCard__item}>
@@ -50,6 +57,13 @@ const OrderCard: FC<IOrderCard> = ({ orderData }) => {
         <h2 className={`text text_type_main-medium ${styles.orderCard__title}`}>
           {orderData.name}
         </h2>
+        <p
+          className={`text text_type_main-default mt-2 ${
+            orderData.status === "done" && styles.orderCard__subTitle
+          }`}
+        >
+          {status}
+        </p>
         <div className={styles.orderCard__ingredientsList_wrapper}>
           <ul className={styles.orderCard__ingredientsList}>
             {ingedientsInOrders.length > 5 && (

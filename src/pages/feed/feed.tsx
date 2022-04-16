@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import FeedStatistic from "../../components/feed-statistic/feed-statistic";
-import FeedsOrders from "../../components/feeds-orders/feeds-orders";
 import Loader from "../../components/loader/loader";
+import OrdersLists from "../../components/orders-lists/orders-lists";
 import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
@@ -50,7 +50,7 @@ const FeedPage: FC = () => {
           </h1>
           {ordersData.orders.length === 50 ? (
             <section className={styles.feed__orderSection}>
-              <FeedsOrders orders={ordersData.orders} />
+              <OrdersLists ordersData={ordersData.orders} />
             </section>
           ) : (
             <Loader />
