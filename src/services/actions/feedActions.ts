@@ -55,6 +55,20 @@ export interface IClickOnOrder {
   payload: number;
 }
 
+export interface IWsAuthConnectionStart {
+  readonly type: typeof WS_AUTH_CONNECTION_START;
+}
+
+export interface IWsAuthConnectionSuccess {
+  readonly type: typeof WS_AUTH_CONNECTION_SUCCESS;
+  payload: Event;
+}
+
+export interface IWsAuthConnectionError {
+  readonly type: typeof WS_AUTH_CONNECTION_ERROR;
+  payload: Event;
+}
+
 export type TWsActions =
   | IWsConnectionStart
   | IWsConnectionSuccess
@@ -62,4 +76,7 @@ export type TWsActions =
   | IWsConnectionClose
   | IWsConnectionGetMessage
   | IWsConnectionSendMessage
-  | IClickOnOrder;
+  | IClickOnOrder
+  | IWsAuthConnectionStart
+  | IWsAuthConnectionSuccess
+  | IWsAuthConnectionError;

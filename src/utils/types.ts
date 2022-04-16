@@ -111,8 +111,12 @@ export interface IFeedsOrders {
   orders: any;
 }
 
+export interface IOrdersList {
+  orders: TWsOrder[] | undefined;
+}
+
 export interface IOrderCard {
-  orderData: any;
+  orderData: TWsOrder;
 }
 
 export interface IStatisticStatusList {
@@ -145,6 +149,7 @@ export type TWsAnswer = {
 
 export type TWsOrdersActions = {
   wsAllOrdersData: string;
+  wsUserOrdersData: string;
   onOpen: string;
   onClose: string;
   onError: string;

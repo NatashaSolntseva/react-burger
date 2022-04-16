@@ -14,7 +14,7 @@ const FeedPage: FC = () => {
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
 
   console.log("wsConnected", wsConnected);
-  //console.log("ordersData", ordersData);
+  console.log("ordersData", ordersData);
 
   //номера готовых заказов
   const doneOrders: number[] | null =

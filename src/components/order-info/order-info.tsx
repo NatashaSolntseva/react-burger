@@ -7,12 +7,32 @@ import IngredientInfo from "./components/ingredient-info";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../services/hooks/hooks";
 import { findOrderById } from "../../services/actions/orderActions";
+import { IIngredient } from "../../utils/types";
+
+//TODO компонент для модалки
 
 const OrderInfo: FC = () => {
   const params = useParams<{ id: string }>();
   const { ordersData } = useAppSelector((store) => store.feed);
+  console.log("ordersData", ordersData);
   //получили состав заказа, в т.ч. id ингредиентов
   const exactOrder = useAppSelector(findOrderById(params.id));
+  //console.log("exctOrder", exactOrder);
+
+  const { ingredientsDataFromServer } = useAppSelector(
+    (store) => store.ingredients
+  );
+  /*
+  const ingedientsInOrder: IIngredient[] = ingredientsDataFromServer.filter(
+    (ingredient) => {
+      return ordersData?.orders. ingredients
+    }
+  );
+  
+  const totalPrice: number = ingedientsInOrder.reduce(
+    (price: number, ingredient: IIngredient) => price + ingredient.price,
+    0
+  );*/
 
   return (
     <div className={styles.orderInfo__wrapper}>

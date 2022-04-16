@@ -26,6 +26,21 @@ class Api {
     }).then(this._getResponseData);
   }
 
+  /***************************************************** */
+
+  getOrderNumber(orderIngredientList: string[]) {
+    return fetch(`${BASE_URL}/orders`, {
+      method: "POST",
+      headers: {
+        ...this._headers,
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+      body: JSON.stringify({ ingredients: orderIngredientList }),
+    });
+  }
+
+  /***************************************************** */
+
   registerNewUserRequest(
     email: string,
     password: string,

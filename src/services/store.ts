@@ -3,6 +3,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { rootReducer } from "../services/reducers/root-reducer";
 import { socketMiddleware } from "./middleware/socket-middleware";
+import { WS_ORDERS_URL } from "../utils/const";
 
 import {
   WS_CONNECTION_START,
@@ -10,10 +11,12 @@ import {
   WS_CONNECTION_ERROR,
   WS_GET_MESSAGE,
   WS_CONNECTION_CLOSED,
+  WS_AUTH_CONNECTION_START,
 } from "./actions/feedActions";
 
 const wsFeedActions = {
   wsAllOrdersData: WS_CONNECTION_START,
+  wsUserOrdersData: WS_AUTH_CONNECTION_START,
   onOpen: WS_CONNECTION_SUCCESS,
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
@@ -23,10 +26,7 @@ const wsFeedActions = {
 //const enhancer = composeWithDevTools(applyMiddleware(thunk));
 
 const enhancer = composeWithDevTools(
-  applyMiddleware(
-    thunk,
-    socketMiddleware("wss://norma.nomoreparties.space/orders", wsFeedActions)
-  )
+  applyMiddleware(thunk, socketMiddleware(WS_ORDERS_URL, wsFeedActions))
 );
 
 const storeState = createStore(rootReducer, enhancer);

@@ -1,6 +1,7 @@
 import { BASE_URL } from "../../utils/api";
 import type { AppDispatch, AppThunk, RootState } from "../../index";
 import { TWsOrder } from "../../utils/types";
+import { getCookie } from "../../utils/cookies";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.
 export const SEND_ORDER_NUMBER_REQUEST: "SEND_ORDER_NUMBER_REQUEST" =
@@ -53,7 +54,10 @@ export const getOrderNumberApi: AppThunk = (
   return async (dispatch: AppDispatch) => {
     const postOrderOption = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
       body: JSON.stringify({
         ingredients: orderIngredientList,
       }),
@@ -64,6 +68,7 @@ export const getOrderNumberApi: AppThunk = (
       const res = await fetch(`${BASE_URL}/orders`, postOrderOption);
       if (res.ok) {
         const serverResOrderId = await res.json();
+        console.log("yea");
         dispatch(sendOrderNumberSuccess(serverResOrderId));
       } else {
         throw new Error(`Error ${res.status}`);

@@ -1,4 +1,5 @@
 import { AnyAction, MiddlewareAPI } from "redux";
+import { getCookie } from "../../utils/cookies";
 import { TWsOrdersActions } from "../../utils/types";
 
 export const socketMiddleware = (
@@ -11,18 +12,30 @@ export const socketMiddleware = (
     return (next: (A: AnyAction) => void) => (action: AnyAction) => {
       const { dispatch } = store;
       const { type } = action;
-      const { wsAllOrdersData, onOpen, onClose, onError, onMessage } =
-        wsActions;
-      console.log(wsActions);
-      console.log(type);
+      const {
+        wsAllOrdersData,
+        wsUserOrdersData,
+        onOpen,
+        onClose,
+        onError,
+        onMessage,
+      } = wsActions;
+      console.log("wsActions:", wsActions);
+      console.log("wsTypeAction:", type);
 
       if (type === wsAllOrdersData) {
-        socket = new WebSocket(`${wsUrl}/all`);
+        socket = new WebSocket(`${wsUrl}/orders/all`);
+      }
+
+      if (type === wsUserOrdersData) {
+        const token = getCookie("accessToken").replace("Bearer ", "");
+        console.log("token in WS", token);
+        socket = new WebSocket(`${wsUrl}/orders?token=${token}`);
       }
 
       if (socket) {
         socket.onopen = (event) => {
-          console.log("Соединение установлено");
+          console.log("Соединение установлено", socket);
           dispatch({ type: onOpen, payload: event });
         };
 

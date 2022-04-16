@@ -4,8 +4,6 @@ import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 import { ILocation } from "../../utils/types";
 import { useAppDispatch } from "../../services/hooks/hooks";
 
-import { closeModal } from "../../services/actions/modalActions";
-
 // компоненты
 import AppHeader from "../app-header/appHeader";
 import ProtectedRoute from "../protected-route/protected-route";
@@ -27,19 +25,22 @@ import OrderInfo from "../order-info/order-info";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
-  const background = location.state && location.state.background;
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const background =
+    history.action === "PUSH" && location.state && location.state.background;
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
-    // dispatch(checkUserAuth());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
-  const handleIngredientModalClose = useCallback(() => {
-    dispatch(closeModal());
-    history.replace("/");
-  }, [dispatch, history]);
+  const closeModal = useCallback(
+    (href: string) => {
+      history.push(href);
+    },
+    [history]
+  );
 
   return (
     <>
@@ -66,9 +67,9 @@ const App: FC = () => {
         <Route path="/feed/">
           <FeedPage />
         </Route>
-        <Route path="/feed/:id" exact>
+        {/*<Route path="/feed/:id" exact>
           <OrderInfo />
-        </Route>
+  </Route>*/}
         <ProtectedRoute path="/profile/orders">
           <OrderHistoryPage />
         </ProtectedRoute>
@@ -83,21 +84,21 @@ const App: FC = () => {
 
       {background && (
         <Route path="/ingredients/:id">
-          <Modal closeModal={handleIngredientModalClose}>
+          <Modal closeModal={() => closeModal("/")}>
             <IngredientDetails />
           </Modal>
         </Route>
       )}
       {background && (
         <Route path="/feed/:id">
-          <Modal closeModal={handleIngredientModalClose}>
+          <Modal closeModal={() => closeModal("/feed")}>
             <OrderInfo />
           </Modal>
         </Route>
       )}
       {background && (
         <Route path="/profile/orders/:id">
-          <Modal closeModal={handleIngredientModalClose}>
+          <Modal closeModal={() => closeModal("/profile/orders")}>
             <OrderInfo />
           </Modal>
         </Route>

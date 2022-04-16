@@ -3,6 +3,8 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
+  WS_AUTH_CONNECTION_SUCCESS,
+  WS_AUTH_CONNECTION_ERROR,
 } from "../actions/feedActions";
 import { TWsAnswer } from "../../utils/types";
 import { TWsActions } from "../actions/feedActions";
@@ -45,6 +47,11 @@ export const feedOrdersReducer = (
       return {
         ...state,
         ordersData: action.payload,
+      };
+    case WS_AUTH_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        wsConnected: true,
       };
     default:
       return state;
