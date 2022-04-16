@@ -112,10 +112,14 @@ export interface IFeedsOrders {
 
 export interface IOrdersList {
   ordersData: TWsOrder[] | undefined;
+  isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
+  path: string;
 }
 
 export interface IOrderCard {
   orderData: TWsOrder | any;
+  isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
+  path: string;
 }
 
 export interface IStatisticStatusList {

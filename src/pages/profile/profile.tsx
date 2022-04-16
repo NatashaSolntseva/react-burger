@@ -125,6 +125,8 @@ const ProfilePage: FC = () => {
           <section className={styles.orderHistoryPage__content}>
             <OrdersLists
               ordersData={ordersData.orders && [...ordersData.orders].reverse()}
+              path="/profile/orders/"
+              isOrderStatus
             />
           </section>
         ) : (

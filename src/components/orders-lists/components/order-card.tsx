@@ -8,8 +8,8 @@ import { IIngredient, ILocation, IOrderCard } from "../../../utils/types";
 import getDateFormat from "../../../utils/date";
 
 import IngredientIcon from "../../ingredient-icon/ingredientIcon";
-//TODO общая карточка
-const OrderCard: FC<IOrderCard> = ({ orderData }) => {
+
+const OrderCard: FC<IOrderCard> = ({ orderData, path, isOrderStatus }) => {
   const location = useLocation<ILocation>();
   const { ingredientsDataFromServer } = useAppSelector(
     (store) => store.ingredients
@@ -41,7 +41,7 @@ const OrderCard: FC<IOrderCard> = ({ orderData }) => {
     <li className={styles.orderCard__item}>
       <Link
         to={{
-          pathname: `${orderData._id}`,
+          pathname: `${path}${orderData._id}`,
           state: { background: location },
         }}
         className={styles.orderCard__link}
@@ -57,13 +57,16 @@ const OrderCard: FC<IOrderCard> = ({ orderData }) => {
         <h2 className={`text text_type_main-medium ${styles.orderCard__title}`}>
           {orderData.name}
         </h2>
-        <p
-          className={`text text_type_main-default mt-2 ${
-            orderData.status === "done" && styles.orderCard__subTitle
-          }`}
-        >
-          {status}
-        </p>
+        {isOrderStatus && (
+          <p
+            className={`text text_type_main-default mt-2 ${
+              orderData.status === "done" && styles.orderCard__subTitle
+            }`}
+          >
+            {status}
+          </p>
+        )}
+
         <div className={styles.orderCard__ingredientsList_wrapper}>
           <ul className={styles.orderCard__ingredientsList}>
             {ingedientsInOrders.length > 5 && (
