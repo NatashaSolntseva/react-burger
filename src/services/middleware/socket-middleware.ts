@@ -20,8 +20,8 @@ export const socketMiddleware = (
         onError,
         onMessage,
       } = wsActions;
-      console.log("wsActions:", wsActions);
-      console.log("wsTypeAction:", type);
+      //console.log("wsActions:", wsActions);
+      //console.log("wsTypeAction:", type);
 
       if (type === wsAllOrdersData) {
         socket = new WebSocket(`${wsUrl}/orders/all`);
@@ -29,18 +29,18 @@ export const socketMiddleware = (
 
       if (type === wsUserOrdersData) {
         const token = getCookie("accessToken").replace("Bearer ", "");
-        console.log("token in WS", token);
+        //console.log("token in WS", token);
         socket = new WebSocket(`${wsUrl}/orders?token=${token}`);
       }
 
       if (socket) {
         socket.onopen = (event) => {
-          console.log("Соединение установлено", socket);
+          //console.log("Соединение установлено", socket);
           dispatch({ type: onOpen, payload: event });
         };
 
         socket.onerror = (event) => {
-          console.log(`Ошибка ${event}`);
+          //console.log(`Ошибка ${event}`);
           dispatch({ type: onError, payload: event });
         };
 

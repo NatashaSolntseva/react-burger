@@ -1,7 +1,6 @@
 import { ReactNode, SyntheticEvent } from "react";
 
 import { Location } from "history";
-import { type } from "os";
 
 export interface IIngredient {
   _id: string;
@@ -112,11 +111,11 @@ export interface IFeedsOrders {
 }
 
 export interface IOrdersList {
-  orders: TWsOrder[] | undefined;
+  ordersData: TWsOrder[] | undefined;
 }
 
 export interface IOrderCard {
-  orderData: TWsOrder;
+  orderData: TWsOrder | any;
 }
 
 export interface IStatisticStatusList {
@@ -144,7 +143,7 @@ export type TWsAnswer = {
   success: boolean;
   total: number;
   totalToday: number;
-  orders: Array<TWsOrder>;
+  orders: TWsOrder[];
 };
 
 export type TWsOrdersActions = {

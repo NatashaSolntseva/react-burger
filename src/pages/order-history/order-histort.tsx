@@ -8,12 +8,13 @@ import {
   WS_AUTH_CONNECTION_START,
   WS_CONNECTION_CLOSED,
 } from "../../services/actions/feedActions";
+import Loader from "../../components/loader/loader";
 
 const OrderHistoryPage: FC = () => {
   const dispatch = useAppDispatch();
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
-  console.log("wsConnected", wsConnected);
-  console.log("ordersData", ordersData);
+  // console.log("wsAuthConnected", wsConnected);
+  //console.log("ordersData in ordersHistoryPage", ordersData);
 
   useEffect(() => {
     dispatch({ type: WS_AUTH_CONNECTION_START });
@@ -25,9 +26,13 @@ const OrderHistoryPage: FC = () => {
   return (
     <main className={styles.orderHistoryPage__wrapper}>
       <ProfileNav />
-      <section className={styles.orderHistoryPage__content}>
-        <OrdersList />
-      </section>
+      {wsConnected && ordersData ? (
+        <section className={styles.orderHistoryPage__content}>
+          <OrdersList ordersData={ordersData.orders} />
+        </section>
+      ) : (
+        <Loader />
+      )}
     </main>
   );
 };

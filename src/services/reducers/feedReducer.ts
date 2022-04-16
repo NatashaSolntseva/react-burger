@@ -53,6 +53,11 @@ export const feedOrdersReducer = (
         ...state,
         wsConnected: true,
       };
+    case WS_AUTH_CONNECTION_ERROR:
+      return {
+        ...state,
+        wsError: true,
+      };
     default:
       return state;
   }
