@@ -51,19 +51,19 @@ const App: FC = () => {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <Route path="/register">
+        <Route path="/register" exact>
           <RegisterPage />
         </Route>
-        <Route path="/forgot-password">
+        <Route path="/forgot-password" exact>
           <ForgotPswPage />
         </Route>
-        <Route path="/reset-password">
+        <Route path="/reset-password" exact>
           <ResetPswPage />s
         </Route>
         <Route path="/ingredients/:id" exact>
           <IngredientDetails />
         </Route>
-        <Route path="/feed/">
+        <Route path="/feed" exact>
           <FeedPage />
         </Route>
         <Route path="/feed/:id" exact>
@@ -73,7 +73,7 @@ const App: FC = () => {
         <ProtectedRoute path="/profile/orders/:id" exact>
           <OrderInfo />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile">
+        <ProtectedRoute path="/profile" exact>
           <ProfilePage />
         </ProtectedRoute>
 
