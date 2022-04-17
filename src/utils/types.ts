@@ -129,7 +129,7 @@ export interface IStatisticStatusList {
 }
 
 export interface IIngredientIcon {
-  img: string;
+  img?: string;
   hiddenIconsCount?: number;
 }
 
@@ -165,3 +165,19 @@ export interface IFeedStatistic {
   doneOrders?: number[] | null;
   pendingOrders?: number[] | null;
 }
+
+export type TOrdersIngredient = {
+  _id?: string;
+  name?: string;
+  type?: string;
+  proteins?: number;
+  fat?: number;
+  carbohydrates?: number;
+  calories?: number;
+  price?: number;
+  image?: string;
+  image_mobile?: string | undefined;
+  image_large?: string;
+  __v?: number;
+  uid?: string;
+};

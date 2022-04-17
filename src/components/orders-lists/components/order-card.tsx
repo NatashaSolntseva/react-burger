@@ -4,24 +4,16 @@ import { FC } from "react";
 import { useAppSelector } from "../../../services/hooks/hooks";
 import { Link, useLocation } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient, ILocation, IOrderCard } from "../../../utils/types";
+import { ILocation, IOrderCard } from "../../../utils/types";
 import getDateFormat from "../../../utils/date";
 
 import IngredientIcon from "../../ingredient-icon/ingredientIcon";
+import { getOrderIngredientsDataByIds } from "../../../services/actions/ingredientsActions";
 
 const OrderCard: FC<IOrderCard> = ({ orderData, path, isOrderStatus }) => {
   const location = useLocation<ILocation>();
-  const { ingredientsDataFromServer } = useAppSelector(
-    (store) => store.ingredients
-  );
-  const ingedientsInOrders: IIngredient[] = ingredientsDataFromServer.filter(
-    (ingredient) => {
-      return orderData.ingredients.indexOf(ingredient._id) > -1;
-    }
-  );
-  const totalPrice: number = ingedientsInOrders.reduce(
-    (price: number, ingredient: IIngredient) => price + ingredient.price,
-    0
+  const { ingredients, totalPrice } = useAppSelector(
+    getOrderIngredientsDataByIds(orderData.ingredients)
   );
 
   let status = "";
@@ -69,16 +61,14 @@ const OrderCard: FC<IOrderCard> = ({ orderData, path, isOrderStatus }) => {
 
         <div className={styles.orderCard__ingredientsList_wrapper}>
           <ul className={styles.orderCard__ingredientsList}>
-            {ingedientsInOrders.length > 5 && (
+            {ingredients.length > 5 && (
               <IngredientIcon
-                img={
-                  ingedientsInOrders[ingedientsInOrders.length - 6].image_mobile
-                }
-                hiddenIconsCount={ingedientsInOrders.length - 5}
+                img={ingredients[ingredients.length - 6]?.image_mobile}
+                hiddenIconsCount={ingredients.length - 5}
               />
             )}
-            {ingedientsInOrders.slice(-5).map((ingredient, i) => {
-              return <IngredientIcon img={ingredient.image_mobile} key={i} />;
+            {ingredients.slice(-5).map((ingredient, i) => {
+              return <IngredientIcon img={ingredient?.image_mobile} key={i} />;
             })}
           </ul>
           <p className={styles.orderCard__priceWrapper}>

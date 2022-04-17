@@ -10,4 +10,5 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   max-height: calc(100vh - 286px);
+  scrollbar-width: thin;
 }
