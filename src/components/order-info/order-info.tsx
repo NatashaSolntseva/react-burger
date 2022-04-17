@@ -1,31 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FC } from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./orderInfo.module.css";
 import getDateFormat from "../../utils/date";
 import IngredientInfo from "./components/ingredient-info";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../services/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 import { findOrderById } from "../../services/actions/orderActions";
 import Loader from "../loader/loader";
 import { getOrderIngredientsDataByIds } from "../../services/actions/ingredientsActions";
+import {
+  WS_AUTH_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../services/actions/feedActions";
 
 //TODO компонент для модалки
 
-const OrderInfo: FC = () => {
+const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
+  const dispatch = useAppDispatch();
+
   const params = useParams<{ id: string }>();
+
   const { ordersData, wsError, wsConnected } = useAppSelector(
     (store) => store.feed
   );
+
+  useEffect(() => {
+    if (!ordersData) {
+      protectedRoute
+        ? dispatch({ type: WS_CONNECTION_START })
+        : dispatch({ type: WS_AUTH_CONNECTION_START });
+      return () => {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      };
+    }
+  }, [dispatch, ordersData, protectedRoute]);
+
+  console.log("wsConnected", wsConnected);
   console.log("ordersData in OrderInfo", ordersData);
   //получили состав заказа, в т.ч. id ингредиентов
   const exactOrder = useAppSelector(findOrderById(params.id));
-  //console.log("exctOrder", exactOrder);
+  console.log("exctOrder", exactOrder);
   //console.log("exactOrder.ingredients", exactOrder.ingredients); //тут id лежат
 
   const { ingredients, totalPrice } = useAppSelector(
     getOrderIngredientsDataByIds(exactOrder.ingredients)
   );
+
+  if (!ordersData) {
+    console.log("не получены данные для отображения");
+  }
+  console.log("ordersData in OrderInfo", ordersData);
 
   //console.log("ingredients", ingredients);
   //console.log("totalPrice", totalPrice);
@@ -44,8 +70,9 @@ const OrderInfo: FC = () => {
   }
 
   //TODO не работает лоадер? пустой массив
+  console.log("ingredients.length", ingredients);
 
-  return wsError && !wsConnected && !ordersData ? (
+  return wsError && !wsConnected && ingredients.length === 1 ? (
     <Loader />
   ) : (
     <div className={styles.orderInfo__wrapper}>

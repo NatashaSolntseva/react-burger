@@ -11,7 +11,15 @@ import styles from "./feedStyles.module.css";
 
 const FeedPage: FC = () => {
   const dispatch = useAppDispatch();
+
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
+
+  useEffect(() => {
+    if (!ordersData) dispatch({ type: WS_CONNECTION_START });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
 
   //console.log("wsConnected", wsConnected);
   //console.log("ordersData", ordersData);
@@ -33,13 +41,6 @@ const FeedPage: FC = () => {
       .map((order) => order.number);
 
   //console.log("pendingOrders", pendingOrders);
-
-  useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START });
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
-    };
-  }, [dispatch]);
 
   return (
     <>
