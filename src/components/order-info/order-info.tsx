@@ -14,6 +14,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_START,
 } from "../../services/actions/feedActions";
+import { IIngredient, TWsOrder } from "../../utils/types";
 
 //TODO компонент для модалки
 
@@ -22,42 +23,59 @@ const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
 
   const params = useParams<{ id: string }>();
 
-  const { ordersData, wsError, wsConnected } = useAppSelector(
-    (store) => store.feed
+  const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
+
+  const { ingredientsDataFromServer } = useAppSelector(
+    (store) => store.ingredients
   );
+
+  /*if (!ordersData) {
+    console.log("не получены данные для отображения");
+  }*/
+  console.log("ordersData in OrderInfo", ordersData);
+
+  //console.log("protectedRoute", protectedRoute);
 
   useEffect(() => {
     if (!ordersData) {
       protectedRoute
         ? dispatch({ type: WS_CONNECTION_START })
         : dispatch({ type: WS_AUTH_CONNECTION_START });
-      return () => {
-        dispatch({ type: WS_CONNECTION_CLOSED });
-      };
     }
   }, [dispatch, ordersData, protectedRoute]);
 
   console.log("wsConnected", wsConnected);
   console.log("ordersData in OrderInfo", ordersData);
   //получили состав заказа, в т.ч. id ингредиентов
-  const exactOrder = useAppSelector(findOrderById(params.id));
+  //const exactOrder = useAppSelector(findOrderById(params.id));
+
+  const exactOrder = ordersData?.orders.find(
+    (order: TWsOrder) => order._id === params.id
+  );
   console.log("exctOrder", exactOrder);
   //console.log("exactOrder.ingredients", exactOrder.ingredients); //тут id лежат
 
-  const { ingredients, totalPrice } = useAppSelector(
+  /*const { ingredients, totalPrice } = useAppSelector(
     getOrderIngredientsDataByIds(exactOrder.ingredients)
   );
-
-  if (!ordersData) {
-    console.log("не получены данные для отображения");
-  }
-  console.log("ordersData in OrderInfo", ordersData);
+*/
 
   //console.log("ingredients", ingredients);
   //console.log("totalPrice", totalPrice);
 
+  const ingredients = exactOrder?.ingredients
+    .filter((id) => typeof id === "string")
+    .map((id) =>
+      ingredientsDataFromServer.find((item: IIngredient) => item._id === id)
+    );
+
+  const totalPrice = ingredients?.reduce((sum, ingredient) => {
+    if (ingredient) sum += ingredient.price;
+    return sum;
+  }, 0);
+
   let status = "";
-  switch (exactOrder.status) {
+  switch (exactOrder?.status) {
     case "created":
       status = "Создан";
       break;
@@ -72,13 +90,13 @@ const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
   //TODO не работает лоадер? пустой массив
   console.log("ingredients.length", ingredients);
 
-  return wsError && !wsConnected && ingredients.length === 1 ? (
+  return !ordersData ? (
     <Loader />
   ) : (
     <div className={styles.orderInfo__wrapper}>
-      <p className={`text text_type_digits-default`}>#{exactOrder.number} </p>
+      <p className={`text text_type_digits-default`}>#{exactOrder?.number} </p>
       <h2 className={`text text_type_main-medium ${styles.orderInfo__title}`}>
-        {exactOrder.name}
+        {exactOrder?.name}
       </h2>
       <p className={`text text_type_main-default ${styles.orderInfo__status}`}>
         {status}
@@ -87,13 +105,13 @@ const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
         Состав:
       </p>
       <ul className={`mt-6 ${styles.orderInfo__list}`}>
-        {ingredients.map((item: any, index: number) => {
+        {ingredients?.map((item: any, index: number) => {
           return <IngredientInfo ingredient={item} key={index} />;
         })}
       </ul>
       <div className={styles.orderInfo__footer}>
         <time className="text text_type_main-default text_color_inactive">
-          {getDateFormat(exactOrder.createdAt)} i-GMT+3
+          {getDateFormat(exactOrder?.createdAt)} i-GMT+3
         </time>
         <div className={styles.orderInfo__price}>
           <span className="text text_type_digits-default">{totalPrice}</span>
@@ -105,3 +123,14 @@ const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
 };
 
 export default React.memo(OrderInfo);
+
+/*
+
+для модалок не нужно обрывать связб
+
+      return () => {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      };
+
+      
+*/

@@ -136,6 +136,15 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
       body: JSON.stringify({ password: password, token: accessToken }),
     }).then(this._getResponseData);
   }
+
+  getOrderByIdApi(id: string) {
+    return fetch(`${BASE_URL}/orders/${id}`, {
+      method: "GET",
+      headers: {
+        ...this._headers,
+      },
+    }).then(this._getResponseData);
+  }
 }
 
 export default new Api({ url: BASE_URL });

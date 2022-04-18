@@ -134,7 +134,7 @@ export interface IIngredientIcon {
 }
 
 export type TWsOrder = {
-  createdAt: string;
+  createdAt: any | undefined;
   ingredients: string[];
   name: string;
   number: number;

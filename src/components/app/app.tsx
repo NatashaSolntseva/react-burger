@@ -99,7 +99,7 @@ const App: FC = () => {
       {background && (
         <Route path="/profile/orders/:id">
           <Modal closeModal={() => closeModal("/profile/orders")}>
-            <OrderInfo />
+            <OrderInfo protectedRoute />
           </Modal>
         </Route>
       )}
