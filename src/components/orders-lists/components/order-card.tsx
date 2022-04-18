@@ -33,7 +33,7 @@ const OrderCard: FC<IOrderCard> = ({ orderData, path, isOrderStatus }) => {
     <li className={styles.orderCard__item}>
       <Link
         to={{
-          pathname: `${path}${orderData._id}`,
+          pathname: `${path}${orderData.number}`,
           state: { background: location },
         }}
         className={styles.orderCard__link}

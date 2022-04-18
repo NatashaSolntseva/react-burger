@@ -66,11 +66,11 @@ const App: FC = () => {
         <Route path="/feed" exact>
           <FeedPage />
         </Route>
-        <Route path="/feed/:id" exact>
+        <Route path="/feed/:number" exact>
           <OrderInfo />
         </Route>
 
-        <ProtectedRoute path="/profile/orders/:id" exact>
+        <ProtectedRoute path="/profile/orders/:number" exact>
           <OrderInfo protectedRoute />
         </ProtectedRoute>
         <ProtectedRoute path="/profile">
@@ -90,14 +90,14 @@ const App: FC = () => {
         </Route>
       )}
       {background && (
-        <Route path="/feed/:id">
+        <Route path="/feed/:number">
           <Modal closeModal={() => closeModal("/feed")}>
             <OrderInfo />
           </Modal>
         </Route>
       )}
       {background && (
-        <Route path="/profile/orders/:id">
+        <Route path="/profile/orders/:number">
           <Modal closeModal={() => closeModal("/profile/orders")}>
             <OrderInfo protectedRoute />
           </Modal>

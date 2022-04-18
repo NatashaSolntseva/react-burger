@@ -137,8 +137,8 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
     }).then(this._getResponseData);
   }
 
-  getOrderByIdApi(id: string) {
-    return fetch(`${BASE_URL}/orders/${id}`, {
+  getOrderByNumberApi(number: string) {
+    return fetch(`${BASE_URL}/orders/${number}`, {
       method: "GET",
       headers: {
         ...this._headers,

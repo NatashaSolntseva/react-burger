@@ -21,7 +21,7 @@ import { IIngredient, TWsOrder } from "../../utils/types";
 const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
   const dispatch = useAppDispatch();
 
-  const params = useParams<{ id: string }>();
+  const params = useParams<{ number: string }>();
 
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
 
@@ -50,7 +50,7 @@ const OrderInfo: FC<{ protectedRoute?: boolean }> = ({ protectedRoute }) => {
   //const exactOrder = useAppSelector(findOrderById(params.id));
 
   const exactOrder = ordersData?.orders.find(
-    (order: TWsOrder) => order._id === params.id
+    (order: TWsOrder) => order.number === Number(params.number)
   );
   console.log("exctOrder", exactOrder);
   //console.log("exactOrder.ingredients", exactOrder.ingredients); //тут id лежат
