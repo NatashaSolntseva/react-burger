@@ -6,9 +6,9 @@ import Loader from "../loader/loader";
 const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
   const { isAuthChecked, userIsAuth } = useAppSelector((store) => store.user);
 
-  if (!isAuthChecked) {
+  /*if (!isAuthChecked) {
     return <Loader />;
-  }
+  }*/
 
   return (
     <Route

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import styles from "./profileNav.module.css";
 import Api from "../../utils/api";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useAppDispatch } from "../../services/hooks/hooks";
 import { deleteCookie, getCookie } from "../../utils/cookies";
 
@@ -10,6 +10,7 @@ import { LOGOUT_USER_REQUEST } from "../../services/actions/userActions";
 
 const ProfileNav = () => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const handleLogoutClick = useCallback(
     (evt: React.SyntheticEvent) => {
@@ -19,6 +20,7 @@ const ProfileNav = () => {
       deleteCookie("refreshToken");
       deleteCookie("accessToken");
       dispatch({ type: LOGOUT_USER_REQUEST });
+      history.push("/login");
     },
     [dispatch]
   );
