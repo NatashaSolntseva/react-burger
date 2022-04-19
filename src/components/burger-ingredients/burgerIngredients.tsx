@@ -47,9 +47,9 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
   );
 
   // реализация функционала скрола
-  const bunRef = useRef<HTMLParagraphElement>(null);
-  const sauceRef = useRef<HTMLParagraphElement>(null);
-  const mainRef = useRef<HTMLParagraphElement>(null);
+  const bunRef = useRef<HTMLLIElement>(null);
+  const sauceRef = useRef<HTMLLIElement>(null);
+  const mainRef = useRef<HTMLLIElement>(null);
 
   const [currentTab, setCurrentTab] = useState("buns");
 
@@ -140,33 +140,29 @@ const BurgerIngredients: FC<IBurgerIngredients> = ({ openModal }) => {
         className={`${styles.burger_list_container} pt-25`}
         onScroll={handleIngredientListScroll}
       >
-        <li>
-          <IngredientGroup
-            groupName={"Булки"}
-            groupElements={buns}
-            ref={bunRef}
-            openModal={openModal}
-            count={ingredientCounter}
-          />
-        </li>
-        <li>
-          <IngredientGroup
-            groupName={"Соусы"}
-            groupElements={sauces}
-            ref={sauceRef}
-            openModal={openModal}
-            count={ingredientCounter}
-          />
-        </li>
-        <li>
-          <IngredientGroup
-            groupName={"Начинки"}
-            groupElements={mains}
-            ref={mainRef}
-            openModal={openModal}
-            count={ingredientCounter}
-          />
-        </li>
+        <IngredientGroup
+          groupName={"Булки"}
+          groupElements={buns}
+          ref={bunRef}
+          openModal={openModal}
+          count={ingredientCounter}
+        />
+
+        <IngredientGroup
+          groupName={"Соусы"}
+          groupElements={sauces}
+          ref={sauceRef}
+          openModal={openModal}
+          count={ingredientCounter}
+        />
+
+        <IngredientGroup
+          groupName={"Начинки"}
+          groupElements={mains}
+          ref={mainRef}
+          openModal={openModal}
+          count={ingredientCounter}
+        />
       </ul>
     </section>
   );

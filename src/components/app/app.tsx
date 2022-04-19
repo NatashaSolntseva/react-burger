@@ -4,8 +4,6 @@ import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 import { ILocation } from "../../utils/types";
 import { useAppDispatch } from "../../services/hooks/hooks";
 
-import { closeModal } from "../../services/actions/modalActions";
-
 // компоненты
 import AppHeader from "../app-header/appHeader";
 import ProtectedRoute from "../protected-route/protected-route";
@@ -18,27 +16,30 @@ import ResetPswPage from "../../pages/reset-password/reset-password";
 import ProfilePage from "../../pages/profile/profile";
 import NotFound404Page from "../../pages/not-found-404/not-found-404";
 import FeedPage from "../../pages/feed/feed";
-import OrderHistoryPage from "../../pages/order-history/order-histort";
 import Modal from "../modal/modal";
 import IngredientDetails from "../burger-ingredients/components/ingredient-detail/ingredientDetails";
 import { getIngredientsRequestApi } from "../../services/actions/ingredientsActions";
 import { checkUserAuth } from "../../services/actions/userActions";
+import OrderInfo from "../order-info/order-info";
 
 const App: FC = () => {
   const location = useLocation<ILocation>();
-  const background = location.state && location.state.background;
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const background =
+    history.action === "PUSH" && location.state && location.state.background;
 
   useEffect(() => {
     dispatch(getIngredientsRequestApi());
     dispatch(checkUserAuth());
   }, [dispatch]);
 
-  const handleIngredientModalClose = useCallback(() => {
-    dispatch(closeModal());
-    history.replace("/");
-  }, [dispatch, history]);
+  const closeModal = useCallback(
+    (href: string) => {
+      history.push(href);
+    },
+    [history]
+  );
 
   return (
     <>
@@ -59,26 +60,46 @@ const App: FC = () => {
         <Route path="/reset-password">
           <ResetPswPage />s
         </Route>
-        <ProtectedRoute path="/profile">
-          <ProfilePage />
-        </ProtectedRoute>
-        <ProtectedRoute path="/orders">
-          <OrderHistoryPage />
-        </ProtectedRoute>
         <Route path="/ingredients/:id" exact>
           <IngredientDetails />
         </Route>
-        <Route path="/feed">
+        <Route path="/feed" exact>
           <FeedPage />
         </Route>
+        <Route path="/feed/:number" exact>
+          <OrderInfo />
+        </Route>
+
+        <ProtectedRoute path="/profile/orders/:number" exact>
+          <OrderInfo />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+
         <Route>
           <NotFound404Page />
         </Route>
       </Switch>
+
       {background && (
         <Route path="/ingredients/:id">
-          <Modal closeModal={handleIngredientModalClose}>
+          <Modal closeModal={() => closeModal("/")}>
             <IngredientDetails />
+          </Modal>
+        </Route>
+      )}
+      {background && (
+        <Route path="/feed/:number">
+          <Modal closeModal={() => closeModal("/feed")}>
+            <OrderInfo />
+          </Modal>
+        </Route>
+      )}
+      {background && (
+        <Route path="/profile/orders/:number">
+          <Modal closeModal={() => closeModal("/profile/orders")}>
+            <OrderInfo />
           </Modal>
         </Route>
       )}

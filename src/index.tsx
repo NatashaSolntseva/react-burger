@@ -16,13 +16,15 @@ import { TUserRequestActions } from "./services/actions/userActions";
 
 import "./index.css";
 import App from "./components/app/app";
+import { TWsActions } from "./services/actions/feedActions";
 
 type TApplicationActions =
   | TOrderActions
   | TConstructorActions
   | TIngredientsActions
   | TModalActions
-  | TUserRequestActions;
+  | TUserRequestActions
+  | TWsActions;
 
 export type RootState = ReturnType<typeof storeState.getState>;
 export type AppThunk<TReturn = void> = ActionCreator<

@@ -1,7 +1,7 @@
 .burger_ingredients {
   height: 750px;
   width: 600px;
-  padding-left: 24px;    
+  padding-left: 24px;
 }
 
 .burger_menu_tab {
@@ -9,10 +9,11 @@
 }
 
 .burger_list_container {
+  margin: 0;
   padding: 0px;
-  list-style: none;  
+  list-style: none;
   overflow-y: scroll;
   overflow-x: hidden;
   height: calc(100vh - 384px);
-  scrollbar-width: thin;  
-} 
+  scrollbar-width: thin;
+}

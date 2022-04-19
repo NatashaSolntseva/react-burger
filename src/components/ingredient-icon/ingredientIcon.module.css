@@ -1,0 +1,36 @@
+.ingerdientIcon__wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 2px;
+  box-sizing: content-box;
+  background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  position: relative;
+}
+
+.ingredientIcon__image {
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center;
+  background: #131316;
+  border-radius: 50%;
+}
+
+.ingerdientIcon__wrapper:not(:last-child) {
+  margin-left: -18px;
+}
+
+.ingredientIcon__hidden {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(28, 28, 33, 0.6);
+}

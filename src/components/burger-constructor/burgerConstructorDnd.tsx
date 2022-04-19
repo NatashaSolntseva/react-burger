@@ -15,6 +15,7 @@ import BunMold from "./components/bun-mold/bunMold";
 import BurgerConstructorElementDndWrapper from "./components/burger-constructor-element-dnd-wrapper/burgerConstructorElementDndWrapper";
 
 import { getOrderNumberApi } from "../../services/actions/orderActions";
+
 import { deleteIngredient } from "../../services/actions/constructorActions";
 
 import { IBurgerConstructor } from "../../utils/types";
@@ -75,7 +76,7 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
         <ul className={styles.ingredients_list} ref={ref}>
           <li className={`${styles.ingredient} ${styles.top_container}`}>
             {!droppedBun ? (
-              <BunMold position="top">Перетащи себе булочку</BunMold>
+              <BunMold position="top">Добавь булочку</BunMold>
             ) : (
               <ConstructorElement
                 type="top"

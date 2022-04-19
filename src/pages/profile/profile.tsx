@@ -1,12 +1,8 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { deleteCookie, getCookie } from "../../utils/cookies";
-import Api from "../../utils/api";
-import {
-  LOGOUT_USER_REQUEST,
-  patchUser,
-} from "../../services/actions/userActions";
+
+import { patchUser } from "../../services/actions/userActions";
 
 import styles from "./profile.module.css";
 
@@ -15,12 +11,21 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import ProfileNav from "../../components/profile-nav/pforile-nav";
+
+import {
+  WS_AUTH_CONNECTION_START,
+  WS_CONNECTION_CLOSED,
+} from "../../services/actions/feedActions";
+import Loader from "../../components/loader/loader";
+import OrdersLists from "../../components/orders-lists/orders-lists";
 
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
   const { userName, userEmail, userPassword } = useAppSelector(
     (store) => store.user
   );
+  const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,23 +38,18 @@ const ProfilePage: FC = () => {
     }
   }, [userName, userEmail]);
 
+  useEffect(() => {
+    dispatch({ type: WS_AUTH_CONNECTION_START });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
+
   const isInfoChanged = useMemo(
     () => name !== userName || email !== userEmail || password !== userPassword,
     [userName, userEmail, userPassword, name, email, password]
   );
   //console.log("isInfo", isInfoChanged);
-
-  const handleLogoutClick = useCallback(
-    (evt: React.SyntheticEvent) => {
-      evt.preventDefault();
-      const refreshToken = getCookie("refreshToken");
-      refreshToken && Api.signOutUserRequest(refreshToken);
-      deleteCookie("refreshToken");
-      deleteCookie("accessToken");
-      dispatch({ type: LOGOUT_USER_REQUEST });
-    },
-    [dispatch]
-  );
 
   const handleResetChanges = useCallback(
     (evt: React.SyntheticEvent) => {
@@ -71,89 +71,72 @@ const ProfilePage: FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <aside className={styles.navwrapper}>
-        <ul className={styles.list}>
-          <li>
-            <NavLink
-              className={`text text_type_main-medium pt-4 pb-5 ${styles.listelement}`}
-              activeClassName={styles.listelement_active}
-              to="/profile"
-            >
-              Профиль
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={`text text_type_main-medium pt-4 pb-5 ${styles.listelement}`}
-              activeClassName={styles.listelement_active}
-              to="/orders"
-            >
-              История заказов
-            </NavLink>
-          </li>
-          <li>
-            <button
-              className={`text text_type_main-medium text_color_inactive pt-4 pb-5 ${styles.button}`}
-              onClick={handleLogoutClick}
-            >
-              Выход
-            </button>
-          </li>
-        </ul>
-        <div className={`mt-20`}>
-          <p
-            className={`text text_type_main-default text_color_inactive ${styles.info}`}
-          >
-            В этом разделе вы можете&nbsp; изменить свои персональные данные
-          </p>
-        </div>
-      </aside>
-      <form className={styles.form}>
-        <FormInputWrapper>
-          <Input
-            name="name"
-            type="text"
-            value={name}
-            onChange={(evt) => setName(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Имя"
-          />
-        </FormInputWrapper>
-        <FormInputWrapper>
-          <Input
-            name="login"
-            type="text"
-            value={email}
-            onChange={(evt) => setEmail(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Логин"
-          />
-        </FormInputWrapper>
-        <FormInputWrapper>
-          <Input
-            name="password"
-            type="password"
-            value={password}
-            onChange={(evt) => setPassword(evt.target.value)}
-            icon="EditIcon"
-            placeholder="Пароль"
-          />
-        </FormInputWrapper>
-        {isInfoChanged && (
-          <div className={styles.form__buttons}>
-            <Button type="secondary" size="medium" onClick={handleResetChanges}>
-              Отмена
-            </Button>
-            <Button type="primary" size="medium" onClick={handleSaveChanges}>
-              Сохранить
-            </Button>
-          </div>
+      <ProfileNav />
+      <Route path="/profile" exact>
+        <form className={styles.form}>
+          <FormInputWrapper>
+            <Input
+              name="name"
+              type="text"
+              value={name}
+              onChange={(evt) => setName(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Имя"
+            />
+          </FormInputWrapper>
+          <FormInputWrapper>
+            <Input
+              name="login"
+              type="text"
+              value={email}
+              onChange={(evt) => setEmail(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Логин"
+            />
+          </FormInputWrapper>
+          <FormInputWrapper>
+            <Input
+              name="password"
+              type="password"
+              value={password}
+              onChange={(evt) => setPassword(evt.target.value)}
+              icon="EditIcon"
+              placeholder="Пароль"
+            />
+          </FormInputWrapper>
+          {isInfoChanged && (
+            <div className={styles.form__buttons}>
+              <Button
+                type="secondary"
+                size="medium"
+                onClick={handleResetChanges}
+              >
+                Отмена
+              </Button>
+              <Button type="primary" size="medium" onClick={handleSaveChanges}>
+                Сохранить
+              </Button>
+            </div>
+          )}
+        </form>
+      </Route>
+      <Route path="/profile/orders">
+        {wsConnected && ordersData ? (
+          <section className={styles.orderHistoryPage__content}>
+            <OrdersLists
+              ordersData={ordersData.orders && [...ordersData.orders].reverse()}
+              path="/profile/orders/"
+              isOrderStatus
+            />
+          </section>
+        ) : (
+          <Loader />
         )}
-      </form>
+      </Route>
     </div>
   );
 };
 
 export default ProfilePage;
 
-//TODO  условный рендернинг кнопок - userPassword <empty string> в хранилице
+//сначала идут более поздние по ТЗ

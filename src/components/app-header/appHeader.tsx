@@ -36,7 +36,7 @@ const AppHeader = () => {
             <li>
               <NavLink
                 exact
-                to="/feed"
+                to="/feed/"
                 className={`pl-5 pr-5 ${styles.header__link}`}
                 activeClassName={styles.header__link_active}
               >
