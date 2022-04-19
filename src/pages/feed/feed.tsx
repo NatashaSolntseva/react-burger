@@ -11,7 +11,15 @@ import styles from "./feedStyles.module.css";
 
 const FeedPage: FC = () => {
   const dispatch = useAppDispatch();
+
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
+
+  useEffect(() => {
+    dispatch({ type: WS_CONNECTION_START });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
+  }, [dispatch]);
 
   //console.log("wsConnected", wsConnected);
   //console.log("ordersData", ordersData);
@@ -34,13 +42,6 @@ const FeedPage: FC = () => {
 
   //console.log("pendingOrders", pendingOrders);
 
-  useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START });
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
-    };
-  }, [dispatch]);
-
   return (
     <>
       {wsConnected && ordersData ? (
@@ -50,7 +51,7 @@ const FeedPage: FC = () => {
           </h1>
           {ordersData.orders.length === 50 ? (
             <section className={styles.feed__orderSection}>
-              <OrdersLists path="feed/" ordersData={ordersData.orders} />
+              <OrdersLists path="/feed/" ordersData={ordersData.orders} />
             </section>
           ) : (
             <Loader />

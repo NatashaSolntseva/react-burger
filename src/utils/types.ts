@@ -111,7 +111,7 @@ export interface IFeedsOrders {
 }
 
 export interface IOrdersList {
-  ordersData: TWsOrder[] | undefined;
+  ordersData: TWsOrder[];
   isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
   path: string;
 }
@@ -134,7 +134,7 @@ export interface IIngredientIcon {
 }
 
 export type TWsOrder = {
-  createdAt: string;
+  createdAt: any | undefined;
   ingredients: string[];
   name: string;
   number: number;

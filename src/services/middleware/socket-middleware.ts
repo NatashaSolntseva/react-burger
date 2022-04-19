@@ -40,7 +40,7 @@ export const socketMiddleware = (
         };
 
         socket.onerror = (event) => {
-          //console.log(`Ошибка ${event}`);
+          console.log(`Ошибка ${event}`);
           dispatch({ type: onError, payload: event });
         };
 

@@ -1,37 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FC } from "react";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./orderInfo.module.css";
-import getDateFormat from "../../utils/date";
-import IngredientInfo from "./components/ingredient-info";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../services/hooks/hooks";
-import { findOrderById } from "../../services/actions/orderActions";
+
+import styles from "./orderInfo.module.css";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import Loader from "../loader/loader";
+import IngredientInfo from "./components/ingredient-info";
+
+import getDateFormat from "../../utils/date";
+
+import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+import { findExactOrderByNumber } from "../../services/actions/orderActions";
+import { getOrderByNumber } from "../../services/actions/feedActions";
 import { getOrderIngredientsDataByIds } from "../../services/actions/ingredientsActions";
 
 //TODO компонент для модалки
 
 const OrderInfo: FC = () => {
-  const params = useParams<{ id: string }>();
-  const { ordersData, wsError, wsConnected } = useAppSelector(
-    (store) => store.feed
-  );
-  console.log("ordersData in OrderInfo", ordersData);
-  //получили состав заказа, в т.ч. id ингредиентов
-  const exactOrder = useAppSelector(findOrderById(params.id));
-  //console.log("exctOrder", exactOrder);
-  //console.log("exactOrder.ingredients", exactOrder.ingredients); //тут id лежат
+  const dispatch = useAppDispatch();
+
+  const params = useParams<{ number: string }>();
+
+  const { ordersData } = useAppSelector((store) => store.feed);
+
+  const exactOrder = useAppSelector(findExactOrderByNumber(+params.number)); // превращает в число как и Number
+
+  useEffect(() => {
+    if (exactOrder && !exactOrder.number) {
+      dispatch(getOrderByNumber(+params.number));
+    }
+  }, [dispatch, exactOrder, params.number]);
 
   const { ingredients, totalPrice } = useAppSelector(
     getOrderIngredientsDataByIds(exactOrder.ingredients)
   );
 
-  //console.log("ingredients", ingredients);
-  //console.log("totalPrice", totalPrice);
-
   let status = "";
-  switch (exactOrder.status) {
+  switch (exactOrder?.status) {
     case "created":
       status = "Создан";
       break;
@@ -43,9 +48,7 @@ const OrderInfo: FC = () => {
       break;
   }
 
-  //TODO не работает лоадер? пустой массив
-
-  return wsError && !wsConnected && !ordersData ? (
+  return !ordersData && !exactOrder ? (
     <Loader />
   ) : (
     <div className={styles.orderInfo__wrapper}>
@@ -66,7 +69,7 @@ const OrderInfo: FC = () => {
       </ul>
       <div className={styles.orderInfo__footer}>
         <time className="text text_type_main-default text_color_inactive">
-          {getDateFormat(exactOrder.createdAt)} i-GMT+3
+          {getDateFormat(exactOrder?.createdAt)} i-GMT+3
         </time>
         <div className={styles.orderInfo__price}>
           <span className="text text_type_digits-default">{totalPrice}</span>

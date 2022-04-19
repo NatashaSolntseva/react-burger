@@ -51,13 +51,13 @@ const App: FC = () => {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <Route path="/register" exact>
+        <Route path="/register">
           <RegisterPage />
         </Route>
-        <Route path="/forgot-password" exact>
+        <Route path="/forgot-password">
           <ForgotPswPage />
         </Route>
-        <Route path="/reset-password" exact>
+        <Route path="/reset-password">
           <ResetPswPage />s
         </Route>
         <Route path="/ingredients/:id" exact>
@@ -66,14 +66,14 @@ const App: FC = () => {
         <Route path="/feed" exact>
           <FeedPage />
         </Route>
-        <Route path="/feed/:id" exact>
+        <Route path="/feed/:number" exact>
           <OrderInfo />
         </Route>
 
-        <ProtectedRoute path="/profile/orders/:id" exact>
+        <ProtectedRoute path="/profile/orders/:number" exact>
           <OrderInfo />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile" exact>
+        <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
 
@@ -90,14 +90,14 @@ const App: FC = () => {
         </Route>
       )}
       {background && (
-        <Route path="/feed/:id">
+        <Route path="/feed/:number">
           <Modal closeModal={() => closeModal("/feed")}>
             <OrderInfo />
           </Modal>
         </Route>
       )}
       {background && (
-        <Route path="/profile/orders/:id">
+        <Route path="/profile/orders/:number">
           <Modal closeModal={() => closeModal("/profile/orders")}>
             <OrderInfo />
           </Modal>

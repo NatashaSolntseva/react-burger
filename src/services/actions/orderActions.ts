@@ -68,7 +68,7 @@ export const getOrderNumberApi: AppThunk = (
       const res = await fetch(`${BASE_URL}/orders`, postOrderOption);
       if (res.ok) {
         const serverResOrderId = await res.json();
-        console.log("yea");
+        //console.log("yea");
         dispatch(sendOrderNumberSuccess(serverResOrderId));
       } else {
         throw new Error(`Error ${res.status}`);
@@ -79,19 +79,20 @@ export const getOrderNumberApi: AppThunk = (
   };
 };
 
-export const findOrderById = (id: string) => (state: RootState) => {
-  const order = state.feed.ordersData?.orders.find(
-    (order: TWsOrder) => order._id === id
-  );
-  return order
-    ? order
-    : {
-        _id: "",
-        status: "",
-        name: "",
-        createdAt: "",
-        updatedAt: "",
-        number: 0,
-        ingredients: [""],
-      };
-};
+export const findExactOrderByNumber =
+  (number: number) => (state: RootState) => {
+    const order = state.feed.ordersData?.orders.find(
+      (order: TWsOrder) => order.number === number
+    );
+    return order
+      ? order
+      : {
+          _id: "",
+          status: "",
+          name: "",
+          createdAt: "",
+          updatedAt: "",
+          number: 0,
+          ingredients: [""],
+        };
+  };
