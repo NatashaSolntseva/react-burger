@@ -20,7 +20,7 @@ export const socketMiddleware = (
         onError,
         onMessage,
       } = wsActions;
-      console.log("wsActions:", wsActions);
+      //console.log("wsActions:", wsActions);
       console.log("wsTypeAction:", type);
 
       if (type === wsAllOrdersData) {
@@ -35,7 +35,7 @@ export const socketMiddleware = (
 
       if (socket) {
         socket.onopen = (event) => {
-          console.log("Соединение установлено", socket);
+          //console.log("Соединение установлено", socket);
           dispatch({ type: onOpen, payload: event });
         };
 

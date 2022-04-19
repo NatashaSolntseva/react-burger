@@ -1,3 +1,5 @@
+import { AppDispatch, AppThunk } from "../..";
+import api from "../../utils/api";
 import { TWsAnswer } from "../../utils/types";
 
 export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";

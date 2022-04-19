@@ -11,14 +11,12 @@ import { TWsActions } from "../actions/feedActions";
 
 type TdefaultFeedOrdersState = {
   ordersData: TWsAnswer | null;
-  orderNumber: number | null;
   wsConnected: boolean;
   wsError: boolean;
 };
 
 const defaultFeedOrdersState: TdefaultFeedOrdersState = {
   ordersData: null,
-  orderNumber: null,
   wsConnected: false,
   wsError: false,
 };

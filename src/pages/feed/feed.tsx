@@ -51,7 +51,7 @@ const FeedPage: FC = () => {
           </h1>
           {ordersData.orders.length === 50 ? (
             <section className={styles.feed__orderSection}>
-              <OrdersLists path="feed/" ordersData={ordersData.orders} />
+              <OrdersLists path="/feed/" ordersData={ordersData.orders} />
             </section>
           ) : (
             <Loader />
