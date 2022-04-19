@@ -25,6 +25,7 @@ const OrderInfo: FC = () => {
 
   const exactOrder = useAppSelector(findExactOrderByNumber(+params.number)); // превращает в число как и Number
 
+  // если нет orderData при открытии страницы отдельно (т.к. пришли в обход открытого soket соединения), то запрашиваем заказ с сервера по номеру заказа
   useEffect(() => {
     if (exactOrder && !exactOrder.number) {
       dispatch(getOrderByNumber(+params.number));
@@ -36,7 +37,7 @@ const OrderInfo: FC = () => {
   );
 
   let status = "";
-  switch (exactOrder?.status) {
+  switch (exactOrder.status) {
     case "created":
       status = "Создан";
       break;
@@ -48,7 +49,7 @@ const OrderInfo: FC = () => {
       break;
   }
 
-  return !ordersData && !exactOrder ? (
+  return !ordersData && !exactOrder.number ? (
     <Loader />
   ) : (
     <div className={styles.orderInfo__wrapper}>

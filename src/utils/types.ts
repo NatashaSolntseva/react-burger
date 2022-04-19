@@ -25,7 +25,7 @@ export type TOverlayCloseModal = {
   children?: ReactNode;
 };
 
-export type TDetailIngredient = { ingredient: IIngredient | any }; //TODO убрать any
+export type TDetailIngredient = { ingredient: IIngredient };
 
 export type TOpenModal = {
   modalType: "ingredientDetail" | "orderDetail";
@@ -117,15 +117,9 @@ export interface IOrdersList {
 }
 
 export interface IOrderCard {
-  orderData: TWsOrder | any;
+  orderData: TWsOrder;
   isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
   path: string;
-}
-
-export interface IStatisticStatusList {
-  title: string;
-  hightlightSelection?: boolean;
-  orders?: number[] | null | undefined;
 }
 
 export interface IIngredientIcon {
@@ -134,7 +128,7 @@ export interface IIngredientIcon {
 }
 
 export type TWsOrder = {
-  createdAt: any | undefined;
+  createdAt: string;
   ingredients: string[];
   name: string;
   number: number;
@@ -166,6 +160,12 @@ export interface IFeedStatistic {
   pendingOrders?: number[] | null;
 }
 
+export interface IStatisticStatusList {
+  title: string;
+  hightlightSelection?: boolean;
+  orders?: number[] | null;
+}
+
 export type TOrdersIngredient = {
   _id?: string;
   name?: string;
@@ -176,7 +176,7 @@ export type TOrdersIngredient = {
   calories?: number;
   price?: number;
   image?: string;
-  image_mobile?: string | undefined;
+  image_mobile?: string;
   image_large?: string;
   __v?: number;
   uid?: string;

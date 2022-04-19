@@ -3,6 +3,7 @@ import { FC } from "react";
 import StatisticTotal from "./statistic-total/statistic-total";
 import LifeStatistic from "./statistic-life/statistic-life";
 import { IFeedStatistic } from "../../utils/types";
+import Loader from "../loader/loader";
 
 const FeedStatistic: FC<IFeedStatistic> = ({
   total,
@@ -10,7 +11,9 @@ const FeedStatistic: FC<IFeedStatistic> = ({
   doneOrders,
   pendingOrders,
 }) => {
-  return (
+  return !doneOrders && !pendingOrders ? (
+    <Loader />
+  ) : (
     <section className={styles.feedStatistic}>
       <div className={styles.feedStatsistic__listWrapper}>
         <LifeStatistic

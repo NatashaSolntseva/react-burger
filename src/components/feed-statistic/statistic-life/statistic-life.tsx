@@ -2,6 +2,7 @@ import styles from "./statisticLife.module.css";
 
 import { FC } from "react";
 import { IStatisticStatusList } from "../../../utils/types";
+import Loader from "../../loader/loader";
 
 const LifeStatistic: FC<IStatisticStatusList> = ({
   title,
@@ -9,7 +10,9 @@ const LifeStatistic: FC<IStatisticStatusList> = ({
   orders,
 }) => {
   const style = hightlightSelection ? { color: "#00cccc" } : {};
-  return (
+  return !orders ? (
+    <Loader />
+  ) : (
     <div className={styles.lifeStatistic__wrapper}>
       <h2
         className={`text text_type_main-medium ${styles.lifeStatistic__title}`}

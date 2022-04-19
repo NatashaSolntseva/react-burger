@@ -21,30 +21,23 @@ const FeedPage: FC = () => {
     };
   }, [dispatch]);
 
-  //console.log("wsConnected", wsConnected);
-  //console.log("ordersData", ordersData);
-
   //номера готовых заказов
-  const doneOrders: number[] | null =
+  const doneOrders =
     ordersData &&
     ordersData.orders
       .filter((order) => order.status === "done")
       .map((order) => order.number);
 
-  //console.log("doneOrders", doneOrders);
-
   //номера заказов в работе
-  const pendingOrders: number[] | null =
+  const pendingOrders =
     ordersData &&
     ordersData.orders
       .filter((order) => order.status === "pending")
       .map((order) => order.number);
 
-  //console.log("pendingOrders", pendingOrders);
-
   return (
     <>
-      {wsConnected && ordersData ? (
+      {wsConnected && ordersData && doneOrders && pendingOrders ? (
         <main className={styles.feed}>
           <h1 className={`text text_type_main-large ${styles.feed__title}`}>
             Лента заказов

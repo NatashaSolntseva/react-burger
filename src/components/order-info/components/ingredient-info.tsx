@@ -8,7 +8,6 @@ import styles from "./ingredientInfo.module.css";
 const IngredientInfo: FC<{ ingredient: TOrdersIngredient }> = ({
   ingredient,
 }) => {
-  //console.log("ingredient in ingredientInfo", ingredient);
   return !ingredient ? (
     <Loader />
   ) : (
