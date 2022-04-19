@@ -1,29 +1,15 @@
-import styles from "./statisticLife.module.css";
+//import styles from ".statisticLife.module.css";
 
 import { FC } from "react";
 import { IStatisticStatusList } from "../../../utils/types";
 
-const LifeStatistic: FC<IStatisticStatusList> = ({
-  title,
-  hightlightSelection,
-  orders,
-}) => {
-  const style = hightlightSelection ? { color: "#00cccc" } : {};
+const LifeStatistic: FC<IStatisticStatusList> = ({ title }) => {
   return (
-    <div className={styles.lifeStatistic__wrapper}>
-      <h2
-        className={`text text_type_main-medium ${styles.lifeStatistic__title}`}
-      >
-        {title}
-      </h2>
-      <ul className={`${styles.lifeStatistic__list}`}>
-        {orders?.slice(0, 10).map((order) => {
-          return (
-            <li className={"text text_type_digits-default"} style={style}>
-              {order}
-            </li>
-          );
-        })}
+    <div>
+      <p className={`text text_type_main-medium`}>{title}</p>
+      <ul>
+        <li className={"text text_type_digits-default"}>1234567</li>
+        <li className={"text text_type_digits-default"}>123454324</li>
       </ul>
     </div>
   );

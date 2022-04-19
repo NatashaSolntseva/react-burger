@@ -7,14 +7,16 @@ import { IIngredient } from "../../../../utils/types";
 
 import { IIngredientsGroup } from "../../../../utils/types";
 
-const IngredientGroup = forwardRef<HTMLLIElement, IIngredientsGroup>(
+const IngredientGroup = forwardRef<HTMLParagraphElement, IIngredientsGroup>(
   ({ groupName, groupElements, openModal, count }, ref) => {
     return (
-      <li ref={ref}>
+      <div>
         <div className="mt-10 mb-6">
-          <p className="text text_type_main-medium">{groupName}</p>
+          <p className="text text_type_main-medium" ref={ref}>
+            {groupName}
+          </p>
         </div>
-        <ul className={`${styles.content}`}>
+        <div className={`${styles.content}`}>
           {groupElements.map((burgerItem: IIngredient) => (
             <IngredientElementDndWrapper
               key={burgerItem._id}
@@ -23,8 +25,8 @@ const IngredientGroup = forwardRef<HTMLLIElement, IIngredientsGroup>(
               count={count[burgerItem._id]}
             />
           ))}
-        </ul>
-      </li>
+        </div>
+      </div>
     );
   }
 );

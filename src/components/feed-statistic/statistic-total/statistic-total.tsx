@@ -1,4 +1,4 @@
-import styles from "./statisticTotal.module.css";
+//import styles from "./statisticTotal.module.css";
 import { FC } from "react";
 
 const StatisticTotal: FC<{ title: string; children: number | string }> = ({
@@ -6,13 +6,9 @@ const StatisticTotal: FC<{ title: string; children: number | string }> = ({
   children,
 }) => {
   return (
-    <div className={styles.statisticTotal__wrapper}>
+    <div>
       <p className={`text text_type_main-medium`}>{title}</p>
-      <span
-        className={`text text_type_digits-large ${styles.statisticTotlal__content}`}
-      >
-        {!children ? "-" : children}
-      </span>
+      <span className={`text text_type_digits-large`}>{children}</span>
     </div>
   );
 };

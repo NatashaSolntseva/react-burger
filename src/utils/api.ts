@@ -26,17 +26,6 @@ class Api {
     }).then(this._getResponseData);
   }
 
-  getOrderNumber(orderIngredientList: string[]) {
-    return fetch(`${BASE_URL}/orders`, {
-      method: "POST",
-      headers: {
-        ...this._headers,
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
-      body: JSON.stringify({ ingredients: orderIngredientList }),
-    });
-  }
-
   registerNewUserRequest(
     email: string,
     password: string,
@@ -132,15 +121,22 @@ PATCH https://norma.nomoreparties.space/api/auth/user - эндпоинт обн�
       body: JSON.stringify({ password: password, token: accessToken }),
     }).then(this._getResponseData);
   }
-
-  getOrderByNumberApi(number: number) {
-    return fetch(`${BASE_URL}/orders/${number}`, {
-      method: "GET",
-      headers: {
-        ...this._headers,
-      },
-    }).then(this._getResponseData);
-  }
 }
 
 export default new Api({ url: BASE_URL });
+
+/*
+После успешной авторизации приходят два токена.
+Первый (accessToken) используется для внутренних запросов к серверу — получения или обновления данных о пользователе.
+Если токен просрочился и данные о пользователе нельзя получить или обновить, то используйте маршрут /auth/token и отправляйте на него второй токен — refreshToken для получения нового accessToken.
+После этого повторите запрос на получение или обновление данных о пользователе.
+
+
+
+POST https://norma.nomoreparties.space/api/auth/login - эндпоинт для авторизации.
+POST https://norma.nomoreparties.space/api/auth/register - эндпоинт для регистрации пользователя.
+POST https://norma.nomoreparties.space/api/auth/logout - эндпоинт для выхода из системы.
+POST https://norma.nomoreparties.space/api/auth/token - эндпоинт обновления токена.
+
+
+*/

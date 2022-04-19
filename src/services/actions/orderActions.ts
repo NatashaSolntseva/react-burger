@@ -1,7 +1,5 @@
 import { BASE_URL } from "../../utils/api";
-import type { AppDispatch, AppThunk, RootState } from "../../index";
-import { TWsOrder } from "../../utils/types";
-import { getCookie } from "../../utils/cookies";
+import type { AppDispatch, AppThunk } from "../../index";
 
 //Получение и обновление номера заказа в модальном окне OrderDetails.
 export const SEND_ORDER_NUMBER_REQUEST: "SEND_ORDER_NUMBER_REQUEST" =
@@ -54,10 +52,7 @@ export const getOrderNumberApi: AppThunk = (
   return async (dispatch: AppDispatch) => {
     const postOrderOption = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken")}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ingredients: orderIngredientList,
       }),
@@ -68,7 +63,6 @@ export const getOrderNumberApi: AppThunk = (
       const res = await fetch(`${BASE_URL}/orders`, postOrderOption);
       if (res.ok) {
         const serverResOrderId = await res.json();
-        //console.log("yea");
         dispatch(sendOrderNumberSuccess(serverResOrderId));
       } else {
         throw new Error(`Error ${res.status}`);
@@ -78,21 +72,3 @@ export const getOrderNumberApi: AppThunk = (
     }
   };
 };
-
-export const findExactOrderByNumber =
-  (number: number) => (state: RootState) => {
-    const order = state.feed.ordersData?.orders.find(
-      (order: TWsOrder) => order.number === number
-    );
-    return order
-      ? order
-      : {
-          _id: "",
-          status: "",
-          name: "",
-          createdAt: "",
-          updatedAt: "",
-          number: 0,
-          ingredients: [""],
-        };
-  };

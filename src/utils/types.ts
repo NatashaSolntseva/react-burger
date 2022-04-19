@@ -106,78 +106,8 @@ export type TUser = {
   };
 };
 
-export interface IFeedsOrders {
-  orders: any;
-}
-
-export interface IOrdersList {
-  ordersData: TWsOrder[];
-  isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
-  path: string;
-}
-
-export interface IOrderCard {
-  orderData: TWsOrder | any;
-  isOrderStatus?: boolean; //для верстки карточки заказа в ленте и в заказах пользователя
-  path: string;
-}
+export interface IFeedsOrders {}
 
 export interface IStatisticStatusList {
   title: string;
-  hightlightSelection?: boolean;
-  orders?: number[] | null | undefined;
 }
-
-export interface IIngredientIcon {
-  img?: string;
-  hiddenIconsCount?: number;
-}
-
-export type TWsOrder = {
-  createdAt: any | undefined;
-  ingredients: string[];
-  name: string;
-  number: number;
-  status: string;
-  updatedAt: string;
-  _id: string;
-};
-
-export type TWsAnswer = {
-  success: boolean;
-  total: number;
-  totalToday: number;
-  orders: TWsOrder[];
-};
-
-export type TWsOrdersActions = {
-  wsAllOrdersData: string;
-  wsUserOrdersData: string;
-  onOpen: string;
-  onClose: string;
-  onError: string;
-  onMessage: string;
-};
-
-export interface IFeedStatistic {
-  total: (number | string) & ReactNode;
-  totalToday: (number | string) & ReactNode;
-  doneOrders?: number[] | null;
-  pendingOrders?: number[] | null;
-}
-
-export type TOrdersIngredient = {
-  _id?: string;
-  name?: string;
-  type?: string;
-  proteins?: number;
-  fat?: number;
-  carbohydrates?: number;
-  calories?: number;
-  price?: number;
-  image?: string;
-  image_mobile?: string | undefined;
-  image_large?: string;
-  __v?: number;
-  uid?: string;
-};
