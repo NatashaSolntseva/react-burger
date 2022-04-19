@@ -21,7 +21,7 @@ export const socketMiddleware = (
         onMessage,
       } = wsActions;
       //console.log("wsActions:", wsActions);
-      console.log("wsTypeAction:", type);
+      //console.log("wsTypeAction:", type);
 
       if (type === wsAllOrdersData) {
         socket = new WebSocket(`${wsUrl}/orders/all`);

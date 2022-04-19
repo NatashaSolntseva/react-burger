@@ -23,6 +23,14 @@ export const WS_AUTH_CONNECTION_START: " WS_AUTH_CONNECTION_START" =
 
 export const CLICK_ON_ORDER: "CLICK_ON_ORDER" = "CLICK_ON_ORDER";
 
+//Получение заказа от API по номеру заказа для страницы с описанием заказа
+export const GET_EXACT_ORDER_BY_NUMBER_REQUEST: "GET_EXACT_ORDER_BY_NUMBER_REQUEST" =
+  "GET_EXACT_ORDER_BY_NUMBER_REQUEST";
+export const GET_EXACT_ORDER_BY_NUMBER_SUCCESS: "GET_EXACT_ORDER_BY_NUMBER_SUCCESS" =
+  "GET_EXACT_ORDER_BY_NUMBER_SUCCESS";
+export const GET_EXACT_ORDER_BY_NUMBER_FAILD: "GET_EXACT_ORDER_BY_NUMBER_FAILD" =
+  "GET_EXACT_ORDER_BY_NUMBER_FAILD";
+
 export interface IWsConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
 }
@@ -71,6 +79,19 @@ export interface IWsAuthConnectionError {
   payload: Event;
 }
 
+export interface IGetOrderByNumberRequest {
+  readonly type: typeof GET_EXACT_ORDER_BY_NUMBER_REQUEST;
+}
+
+export interface IGetOrderByNumberSuccess {
+  readonly type: typeof GET_EXACT_ORDER_BY_NUMBER_SUCCESS;
+  readonly payload: TWsAnswer;
+}
+
+export interface IGetOrderByNumberFaild {
+  readonly type: typeof GET_EXACT_ORDER_BY_NUMBER_FAILD;
+}
+
 export type TWsActions =
   | IWsConnectionStart
   | IWsConnectionSuccess
@@ -81,4 +102,24 @@ export type TWsActions =
   | IClickOnOrder
   | IWsAuthConnectionStart
   | IWsAuthConnectionSuccess
-  | IWsAuthConnectionError;
+  | IWsAuthConnectionError
+  | IGetOrderByNumberRequest
+  | IGetOrderByNumberSuccess
+  | IGetOrderByNumberFaild;
+
+export const getOrderByNumber: AppThunk = (number: number) => {
+  return function (dispatch: AppDispatch) {
+    dispatch({ type: GET_EXACT_ORDER_BY_NUMBER_REQUEST });
+    api
+      .getOrderByNumberApi(number)
+      .then((res) => {
+        dispatch({ type: GET_EXACT_ORDER_BY_NUMBER_SUCCESS, payload: res });
+      })
+      .catch((error) => {
+        console.log(`Ошибка при поиске заказа по номеру. ${error}`);
+        dispatch({
+          type: GET_EXACT_ORDER_BY_NUMBER_FAILD,
+        });
+      });
+  };
+};

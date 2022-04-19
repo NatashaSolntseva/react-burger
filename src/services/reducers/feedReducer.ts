@@ -5,6 +5,7 @@ import {
   WS_GET_MESSAGE,
   WS_AUTH_CONNECTION_SUCCESS,
   WS_AUTH_CONNECTION_ERROR,
+  GET_EXACT_ORDER_BY_NUMBER_SUCCESS,
 } from "../actions/feedActions";
 import { TWsAnswer } from "../../utils/types";
 import { TWsActions } from "../actions/feedActions";
@@ -55,6 +56,11 @@ export const feedOrdersReducer = (
       return {
         ...state,
         wsError: true,
+      };
+    case GET_EXACT_ORDER_BY_NUMBER_SUCCESS:
+      return {
+        ...state,
+        ordersData: action.payload,
       };
     default:
       return state;

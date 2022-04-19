@@ -15,7 +15,7 @@ const FeedPage: FC = () => {
   const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
 
   useEffect(() => {
-    if (!ordersData) dispatch({ type: WS_CONNECTION_START });
+    dispatch({ type: WS_CONNECTION_START });
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED });
     };
