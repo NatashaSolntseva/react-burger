@@ -72,7 +72,7 @@ const ProfilePage: FC = () => {
     [dispatch, name, email, password]
   );
 
-  console.log("wsRequest", wsRequest);
+  //console.log("wsRequest", wsRequest);
 
   return (
     <div className={styles.wrapper}>
