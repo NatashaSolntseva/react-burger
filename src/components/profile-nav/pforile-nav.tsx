@@ -22,7 +22,7 @@ const ProfileNav = () => {
       dispatch({ type: LOGOUT_USER_REQUEST });
       history.push("/login");
     },
-    [dispatch]
+    [dispatch, history]
   );
 
   return (

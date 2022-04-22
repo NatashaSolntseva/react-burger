@@ -20,7 +20,7 @@ const IngredientInfo: FC<{ ingredient: TOrdersIngredient }> = ({
       </p>
       <p className={styles.ingredientInfo__price}>
         <span className="text text_type_digits-default mr-2">
-          {1} x {ingredient.price}
+          {ingredient.quantity} x {ingredient.price}
         </span>{" "}
         <CurrencyIcon type="primary" />
       </p>

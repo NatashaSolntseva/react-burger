@@ -19,13 +19,16 @@ import {
 } from "../../services/actions/feedActions";
 import Loader from "../../components/loader/loader";
 import OrdersLists from "../../components/orders-lists/orders-lists";
+import ErrorMessage from "../../components/error-message/error-message";
 
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
   const { userName, userEmail, userPassword } = useAppSelector(
     (store) => store.user
   );
-  const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
+  const { ordersData, wsConnected, wsError, wsRequest } = useAppSelector(
+    (store) => store.feed
+  );
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -68,6 +71,8 @@ const ProfilePage: FC = () => {
     },
     [dispatch, name, email, password]
   );
+
+  console.log("wsRequest", wsRequest);
 
   return (
     <div className={styles.wrapper}>
@@ -121,7 +126,31 @@ const ProfilePage: FC = () => {
         </form>
       </Route>
       <Route path="/profile/orders">
-        {wsConnected && ordersData ? (
+        {wsRequest && <Loader />}
+        {!wsError && wsConnected && ordersData ? (
+          <section className={styles.orderHistoryPage__content}>
+            <OrdersLists
+              ordersData={ordersData.orders && [...ordersData.orders].reverse()}
+              path="/profile/orders/"
+              isOrderStatus
+            />
+          </section>
+        ) : (
+          <ErrorMessage>
+            Ошибка загрузки данных. Пожалуйста, попробуйте зайти позже
+          </ErrorMessage>
+        )}
+      </Route>
+    </div>
+  );
+};
+
+export default ProfilePage;
+
+//сначала идут более поздние по ТЗ
+
+/*
+        {!wsError && wsConnected && ordersData ? (
           <section className={styles.orderHistoryPage__content}>
             <OrdersLists
               ordersData={ordersData.orders && [...ordersData.orders].reverse()}
@@ -132,11 +161,5 @@ const ProfilePage: FC = () => {
         ) : (
           <Loader />
         )}
-      </Route>
-    </div>
-  );
-};
 
-export default ProfilePage;
-
-//сначала идут более поздние по ТЗ
+*/

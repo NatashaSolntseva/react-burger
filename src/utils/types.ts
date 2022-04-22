@@ -48,6 +48,7 @@ export interface IIngredientsGroup {
 export interface IBunMold {
   children?: string;
   position: string;
+  background?: string;
 }
 
 export interface IIngredientsMold {
@@ -125,6 +126,7 @@ export interface IOrderCard {
 export interface IIngredientIcon {
   img?: string;
   hiddenIconsCount?: number;
+  counter?: number;
 }
 
 export type TWsOrder = {
@@ -180,4 +182,5 @@ export type TOrdersIngredient = {
   image_large?: string;
   __v?: number;
   uid?: string;
+  quantity?: number;
 };

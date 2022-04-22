@@ -79,13 +79,30 @@ export const getOrderIngredientsDataByIds =
       );
     //console.log("ingredientsArr", ingredientsArr);
 
+    const combinedIng = ingredientsArr.filter(function (element, index) {
+      return ingredientsArr.indexOf(element) === index;
+    });
+
+    const quantityAddedArr = combinedIng.map((ingredient) => ({
+      ...ingredient,
+      quantity: ingredientsArr.reduce((qty, item) => {
+        if (ingredient?._id === item?._id) {
+          qty++;
+        }
+        return qty;
+      }, 0),
+    }));
+
+    //console.log("скомбинировали", combinedIng);
+    //console.log("добавить количество", quantityAddedArr);
+
     const totalPrice = ingredientsArr.reduce((sum, ingredient) => {
       if (ingredient) sum += ingredient.price;
       return sum;
     }, 0);
     //const totalPrice = 1510;
     return {
-      ingredients: ingredientsArr,
+      ingredients: quantityAddedArr,
       totalPrice: totalPrice,
     };
   };

@@ -23,6 +23,7 @@ import {
 import { clearOrderList } from "../../services/actions/constructorActions";
 import { IIngredient } from "../../utils/types";
 import { TOpenModal } from "../../utils/types";
+import ErrorMessage from "../../components/error-message/error-message";
 
 const HomePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -58,13 +59,9 @@ const HomePage: FC = () => {
     <div className={styles.app}>
       {ingredientsApiRequest && <Loader />}
       {ingredientsApiFailed && (
-        <main>
-          <section>
-            <h1 className="text text_type_main-large">
-              Ох, ошибка загрузки данных...
-            </h1>
-          </section>
-        </main>
+        <ErrorMessage>
+          Ошибка загрузки данных. Пожалуйста, попробуйте зайти позже
+        </ErrorMessage>
       )}
       <DndProvider backend={HTML5Backend}>
         {!ingredientsApiRequest &&
@@ -76,7 +73,6 @@ const HomePage: FC = () => {
             </main>
           )}
       </DndProvider>
-
       {/* модальное окно о готовности заказа. номер и т.д.*/}
       {isOrderDetailModalVisible && (
         <Modal closeModal={handleOrderModalClose}>

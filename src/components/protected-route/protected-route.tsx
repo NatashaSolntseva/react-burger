@@ -1,14 +1,9 @@
 import { FC } from "react";
 import { useAppSelector } from "../../services/hooks/hooks";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import Loader from "../loader/loader";
 
 const ProtectedRoute: FC<RouteProps> = ({ children, ...rest }) => {
-  const { isAuthChecked, userIsAuth } = useAppSelector((store) => store.user);
-
-  /*if (!isAuthChecked) {
-    return <Loader />;
-  }*/
+  const { userIsAuth } = useAppSelector((store) => store.user);
 
   return (
     <Route

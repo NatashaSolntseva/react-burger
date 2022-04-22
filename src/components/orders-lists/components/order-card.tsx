@@ -68,7 +68,13 @@ const OrderCard: FC<IOrderCard> = ({ orderData, path, isOrderStatus }) => {
               />
             )}
             {ingredients.slice(-5).map((ingredient, i) => {
-              return <IngredientIcon img={ingredient?.image_mobile} key={i} />;
+              return (
+                <IngredientIcon
+                  img={ingredient?.image_mobile}
+                  key={i}
+                  counter={ingredient?.quantity}
+                />
+              );
             })}
           </ul>
           <p className={styles.orderCard__priceWrapper}>

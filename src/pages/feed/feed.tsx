@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import ErrorMessage from "../../components/error-message/error-message";
 import FeedStatistic from "../../components/feed-statistic/feed-statistic";
 import Loader from "../../components/loader/loader";
 import OrdersLists from "../../components/orders-lists/orders-lists";
@@ -12,7 +13,9 @@ import styles from "./feedStyles.module.css";
 const FeedPage: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { ordersData, wsConnected } = useAppSelector((store) => store.feed);
+  const { ordersData, wsConnected, wsError, wsRequest } = useAppSelector(
+    (store) => store.feed
+  );
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START });
@@ -35,9 +38,11 @@ const FeedPage: FC = () => {
       .filter((order) => order.status === "pending")
       .map((order) => order.number);
 
-  return (
+  return wsRequest ? (
+    <Loader />
+  ) : (
     <>
-      {wsConnected && ordersData && doneOrders && pendingOrders ? (
+      {!wsError && wsConnected && ordersData && doneOrders && pendingOrders ? (
         <main className={styles.feed}>
           <h1 className={`text text_type_main-large ${styles.feed__title}`}>
             Лента заказов
@@ -59,7 +64,9 @@ const FeedPage: FC = () => {
           </section>
         </main>
       ) : (
-        <Loader />
+        <ErrorMessage>
+          Ошибка загрузки данных. Пожалуйста, попробуйте зайти позже
+        </ErrorMessage>
       )}
     </>
   );

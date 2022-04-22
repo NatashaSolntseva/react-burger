@@ -21,3 +21,8 @@
   max-width: 844px;
   padding-right: 100px;
 }
+
+.profile__loaderWrapper {
+  display: flex;
+  align-items: center;
+}

@@ -22,7 +22,11 @@ const LifeStatistic: FC<IStatisticStatusList> = ({
       <ul className={`${styles.lifeStatistic__list}`}>
         {orders?.slice(0, 10).map((order) => {
           return (
-            <li className={"text text_type_digits-default"} style={style}>
+            <li
+              className={"text text_type_digits-default"}
+              style={style}
+              key={order}
+            >
               {order}
             </li>
           );
