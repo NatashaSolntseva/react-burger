@@ -35,7 +35,7 @@ export type AppDispatch = typeof storeState.dispatch;
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={storeState}>
-      <Router>
+      <Router basename="react-burger">
         <App />
       </Router>
     </Provider>
