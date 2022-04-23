@@ -67,3 +67,42 @@ export const findIngredientById = (id: string) => (state: RootState) => {
     (item: IIngredient) => item._id === id
   );
 };
+
+export const getOrderIngredientsDataByIds =
+  (idsArr: string[]) => (state: RootState) => {
+    const ingredientsArr = idsArr
+      .filter((id) => typeof id === "string")
+      .map((id) =>
+        state.ingredients.ingredientsDataFromServer.find(
+          (item: IIngredient) => item._id === id
+        )
+      );
+    //console.log("ingredientsArr", ingredientsArr);
+
+    const combinedIng = ingredientsArr.filter(function (element, index) {
+      return ingredientsArr.indexOf(element) === index;
+    });
+
+    const quantityAddedArr = combinedIng.map((ingredient) => ({
+      ...ingredient,
+      quantity: ingredientsArr.reduce((qty, item) => {
+        if (ingredient?._id === item?._id) {
+          qty++;
+        }
+        return qty;
+      }, 0),
+    }));
+
+    //console.log("скомбинировали", combinedIng);
+    //console.log("добавить количество", quantityAddedArr);
+
+    const totalPrice = ingredientsArr.reduce((sum, ingredient) => {
+      if (ingredient) sum += ingredient.price;
+      return sum;
+    }, 0);
+    //const totalPrice = 1510;
+    return {
+      ingredients: quantityAddedArr,
+      totalPrice: totalPrice,
+    };
+  };

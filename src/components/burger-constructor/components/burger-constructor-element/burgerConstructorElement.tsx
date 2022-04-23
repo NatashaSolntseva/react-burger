@@ -20,7 +20,7 @@ const BurgerConstructorElement = forwardRef<
 
   return (
     <li ref={ref} className={styles.container_wrapper}>
-      <div className="mr-1">
+      <div className={styles.container__dragIcon}>
         <DragIcon type="primary" />
       </div>
       <ConstructorElement

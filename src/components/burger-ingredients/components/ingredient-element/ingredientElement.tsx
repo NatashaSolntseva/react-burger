@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import { ILocation } from "../../../../utils/types";
 
 const IngredientElement = forwardRef<
-  HTMLDivElement,
+  HTMLLIElement,
   IBurgerIngredientElement & { isDragging: boolean }
 >(({ ingredient, openModal, isDragging, count }, ref) => {
   const handleOpenModal = () => {
@@ -22,7 +22,7 @@ const IngredientElement = forwardRef<
   const location = useLocation<ILocation>();
 
   return (
-    <div ref={ref}>
+    <li ref={ref}>
       <Link
         to={{
           pathname: `/ingredients/${ingredient._id}`,
@@ -47,7 +47,7 @@ const IngredientElement = forwardRef<
         <p className="text text_type_main-default">{ingredient.name}</p>
         {count !== 0 && <Counter size="default" count={count} />}
       </Link>
-    </div>
+    </li>
   );
 });
 

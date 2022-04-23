@@ -1,5 +1,5 @@
 //import { useSelector, useDispatch } from "react-redux";
-import { forwardRef, useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
 
 import {
@@ -15,6 +15,7 @@ import BunMold from "./components/bun-mold/bunMold";
 import BurgerConstructorElementDndWrapper from "./components/burger-constructor-element-dnd-wrapper/burgerConstructorElementDndWrapper";
 
 import { getOrderNumberApi } from "../../services/actions/orderActions";
+
 import { deleteIngredient } from "../../services/actions/constructorActions";
 
 import { IBurgerConstructor } from "../../utils/types";
@@ -41,15 +42,26 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
       [droppedIngredients, droppedBun]
     );
 
+    const [bunMoldBackColor, setbunMoldBackColor] = useState("transparent");
+
     const handleSubmit = () => {
       if (!droppedBun) {
-        alert("Вы не выбрали булочку!"); //TODO что-то более красивое
+        setbunMoldBackColor("var(--colors-interface-accent)");
+        setTimeout(() => {
+          setbunMoldBackColor("transparent");
+        }, 300);
         return;
       } else {
-        const constructorIngredients = droppedIngredients.concat(droppedBun);
+        //console.log("droppedBun", droppedBun);
+        // чтобы две булочки уходили на сервер
+        const constructorIngredients = droppedIngredients
+          .concat(droppedBun)
+          .concat(droppedBun);
         const orderIngredientList = constructorIngredients.map(
           (el: IIngredient) => el._id
         );
+        //console.log("constructorIngredients", constructorIngredients);
+        //console.log("orderIngredientList", orderIngredientList);
         dispatch(getOrderNumberApi(orderIngredientList));
         openModal({ modalType: "orderDetail" });
       }
@@ -57,7 +69,7 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
 
     const handleDeleteIngredient = useCallback(
       (indexToDelete) => {
-        console.log("delete");
+        //console.log("delete");
         dispatch(deleteIngredient(indexToDelete));
       },
       [dispatch]
@@ -75,7 +87,9 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
         <ul className={styles.ingredients_list} ref={ref}>
           <li className={`${styles.ingredient} ${styles.top_container}`}>
             {!droppedBun ? (
-              <BunMold position="top">Перетащи себе булочку</BunMold>
+              <BunMold position="top" background={bunMoldBackColor}>
+                Добавь булочку (верх)
+              </BunMold>
             ) : (
               <ConstructorElement
                 type="top"
@@ -110,7 +124,9 @@ const BurgerConstructorDnd = forwardRef<HTMLUListElement, IBurgerConstructor>(
           </li>
           <li className={`${styles.ingredient} ${styles.bottom_container}`}>
             {!droppedBun ? (
-              <BunMold position="bottom">Перетащи себе булочку</BunMold>
+              <BunMold position="bottom" background={bunMoldBackColor}>
+                Добавь булочку (низ)
+              </BunMold>
             ) : (
               <ConstructorElement
                 type="bottom"
